@@ -22,8 +22,8 @@ export const navItems: readonly NavItem[] = [
 ];
 
 export const authLinks = {
-    login: { label: "Login", href: "/login" },
-    register: { label: "Registrasi", href: "/register" },
+    login: { label: "Login", href: "/auth/login" },
+    register: { label: "Registrasi", href: "/auth/register" },
 } as const satisfies Record<string, NavItem>;
 
 export const contactInfo: {
