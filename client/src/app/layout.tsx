@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Navbar } from "@/components/common/navbar";
+import { Footer } from "@/components/common/footer";
 
 const geistHeading = Geist({subsets:['latin'],variable:'--font-heading'});
 
@@ -28,7 +30,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, "font-sans", manrope.variable, geistHeading.variable)}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Navbar />
+        <main>
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   );
 }
