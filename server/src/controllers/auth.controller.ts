@@ -1,25 +1,30 @@
 import { Request, Response } from "express";
-import { registerUser, loginByRole } from "../services/auth.service";
+import { registerUser, loginUser } from "../services/auth.service";
 import { setAuthCookie, clearAuthCookie } from "../utils/cookie";
-
-const VALID_LOGIN_ROLES = ["user", "admin"] as const;
-type LoginRole = (typeof VALID_LOGIN_ROLES)[number];
 
 export async function register(req: Request, res: Response) {
   try {
-    const { email, password, name, phone, address } = req.body || {};
+    const { email, password, confirmPassword, name, phone } = req.body || {};
 
-    if (!email || !password || !name) {
+    if (!name || !email || !phone || !password || !confirmPassword) {
       return res.status(400).json({
         success: false,
-        message: "Email, password, dan nama wajib diisi",
+        message: "Nama, email, phone, password, dan konfirmasi password wajib diisi",
       });
     }
+
     if (password.length < 6) {
-      return res.status(400).json({ success: false, message: "Password minimal 6 karakter" });
+      return res.status(400).json({
+        success: false,
+        message: "Password minimal 6 karakter",
+      });
     }
 
-    const { user, token } = await registerUser({ email, password, name, phone, address });
+    if (password !== confirmPassword) {
+      return res.status(400).json({ success: false, message: "Konfirmasi password tidak cocok" });
+    }
+
+    const { user, token } = await registerUser({ email, password, name, phone });
     setAuthCookie(res, token);
 
     return res.status(201).json({
@@ -38,22 +43,13 @@ export async function register(req: Request, res: Response) {
 
 export async function login(req: Request, res: Response) {
   try {
-    const { email, password, role } = req.body || {};
+    const { email, password } = req.body || {};
 
     if (!email || !password) {
       return res.status(400).json({ success: false, message: "Email dan password wajib diisi" });
     }
 
-    if (role !== undefined && !VALID_LOGIN_ROLES.includes(role)) {
-      return res.status(400).json({
-        success: false,
-        message: `Role tidak valid, gunakan salah satu dari: ${VALID_LOGIN_ROLES.join(", ")}`,
-      });
-    }
-
-    const loginRole: LoginRole = role === "admin" ? "admin" : "user";
-
-    const { user, token } = await loginByRole(email, password, loginRole);
+    const { user, token } = await loginUser(email, password);
     setAuthCookie(res, token);
 
     return res.json({
