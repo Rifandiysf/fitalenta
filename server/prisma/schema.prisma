@@ -13,6 +13,62 @@ enum Role {
   user
 }
 
+enum ProgramStatus {
+  active
+  inactive
+  full
+}
+
+enum Gender {
+  L
+  P
+}
+
+enum RegistrationStatus {
+  menunggu
+  lolos
+  tidak_lolos
+}
+
+enum PlacementStage {
+  proses
+  lolos
+  ditempatkan
+}
+
+enum PaymentMethod {
+  transfer
+  cash
+  credit_card
+}
+
+enum PaymentStatus {
+  pending
+  installment_1
+  installment_2
+  installment_3
+  installment_4
+  installment_5
+  installment_6
+  paid
+  overdue
+  cancelled
+}
+
+enum NotificationType {
+  info
+  warning
+  success
+  error
+}
+
+enum RelatedEntity {
+  registration
+  payment
+  selection
+  placement
+}
+
 model User {
   id              Int       @id @default(autoincrement())
   email           String    @unique
@@ -27,5 +83,477 @@ model User {
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime  @updatedAt @map("updated_at")
 
+  articles                  Article[]
+  registrations             Registration[]
+  registrationStatusChanges RegistrationStatusHistory[]
+  selectionEvaluations      SelectionStatus[]           @relation("SelectionEvaluatedBy")
+  paymentsVerified          Payment[]                   @relation("PaymentVerifiedBy")
+  paymentHistoryChanges     PaymentHistory[]            @relation("PaymentHistoryChangedBy")
+  notifications             Notification[]
+
   @@map("users")
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String
+  slug      String     @unique
+  parentId  Int?       @map("parent_id")
+  parent    Category?  @relation("CategoryToCategory", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryToCategory")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  events    Event[]
+  articles  Article[]
+  galleries Gallery[]
+
+  @@map("categories")
+}
+
+model Event {
+  id              Int      @id @default(autoincrement())
+  title           String
+  slug            String
+  description     String   @db.Text
+  eventDate       DateTime @map("event_date")
+  location        String
+  isFeatured      Boolean  @default(false) @map("is_featured")
+  maxParticipants Int?     @map("max_participants")
+  link            String?
+  image           String?
+  categoryId      Int      @map("category_id")
+  category        Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  views           Int      @default(0)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  eventViews EventView[]
+
+  @@map("events")
+}
+
+model EventView {
+  id        Int      @id @default(autoincrement())
+  eventId   Int      @map("event_id")
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  ipAddress String   @map("ip_address")
+  userAgent String   @map("user_agent") @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("event_views")
+}
+
+model Article {
+  id         Int       @id @default(autoincrement())
+  title      String
+  slug       String
+  content    String    @db.Text
+  excerpt    String
+  authorId   Int       @map("author_id")
+  author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  eventDate  DateTime? @map("event_date")
+  isFeatured Boolean   @default(false) @map("is_featured")
+  image      String?
+  categoryId Int       @default(2) @map("category_id")
+  category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  views      Int       @default(0)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  articleViews ArticleView[]
+
+  @@map("articles")
+}
+
+model ArticleView {
+  id        Int      @id @default(autoincrement())
+  articleId Int      @map("article_id")
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  ipAddress String   @map("ip_address")
+  userAgent String   @map("user_agent") @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("article_views")
+}
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  name        String
+  short       String   @db.Text
+  description String   @db.Text
+  price       Decimal? @db.Decimal(10, 2)
+  duration    String?
+  views       Int      @default(0)
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  icon        String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  serviceViews ServiceView[]
+
+  @@map("services")
+}
+
+model ServiceView {
+  id        Int      @id @default(autoincrement())
+  serviceId Int      @map("service_id")
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  ipAddress String   @map("ip_address")
+  userAgent String   @map("user_agent") @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("service_views")
+}
+
+model HeroSlide {
+  id        Int      @id @default(autoincrement())
+  title     String
+  subtitle  String?
+  image     String
+  ctaText   String?  @map("cta_text")
+  ctaLink   String?  @map("cta_link")
+  order     Int      @default(0)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("hero_slides")
+}
+
+model Gallery {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?   @db.Text
+  image       String
+  categoryId  Int       @map("category_id")
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  isFeatured  Boolean   @default(false) @map("is_featured")
+  eventDate   DateTime? @map("event_date")
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("galleries")
+}
+
+model TeamMember {
+  id        Int      @id @default(autoincrement())
+  name      String
+  position  String
+  bio       String?  @db.Text
+  image     String?
+  order     Int      @default(0)
+  isActive  Boolean  @default(true) @map("is_active")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("team_members")
+}
+
+model Testimonial {
+  id         Int      @id @default(autoincrement())
+  clientName String   @map("client_name")
+  company    String
+  content    String   @db.Text
+  rating     Int      @default(5)
+  image      String?
+  isFeatured Boolean  @default(false) @map("is_featured")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("testimonials")
+}
+
+model Client {
+  id         Int      @id @default(autoincrement())
+  name       String
+  logo       String
+  website    String?
+  isFeatured Boolean  @default(false) @map("is_featured")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("clients")
+}
+
+model Visitor {
+  id        Int       @id @default(autoincrement())
+  ipAddress String    @map("ip_address")
+  userAgent String    @map("user_agent") @db.Text
+  visits    Int       @default(0)
+  lastVisit DateTime? @map("last_visit")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map("visitors")
+}
+
+model Setting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     Json?
+  type      String   @default("text")
+  group     String   @default("general")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}
+
+model UniversityPartner {
+  id           Int      @id @default(autoincrement())
+  name         String
+  logo         String?
+  location     String
+  studentCount Int      @default(0) @map("student_count")
+  isActive     Boolean  @default(true) @map("is_active")
+  order        Int      @default(0)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("university_partners")
+}
+
+model Company {
+  id            Int      @id @default(autoincrement())
+  name          String
+  logo          String?
+  website       String?
+  industry      String
+  employeeCount String?  @map("employee_count")
+  location      String
+  description   String   @db.Text
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  jobs Job[]
+
+  @@map("companies")
+}
+
+model Job {
+  id               Int      @id @default(autoincrement())
+  companyId        Int      @map("company_id")
+  company          Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  title            String
+  type             String
+  location         String
+  salaryMin        Decimal? @map("salary_min") @db.Decimal(12, 2)
+  salaryMax        Decimal? @map("salary_max") @db.Decimal(12, 2)
+  description      String   @db.Text
+  responsibilities Json
+  requirements     Json
+  benefits         Json
+  howToApply       String   @map("how_to_apply") @db.Text
+  isActive         Boolean  @default(true) @map("is_active")
+  order            Int      @default(0)
+  postedAt         DateTime @map("posted_at")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("job")
+}
+
+model ProgramCategory {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?  @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  programs Program[]
+
+  @@map("program_categories")
+}
+
+model Program {
+  id                   Int              @id @default(autoincrement())
+  categoryId           Int?             @map("category_id")
+  category             ProgramCategory? @relation(fields: [categoryId], references: [id])
+  name                 String
+  description          String?          @db.Text
+  requirements         String?          @db.Text
+  schedule             String?          @db.Text
+  duration             String?
+  capacity             Int?
+  currentParticipants  Int              @default(0) @map("current_participants")
+  status               ProgramStatus    @default(active)
+  isRunning            Boolean          @default(false) @map("is_running")
+  contactInfo          String?          @map("contact_info") @db.Text
+  registrationDeadline DateTime?        @map("registration_deadline") @db.Date
+  startDate            DateTime?        @map("start_date") @db.Date
+  endDate              DateTime?        @map("end_date") @db.Date
+  location             String?          @default("Jakarta, Indonesia & Jepang")
+  trainingCost         Decimal          @default(16000000.00) @map("training_cost") @db.Decimal(10, 2)
+  trainingFeeDetails   String?          @map("training_fee_details") @db.Text
+  departureCost        Decimal          @default(30000000.00) @map("departure_cost") @db.Decimal(10, 2)
+  departureFeeDetails  String?          @map("departure_fee_details") @db.Text
+  installmentPlan      String?          @default("none") @map("installment_plan")
+  downPayment          Decimal          @default(0.00) @map("down_payment") @db.Decimal(10, 2)
+  jobMatchingCost      Decimal          @default(0.00) @map("job_matching_cost") @db.Decimal(10, 2)
+  bridgeFund           String?          @default("Tersedia") @map("bridge_fund")
+  timelineText         String?          @map("timeline_text") @db.Text
+  requirementsText     String?          @map("requirements_text") @db.Text
+  sortOrder            Int              @default(999) @map("sort_order")
+  createdAt            DateTime         @default(now()) @map("created_at")
+  updatedAt            DateTime         @updatedAt @map("updated_at")
+
+  registrations Registration[]
+
+  @@map("programs")
+}
+
+model Registration {
+  id                   Int                @id @default(autoincrement())
+  userId               Int?               @map("user_id")
+  user                 User?              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  programId            Int?               @map("program_id")
+  program              Program?           @relation(fields: [programId], references: [id], onDelete: Cascade)
+  registrationStatus   RegistrationStatus @default(menunggu) @map("registration_status")
+  registrationCode     String             @unique @map("registration_code")
+  selectionNotes       String?            @map("selection_notes") @db.Text
+  registrationDate     DateTime           @default(now()) @map("registration_date")
+  updatedAt            DateTime           @updatedAt @map("updated_at")
+  nik                  String?            @db.VarChar(20)
+  gender               Gender?
+  birthPlace           String?            @map("birth_place")
+  birthDate            DateTime?          @map("birth_date") @db.Date
+  lastEducation        String?            @map("last_education")
+  major                String?
+  educationInstitution String?            @map("education_institution")
+  currentActivity      String?            @map("current_activity")
+  maritalStatus        String?            @map("marital_status")
+  parentPhone          String?            @map("parent_phone")
+  parentRelationship   String?            @map("parent_relationship")
+  ktpProvinceCode      String?            @map("ktp_province_code")
+  ktpProvinceName      String?            @map("ktp_province_name")
+  ktpCityCode          String?            @map("ktp_city_code")
+  ktpCityName          String?            @map("ktp_city_name")
+  ktpAddress           String?            @map("ktp_address") @db.Text
+  domicileProvinceCode String?            @map("domicile_province_code")
+  domicileProvinceName String?            @map("domicile_province_name")
+  domicileCityCode     String?            @map("domicile_city_code")
+  domicileCityName     String?            @map("domicile_city_name")
+  domicileAddress      String?            @map("domicile_address") @db.Text
+  photoPath            String?            @map("photo_path")
+  n4CertificatePath    String?            @map("n4_certificate_path")
+  sswCertificatePath   String?            @map("ssw_certificate_path")
+
+  statusHistory     RegistrationStatusHistory[]
+  selectionStatuses SelectionStatus[]
+  placementStatuses PlacementStatus[]
+  payments          Payment[]
+
+  @@unique([userId, programId], name: "unique_user_program")
+  @@map("registrations")
+}
+
+model RegistrationStatusHistory {
+  id             Int                 @id @default(autoincrement())
+  registrationId Int?                @map("registration_id")
+  registration   Registration?       @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  oldStatus      RegistrationStatus? @map("old_status")
+  newStatus      RegistrationStatus? @map("new_status")
+  notes          String?             @db.Text
+  changedBy      Int?                @map("changed_by")
+  changedByUser  User?               @relation(fields: [changedBy], references: [id])
+  changedAt      DateTime            @default(now()) @map("changed_at")
+
+  @@map("registration_status_history")
+}
+
+model SelectionStatus {
+  id              Int                @id @default(autoincrement())
+  registrationId  Int?               @map("registration_id")
+  registration    Registration?      @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  status          RegistrationStatus @default(menunggu)
+  notes           String?            @db.Text
+  evaluatedBy     Int?               @map("evaluated_by")
+  evaluatedByUser User?              @relation("SelectionEvaluatedBy", fields: [evaluatedBy], references: [id])
+  evaluatedAt     DateTime?          @map("evaluated_at")
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+
+  @@map("selection_status")
+}
+
+model PlacementStatus {
+  id             Int            @id @default(autoincrement())
+  registrationId Int?           @map("registration_id")
+  registration   Registration?  @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  companyName    String?        @map("company_name")
+  status         PlacementStage @default(proses)
+  placementDate  DateTime?      @map("placement_date") @db.Date
+  notes          String?        @db.Text
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  @@map("placement_status")
+}
+
+model Payment {
+  id                       Int           @id @default(autoincrement())
+  registrationId           Int?          @map("registration_id")
+  registration             Registration? @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  invoiceNumber            String        @unique @map("invoice_number")
+  amount                   Decimal       @db.Decimal(15, 2)
+  amountPaid               Decimal       @default(0.00) @map("amount_paid") @db.Decimal(15, 2)
+  paymentMethod            PaymentMethod @default(transfer) @map("payment_method")
+  bankName                 String?       @map("bank_name")
+  accountNumber            String?       @map("account_number")
+  status                   PaymentStatus @default(pending)
+  dueDate                  DateTime?     @map("due_date") @db.Date
+  proofImage               String?       @map("proof_image")
+  paymentDate              DateTime?     @map("payment_date")
+  verifiedBy               Int?          @map("verified_by")
+  verifiedByUser           User?         @relation("PaymentVerifiedBy", fields: [verifiedBy], references: [id])
+  verifiedAt               DateTime?     @map("verified_at")
+  receiptNumber            String?       @unique @map("receipt_number")
+  notes                    String?       @db.Text
+  createdAt                DateTime      @default(now()) @map("created_at")
+  updatedAt                DateTime      @updatedAt @map("updated_at")
+  isManualInvoice          Boolean       @default(false) @map("is_manual_invoice")
+  installmentAmounts       Json?         @map("installment_amounts")
+  currentInstallmentNumber Int           @default(0) @map("current_installment_number")
+  nextDueDate              DateTime?     @map("next_due_date") @db.Date
+
+  paymentHistory PaymentHistory[]
+
+  @@map("payments")
+}
+
+model PaymentHistory {
+  id            Int            @id @default(autoincrement())
+  paymentId     Int?           @map("payment_id")
+  payment       Payment?       @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  oldStatus     PaymentStatus? @map("old_status")
+  newStatus     PaymentStatus? @map("new_status")
+  amountChanged Decimal?       @map("amount_changed") @db.Decimal(10, 2)
+  notes         String?        @db.Text
+  changedBy     Int?           @map("changed_by")
+  changedByUser User?          @relation("PaymentHistoryChangedBy", fields: [changedBy], references: [id])
+  changedAt     DateTime       @default(now()) @map("changed_at")
+  oldAmountPaid Decimal?       @map("old_amount_paid") @db.Decimal(15, 2)
+  newAmountPaid Decimal?       @map("new_amount_paid") @db.Decimal(15, 2)
+
+  @@map("payment_history")
+}
+
+model Notification {
+  id              Int              @id @default(autoincrement())
+  userId          Int?             @map("user_id")
+  user            User?            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  message         String           @db.Text
+  type            NotificationType @default(info)
+  isRead          Boolean          @default(false) @map("is_read")
+  relatedEntity   RelatedEntity?   @map("related_entity")
+  relatedEntityId Int?             @map("related_entity_id")
+  createdAt       DateTime         @default(now()) @map("created_at")
+
+  @@map("notifications")
 }
