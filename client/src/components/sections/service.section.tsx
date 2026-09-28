@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Service, services } from "@/constants/service-constant";
-
+import { getServices, type Service } from "@/constants/service-constant";
 
 const HEADING_ID = "services-heading";
 
@@ -17,23 +16,25 @@ function ServiceItem({ service }: { service: Service }) {
                 </h3>
 
                 <p className="mt-3 max-w-xl text-base leading-relaxed text-[#10302B]/75">
-                    {service.description}
+                    {service.summary}
                 </p>
 
-                <span className="mt-5 inline-flex items-center text-sm font-semibold text-primary sm:text-base">
+                <span
+                    aria-hidden
+                    className="mt-5 inline-flex items-center text-sm font-semibold text-primary sm:text-base"
+                >
                     Learn More
-                    <span className="sr-only">&nbsp;about {service.title}</span>
-                    <ArrowRight
-                        className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
-                        aria-hidden
-                    />
+                    <ArrowRight className="ml-2 h-4 w-4 transition-transform motion-safe:group-hover:translate-x-1" />
                 </span>
             </Link>
         </li>
     );
 }
 
-export function ServicesSection() {
+export async function ServicesSection() {
+    const services = await getServices();
+    if (services.length === 0) return null;
+
     return (
         <section
             id="services"
