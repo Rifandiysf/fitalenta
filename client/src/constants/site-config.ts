@@ -25,17 +25,3 @@ export const authLinks = {
     login: { label: "Login", href: "/auth/login" },
     register: { label: "Registrasi", href: "/auth/register" },
 } as const satisfies Record<string, NavItem>;
-
-export const contactInfo: {
-    email?: string;
-    phone?: string;
-    address?: string;
-} = {
-    // email: "",
-    // phone: "",
-    // address: "",
-};
-
-export const socialLinks: readonly NavItem[] = [
-    // { label: "Instagram", href: "https://instagram.com/..." },
-];

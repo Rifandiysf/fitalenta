@@ -56,7 +56,7 @@ export function TestimonialsSection() {
         <section
             id="testimonials"
             aria-labelledby={HEADING_ID}
-            className="bg-[#EEF3F1] text-[#10302B]"
+            className="bg-slate-50 text-[#10302B]"
         >
             <div className="mx-auto max-w-7xl px-6 py-20 md:px-8 lg:py-28">
                 <header className="max-w-3xl">

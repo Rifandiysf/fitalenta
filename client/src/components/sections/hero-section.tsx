@@ -7,7 +7,7 @@ export function HeroSection() {
         <section id="home" className="relative isolate overflow-hidden text-[#EEF3F1]">
             <div
                 className="absolute inset-0 -z-20 bg-cover bg-center"
-                style={{ backgroundImage: "url('/hero.jpg')" }}
+                style={{ backgroundImage: "url('/images/hero.jpg')" }}
             />
 
             <div className="absolute inset-0 -z-10 bg-linear-to-r from-primary via-primary/85 to-primary/35" />
