@@ -12,9 +12,9 @@ export const siteConfig = {
 
 export const navItems: readonly NavItem[] = [
     { label: "Home", href: "/" },
-    { label: "Event", href: "/event" },
+    { label: "Events", href: "/events" },
     { label: "Services", href: "/services" },
-    { label: "Program", href: "/program" },
+    { label: "Programs", href: "/programs" },
     { label: "Blog", href: "/insights" },
     { label: "Gallery", href: "/gallery" },
     { label: "About", href: "/about" },
