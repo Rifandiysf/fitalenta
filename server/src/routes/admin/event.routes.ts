@@ -1,0 +1,17 @@
+import { Router } from "express";
+import * as adminEventController from "../../controllers/admin/event.controller";
+import { authenticate } from "../../middlewares/authenticate";
+import { authorize } from "../../middlewares/authorize";
+import { uploadEventImage } from "../../middlewares/upload";
+
+const router = Router();
+
+router.use(authenticate, authorize("admin", "editor"));
+
+router.get("/", adminEventController.index);
+router.get("/:id", adminEventController.show);
+router.post("/", uploadEventImage.single("image"), adminEventController.store);
+router.put("/:id", uploadEventImage.single("image"), adminEventController.update);
+router.delete("/:id", adminEventController.destroy);
+
+export default router;
