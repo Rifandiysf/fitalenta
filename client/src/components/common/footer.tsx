@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Icon, Mail, MapPin, Phone } from "lucide-react";
+import {  Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "./logo";
 import { navItems, siteConfig } from "@/constants/site-config";
 import { getContactMock } from "@/constants/contact-constant";
@@ -37,7 +37,7 @@ export async function Footer() {
                         <ul className="mt-5 space-y-3 text-base">
                             {navItems.map((item) => (
                                 <li key={item.href}>
-                                    <Link href={item.href} className={linkClass}>
+                                    <Link href={item.href} className={`${linkClass}`}>
                                         {item.label}
                                     </Link>
                                 </li>
@@ -54,7 +54,7 @@ export async function Footer() {
                                     href={contact.mapsUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className={linkClass}
+                                    className={`${linkClass}`}
                                 >
                                     {contact.addressLines.map((line) => (
                                         <span key={line} className="block">{line}</span>
@@ -63,15 +63,15 @@ export async function Footer() {
                             </p>
                             <p className="flex items-center gap-3">
                                 <Phone className="h-4 w-4 shrink-0" aria-hidden />
-                                <p className={linkClass}>
+                                <span className={`${linkClass}`}>
                                     {contact.phone}
-                                </p>
+                                </span>
                             </p>
                             <p className="flex items-center gap-3">
                                 <Mail className="h-4 w-4 shrink-0" aria-hidden />
-                                <p className={linkClass}>
+                                <span className={`${linkClass}`}>
                                     {contact.email}
-                                </p>
+                                </span>
                             </p>
                             <Link
                                 href="/contact"
