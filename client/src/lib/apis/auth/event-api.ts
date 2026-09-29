@@ -1,0 +1,48 @@
+import { cache } from "react";
+import { api } from "@/lib/axios";
+import type {
+    ApiEnvelope,
+    EventDetailData,
+    EventItem,
+    EventsListData,
+} from "@/types/event";
+
+const ASSET_URL =
+    process.env.NEXT_PUBLIC_ASSET_URL ??
+    (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/api\/?$/, "");
+
+export function eventImageUrl(image?: string | null): string | undefined {
+    if (!image) return undefined;
+    if (/^https?:\/\//.test(image)) return image;
+    return `${ASSET_URL}${image.startsWith("/") ? "" : "/"}${image}`;
+}
+
+export async function getEvents(
+    params: { search?: string; page?: number } = {},
+): Promise<EventsListData> {
+    const { data } = await api.get<ApiEnvelope<EventsListData>>("/events", {
+        params: {
+            search: params.search || undefined,
+            page: params.page && params.page > 1 ? params.page : undefined,
+        },
+    });
+    return data.data;
+}
+
+export async function getFeaturedEvents(): Promise<EventItem[]> {
+    const { data } = await api.get<ApiEnvelope<EventItem[]>>("/events/featured");
+    return data.data;
+}
+
+export const getEventBySlug = cache(
+    async (slug: string): Promise<EventDetailData | undefined> => {
+        const res = await api.get<ApiEnvelope<EventDetailData>>(`/events/${slug}`, {
+            validateStatus: (s) => s < 500,
+        });
+        if (res.status === 404) return undefined;
+        if (!res.data.success) {
+            throw new Error(res.data.message ?? "Gagal memuat event");
+        }
+        return res.data.data;
+    },
+);
