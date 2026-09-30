@@ -29,3 +29,4 @@ function createUploader(folder: string) {
 }
 
 export const uploadEventImage = createUploader("events");
+export const uploadArticleImage = createUploader("articles");
