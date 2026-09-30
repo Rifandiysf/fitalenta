@@ -1,3 +1,5 @@
+import { Pagination } from "./pagination";
+
 export type EventCategory = {
     id: number;
     name: string;
@@ -20,13 +22,6 @@ export type EventItem = {
     createdAt?: string;
 };
 
-export type Pagination = {
-    page: number;
-    perPage: number;
-    total: number;
-    totalPages: number;
-};
-
 export type EventsListData = {
     events: EventItem[];
     pagination: Pagination;
@@ -36,10 +31,4 @@ export type EventDetailData = {
     event: EventItem;
     googleCalendarUrl: string;
     relatedEvents: EventItem[];
-};
-
-export type ApiEnvelope<T> = {
-    success: boolean;
-    data: T;
-    message?: string;
 };

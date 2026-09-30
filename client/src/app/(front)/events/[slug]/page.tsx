@@ -3,22 +3,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarDays, CalendarPlus, Clock, MapPin, Tag, Users } from "lucide-react";
-import { eventImageUrl, getEventBySlug } from "@/lib/apis/auth/event-api";
 import { formatDate, formatTime, isPastEvent, stripHtml } from "@/lib/utils";
 import PageHero from "@/components/common/page-hero";
 import { EventCard } from "../features/event-card";
+import { ImageUrl, getEventBySlug } from "@/lib/services/event-service";
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { slug } = await params;
     const detail = await getEventBySlug(slug);
-    if (!detail) return { title: "Event not found | FITALENTA" };
+    if (!detail) return { title: "Event not found - FITALENTA" };
 
     const { event } = detail;
-    const image = eventImageUrl(event.image);
+    const image = ImageUrl(event.image);
     return {
-        title: `${event.title} | FITALENTA`,
+        title: `${event.title} - FITALENTA`,
         description: stripHtml(event.description).slice(0, 160),
         openGraph: image ? { images: [image] } : undefined,
     };
@@ -35,7 +35,7 @@ export default async function EventDetailPage({ params }: Props) {
     const past = isPastEvent(event.eventDate);
     const date = formatDate(event.eventDate);
     const time = formatTime(event.eventDate);
-    const image = eventImageUrl(event.image);
+    const image = ImageUrl(event.image);
 
     const info: InfoRow[] = [
         { icon: CalendarDays, label: "Date", value: date, badge: past ? "Past" : undefined },

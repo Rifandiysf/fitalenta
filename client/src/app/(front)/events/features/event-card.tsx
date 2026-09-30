@@ -3,11 +3,11 @@ import Link from "next/link";
 import { CalendarDays, ChevronRight } from "lucide-react";
 import { isPastEvent, stripHtml, timeAgo } from "@/lib/utils";
 import type { EventItem } from "@/types/event";
-import { eventImageUrl } from "@/lib/apis/auth/event-api";
+import { ImageUrl } from "@/lib/services/event-service";
 
 export function EventCard({ event }: { event: EventItem }) {
     const past = isPastEvent(event.eventDate);
-    const src = eventImageUrl(event.image);
+    const src = ImageUrl(event.image);
 
     return (
         <article className="flex w-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:shadow-md">

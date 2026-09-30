@@ -1,14 +1,14 @@
 import PageHero from "@/components/common/page-hero";
-import { getEvents } from "@/lib/apis/auth/event-api";
 import type { Metadata } from "next";
 import { EventSearch } from "./features/event-search";
 import { EventCard } from "./features/event-card";
-import { EventPagination } from "./features/event-pagination";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { getEvents } from "@/lib/services/event-service";
+import { Pagination } from "@/components/common/pagination";
 
 export const metadata: Metadata = {
-    title: "Events | FITALENTA",
+    title: "Events - FITALENTA",
     description: "Join us for exciting events and expand your network.",
 };
 
@@ -58,10 +58,7 @@ export default async function EventsPage({ searchParams }: Props) {
                         </ul>
                     )}
 
-                    <EventPagination
-                        pagination={pagination}
-                        search={search}
-                    />
+                    <Pagination basePath="/events" pagination={pagination} search={search}/>
                 </div>
             </div>
 
