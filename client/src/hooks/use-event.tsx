@@ -1,4 +1,4 @@
-import { getEvents } from "@/lib/apis/auth/event-api";
+import { getEvents } from "@/lib/services/event-service";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export function eventsQueryKey(search: string, page: number) {

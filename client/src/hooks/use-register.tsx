@@ -3,7 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth-store";
-import { register } from "@/lib/apis/auth/auth-api";
+import { register } from "@/lib/services/auth-service";
 
 export function useRegister() {
     const router = useRouter();
