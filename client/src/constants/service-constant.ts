@@ -20,6 +20,7 @@ export type Service = {
     listTitle?: string;
     points?: { title: string; desc: string }[];
     secondParagraph?: string;
+    images?: string;
     closing?: string;
   };
 };
@@ -108,7 +109,7 @@ const services: Service[] = [
       ],
       secondParagraph:
         "In addition to recruitment, FITALENTA offers job preparation training and competency enhancement programs that are standardized by the National Professional Certification Agency (BNSP). Our training services are easily accessible and designed to elevate the skills and qualifications of your workforce. We provide a wide range of training schemes, developed in collaboration with more than three professional BNSP certification and training institutions. These partnerships ensure that our programs are up-to-date, relevant, and effective in addressing industry needs. Below is a sample of the certifications FITALENTA provides.",
-      closing:
+        closing:
         "FITALENTA ensures that your company gets access to a reliable and well-vetted workforce that drives business growth. Whether you are looking to fill entry-level positions or find seasoned executives, our recruitment services provide the expertise and resources you need to succeed in today’s competitive market.",
     },
   },
