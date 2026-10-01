@@ -7,7 +7,12 @@ import { InsightsSection } from "@/components/sections/insight-section";
 import { PartnersSection } from "@/components/sections/partner-section";
 import { ServicesSection } from "@/components/sections/service.section";
 import { TestimonialsSection } from "@/components/sections/testimonial-section";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+    title: "FITALENTA - Wellcome to FITALENTA",
+    description: "Empowering businesses and individuals to grow.",
+};
 
 export default function Home() {
   return (
