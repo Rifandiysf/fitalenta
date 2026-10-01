@@ -1,6 +1,5 @@
 import { getArticleBySlug } from "@/lib/services/article-service";
-import { ImageUrl } from "@/lib/services/event-service";
-import { formatDate, stripHtml } from "@/lib/utils";
+import { formatDate, imageUrl, stripHtml } from "@/lib/utils";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -16,7 +15,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!detail) return { title: "Article not found - FITALENTA" };
 
     const { article } = detail;
-    const image = ImageUrl(article.image);
+    const image = imageUrl(article.image);
     return {
         title: `${article.title} | FITALENTA`,
         description: stripHtml(article.excerpt).slice(0, 160),
@@ -34,7 +33,7 @@ export default async function ArticleDetailPage({ params }: Props) {
     if (!detail) notFound();
 
     const { article, relatedArticles } = detail;
-    const image = ImageUrl(article.image);
+    const image = imageUrl(article.image);
 
     return (
         <>
