@@ -180,17 +180,16 @@ model ArticleView {
 }
 
 model Service {
-  id          Int      @id @default(autoincrement())
-  name        String
-  short       String   @db.Text
-  description String   @db.Text
-  price       Decimal? @db.Decimal(10, 2)
-  duration    String?
-  views       Int      @default(0)
-  isFeatured  Boolean  @default(false) @map("is_featured")
-  icon        String?
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id         Int      @id @default(autoincrement())
+  slug       String   @unique
+  title      String
+  icon       String?
+  summary    String   @db.Text
+  content    Json
+  views      Int      @default(0)
+  isFeatured Boolean  @default(false) @map("is_featured")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 
   serviceViews ServiceView[]
 

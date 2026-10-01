@@ -1,11 +1,32 @@
 import prisma from "../config/prisma";
 
-export async function getPublicServices() {
-  return prisma.service.findMany({ orderBy: { createdAt: "desc" } });
+interface ContentInput {
+  intro: string;
+  listTitle?: string;
+  points?: { title: string; desc: string }[];
+  secondParagraph?: string;
+  images?: string;
+  closing?: string;
 }
 
-export async function getServiceById(id: number, ipAddress: string, userAgent: string) {
-  const service = await prisma.service.findUnique({ where: { id } });
+interface ServiceInput {
+  slug: string;
+  title: string;
+  icon?: string;
+  summary: string;
+  content: ContentInput;
+  isFeatured?: boolean;
+}
+
+export async function getPublicServices() {
+  return prisma.service.findMany({
+    select: { slug: true, title: true, icon: true, summary: true, content: true },
+    orderBy: { createdAt: "desc" },
+  });
+}
+
+export async function getServiceBySlug(slug: string, ipAddress: string, userAgent: string) {
+  const service = await prisma.service.findUnique({ where: { slug } });
   if (!service) throw new Error("SERVICE_NOT_FOUND");
 
   const today = new Date();
@@ -36,24 +57,17 @@ export async function getAdminServices({ page = 1 }: { page?: number }) {
   return { services, pagination: { page, perPage, total, totalPages: Math.ceil(total / perPage) } };
 }
 
-interface ServiceInput {
-  name: string;
-  short: string;
-  description: string;
-  price?: number;
-  duration?: string;
-  isFeatured?: boolean;
-  icon?: string;
-}
-
 export async function createService(data: ServiceInput) {
-  return prisma.service.create({ data });
+  return prisma.service.create({ data: { ...data, content: data.content as any } });
 }
 
 export async function updateService(id: number, data: ServiceInput) {
   const existing = await prisma.service.findUnique({ where: { id } });
   if (!existing) throw new Error("SERVICE_NOT_FOUND");
-  return prisma.service.update({ where: { id }, data });
+  return prisma.service.update({
+    where: { id },
+    data: { ...data, content: data.content as any },
+  });
 }
 
 export async function deleteService(id: number) {

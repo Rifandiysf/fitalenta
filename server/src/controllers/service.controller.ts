@@ -13,11 +13,11 @@ export async function index(req: Request, res: Response) {
 
 export async function show(req: Request, res: Response) {
   try {
-    const id = parseInt(req.params.id as string);
+    const slug = req.params.slug as string;
     const ipAddress = req.ip || "unknown";
     const userAgent = (req.headers["user-agent"] as string) || "unknown";
 
-    const service = await serviceService.getServiceById(id, ipAddress, userAgent);
+    const service = await serviceService.getServiceBySlug(slug, ipAddress, userAgent);
     return res.json({ success: true, data: service });
   } catch (error: any) {
     if (error.message === "SERVICE_NOT_FOUND") {

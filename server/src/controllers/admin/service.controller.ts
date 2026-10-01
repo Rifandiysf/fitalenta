@@ -15,24 +15,28 @@ export async function index(req: Request, res: Response) {
 
 export async function store(req: Request, res: Response) {
   try {
-    const { name, short, description, price, duration, isFeatured, icon } = req.body || {};
+    const { slug, title, icon, summary, content, isFeatured } = req.body || {};
 
-    if (!name || !short || !description) {
-      return res.status(400).json({ success: false, message: "Name, short, dan description wajib diisi" });
+    if (!slug || !title || !summary || !content) {
+      return res.status(400).json({ success: false, message: "Slug, title, summary, dan content wajib diisi" });
     }
 
+    const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
+
     const service = await serviceService.createService({
-      name,
-      short,
-      description,
-      price: price ? parseFloat(price) : undefined,
-      duration,
-      isFeatured: isFeatured === "true" || isFeatured === true,
+      slug,
+      title,
       icon,
+      summary,
+      content: parsedContent,
+      isFeatured: isFeatured === "true" || isFeatured === true,
     });
 
     return res.status(201).json({ success: true, message: "Layanan berhasil dibuat", data: service });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.code === "P2002") {
+      return res.status(409).json({ success: false, message: "Slug sudah digunakan" });
+    }
     console.error("Create service error:", error);
     return res.status(500).json({ success: false, message: "Terjadi kesalahan pada server" });
   }
@@ -41,26 +45,30 @@ export async function store(req: Request, res: Response) {
 export async function update(req: Request, res: Response) {
   try {
     const id = parseInt(req.params.id as string);
-    const { name, short, description, price, duration, isFeatured, icon } = req.body || {};
+    const { slug, title, icon, summary, content, isFeatured } = req.body || {};
 
-    if (!name || !short || !description) {
-      return res.status(400).json({ success: false, message: "Name, short, dan description wajib diisi" });
+    if (!slug || !title || !summary || !content) {
+      return res.status(400).json({ success: false, message: "Slug, title, summary, dan content wajib diisi" });
     }
 
+    const parsedContent = typeof content === "string" ? JSON.parse(content) : content;
+
     const service = await serviceService.updateService(id, {
-      name,
-      short,
-      description,
-      price: price ? parseFloat(price) : undefined,
-      duration,
-      isFeatured: isFeatured === "true" || isFeatured === true,
+      slug,
+      title,
       icon,
+      summary,
+      content: parsedContent,
+      isFeatured: isFeatured === "true" || isFeatured === true,
     });
 
     return res.json({ success: true, message: "Layanan berhasil diperbarui", data: service });
   } catch (error: any) {
     if (error.message === "SERVICE_NOT_FOUND") {
       return res.status(404).json({ success: false, message: "Layanan tidak ditemukan" });
+    }
+    if (error.code === "P2002") {
+      return res.status(409).json({ success: false, message: "Slug sudah digunakan" });
     }
     console.error("Update service error:", error);
     return res.status(500).json({ success: false, message: "Terjadi kesalahan pada server" });
