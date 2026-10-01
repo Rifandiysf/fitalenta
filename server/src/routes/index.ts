@@ -6,6 +6,19 @@ import articleRoutes from "./article.routes";
 import adminArticleRoutes from "./admin/article.routes";
 import contactRoutes from "./contact.routes";
 import adminContactRoutes from "./admin/contact.routes";
+import serviceRoutes from "./service.routes";
+import adminServiceRoutes from "./admin/service.routes";
+import galleryRoutes from "./gallery.routes";
+import adminGalleryRoutes from "./admin/gallery.routes";
+import testimonialRoutes from "./testimonial.routes";
+import adminTestimonialRoutes from "./admin/testimonial.routes";
+import clientRoutes from "./client.routes";
+import adminClientRoutes from "./admin/client.routes";
+import universityPartnerRoutes from "./universityPartner.routes";
+import adminUniversityPartnerRoutes from "./admin/universityPartner.routes";
+import adminCompanyRoutes from "./admin/company.routes";
+import jobRoutes from "./job.routes";
+import adminJobRoutes from "./admin/job.routes";
 
 const router = Router();
 
@@ -16,5 +29,18 @@ router.use("/articles", articleRoutes);
 router.use("/admin/articles", adminArticleRoutes);
 router.use("/contact", contactRoutes);
 router.use("/admin/contact-messages", adminContactRoutes);
+router.use("/services", serviceRoutes);
+router.use("/admin/services", adminServiceRoutes);
+router.use("/gallery", galleryRoutes);
+router.use("/admin/gallery", adminGalleryRoutes);
+router.use("/testimonials", testimonialRoutes);
+router.use("/admin/testimonials", adminTestimonialRoutes);
+router.use("/clients", clientRoutes);
+router.use("/admin/clients", adminClientRoutes);
+router.use("/university-partners", universityPartnerRoutes);
+router.use("/admin/university-partners", adminUniversityPartnerRoutes);
+router.use("/admin/companies", adminCompanyRoutes);
+router.use("/jobs", jobRoutes);
+router.use("/admin/jobs", adminJobRoutes);
 
 export default router;

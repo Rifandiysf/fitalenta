@@ -30,3 +30,8 @@ function createUploader(folder: string) {
 
 export const uploadEventImage = createUploader("events");
 export const uploadArticleImage = createUploader("articles");
+export const uploadGalleryImage = createUploader("gallery");
+export const uploadTestimonialImage = createUploader("testimonials");
+export const uploadClientLogo = createUploader("clients");
+export const uploadUniversityLogo = createUploader("university-logos");
+export const uploadCompanyLogo = createUploader("company-logos");
