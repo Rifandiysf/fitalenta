@@ -7,16 +7,6 @@ import type {
 } from "@/types/event";
 import type { ApiResponse } from "@/types/api";
 
-const ASSET_URL =
-    process.env.NEXT_PUBLIC_ASSET_URL ??
-    (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/api\/?$/, "");
-
-export function ImageUrl(image?: string | null): string | undefined {
-    if (!image) return undefined;
-    if (/^https?:\/\//.test(image)) return image;
-    return `${ASSET_URL}${image.startsWith("/") ? "" : "/"}${image}`;
-}
-
 export async function getEvents(
     params: { search?: string; page?: number } = {},
 ): Promise<EventsListData> {
