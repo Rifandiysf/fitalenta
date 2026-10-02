@@ -35,11 +35,11 @@ export default async function EventsPage({ searchParams }: Props) {
                     <EventSearch defaultValue={search} />
 
                     <div className="mb-10 mt-14 text-center">
-                        <p className="text-sm font-medium text-brand-orange">Explore with us</p>
+                        <p className="text-sm font-medium text-secondary">Explore with us</p>
                         <h2 className="mt-2 text-3xl font-bold text-primary md:text-4xl">
                             Discover Our Events
                         </h2>
-                        <div className="mx-auto mt-3 h-1 w-14 rounded-full bg-brand-orange" />
+                        <div className="mx-auto mt-3 h-1 w-14 rounded-full bg-secondary" />
                     </div>
 
                     {events.length === 0 ? (
@@ -64,7 +64,7 @@ export default async function EventsPage({ searchParams }: Props) {
 
             <div className="py-20">
                 <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-4 text-center">
-                    <p className="text-sm font-medium text-brand-blue">Let&apos;s connect</p>
+                    <p className="text-sm font-medium text-primary">Let&apos;s connect</p>
                     <h2 className="text-3xl font-bold md:text-4xl">Can&apos;t Find What You&apos;re Looking For?</h2>
                     <p className="text-slate-600">Contact us to suggest an event or inquire about custom training sessions.</p>
                     <Link

@@ -24,13 +24,13 @@ export default async function GalleryPage() {
             <div className="bg-slate-50 py-16">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-10 text-center">
-                        <p className="text-sm font-medium uppercase tracking-widest text-brand-blue">
+                        <p className="text-sm font-medium uppercase tracking-widest text-primary">
                             Our moments
                         </p>
-                        <h2 className="mt-2 text-3xl font-bold text-brand-navy md:text-4xl">
+                        <h2 className="mt-2 text-3xl font-bold text-primary md:text-4xl">
                             Explore Our Gallery
                         </h2>
-                        <div className="mx-auto mt-3 h-1 w-14 rounded-full bg-brand-blue" />
+                        <div className="mx-auto mt-3 h-1 w-14 rounded-full bg-primary" />
                     </div>
 
                     {items.length === 0 ? (

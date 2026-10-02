@@ -33,7 +33,7 @@ export function Pagination({ pagination, basePath, search }: Props) {
                 Showing {from} to {to} of {total} results
             </p>
             {totalPages > 1 && (
-                <nav aria-label="Pagination" className="flex overflow-hidden rounded-lg bg-brand-navy text-white">
+                <nav aria-label="Pagination" className="flex overflow-hidden rounded-lg bg-primary text-white">
                     {page > 1 ? (
                         <Link href={href(page - 1)} aria-label="Previous page" className={cn(item, "hover:bg-white/10")}>
                             <ChevronLeft className="size-4" />

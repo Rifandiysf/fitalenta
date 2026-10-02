@@ -68,7 +68,7 @@ export default async function ArticleDetailPage({ params }: Props) {
                                     </p>
                                 </div>
                                 {article.category && (
-                                    <span className="rounded-full bg-slate-100 px-4 py-1.5 text-xs font-semibold uppercase text-brand-navy">
+                                    <span className="rounded-full bg-slate-100 px-4 py-1.5 text-xs font-semibold uppercase text-primary">
                                         {article.category.name}
                                     </span>
                                 )}

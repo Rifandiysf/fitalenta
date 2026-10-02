@@ -24,7 +24,7 @@ export function EventCard({ event }: { event: EventItem }) {
                     />
                 )}
                 {event.isFeatured && (
-                    <span className="absolute left-3 top-3 rounded-full bg-brand-orange px-3 py-1 text-xs font-medium text-white">
+                    <span className="absolute left-3 top-3 rounded-full bg-secondary px-3 py-1 text-xs font-medium text-white">
                         Featured
                     </span>
                 )}
@@ -35,7 +35,7 @@ export function EventCard({ event }: { event: EventItem }) {
 
             <div className="flex flex-1 flex-col gap-3 p-5">
                 <p className="flex items-center gap-2 text-sm text-slate-500">
-                    <CalendarDays className="size-4 text-brand-orange" />
+                    <CalendarDays className="size-4 text-secondary" />
                     {timeAgo(event.eventDate)}
                     {event.category && (
                         <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
@@ -51,7 +51,7 @@ export function EventCard({ event }: { event: EventItem }) {
                 </p>
                 <Link
                     href={`/events/${event.slug}`}
-                    className="mt-auto flex items-center justify-center gap-1 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-orange"
+                    className="mt-auto flex items-center justify-center gap-1 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-white transition hover:bg-primary/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary"
                 >
                     {past ? "View Recap" : "View Details"}
                     <ChevronRight className="size-4" />

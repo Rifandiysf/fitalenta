@@ -16,8 +16,8 @@ export function ShareButtons({ slug, title }: { slug: string; title: string }) {
     return (
         <section className="bg-white py-12">
             <div className="mx-auto max-w-2xl rounded-2xl border border-slate-100 bg-slate-50 px-6 py-10 text-center">
-                <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">Share</p>
-                <h2 className="mt-1 text-2xl font-bold text-brand-navy">Share this article:</h2>
+                <p className="text-xs font-semibold uppercase tracking-wide text-primary">Share</p>
+                <h2 className="mt-1 text-2xl font-bold text-primary">Share this article:</h2>
                 <ul className="mt-6 flex justify-center gap-3">
                     {links.map(({ label, icon: Icon, color, href }) => (
                         <li key={label}>

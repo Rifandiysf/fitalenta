@@ -3,10 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CalendarDays, CalendarPlus, Clock, MapPin, Tag, Users } from "lucide-react";
-import { formatDate, formatTime, isPastEvent, stripHtml } from "@/lib/utils";
+import { formatDate, formatTime, imageUrl, isPastEvent, stripHtml } from "@/lib/utils";
 import PageHero from "@/components/common/page-hero";
 import { EventCard } from "../features/event-card";
-import { ImageUrl, getEventBySlug } from "@/lib/services/event-service";
+import { getEventBySlug } from "@/lib/services/event-service";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     if (!detail) return { title: "Event not found - FITALENTA" };
 
     const { event } = detail;
-    const image = ImageUrl(event.image);
+    const image = imageUrl(event.image);
     return {
         title: `${event.title} - FITALENTA`,
         description: stripHtml(event.description).slice(0, 160),
@@ -35,7 +35,7 @@ export default async function EventDetailPage({ params }: Props) {
     const past = isPastEvent(event.eventDate);
     const date = formatDate(event.eventDate);
     const time = formatTime(event.eventDate);
-    const image = ImageUrl(event.image);
+    const image = imageUrl(event.image);
 
     const info: InfoRow[] = [
         { icon: CalendarDays, label: "Date", value: date, badge: past ? "Past" : undefined },
@@ -79,7 +79,7 @@ export default async function EventDetailPage({ params }: Props) {
                     </article>
 
                     <aside className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-100 lg:sticky lg:top-24">
-                        <p className="text-sm font-medium text-brand-orange">Event information</p>
+                        <p className="text-sm font-medium text-secondary">Event information</p>
                         <h2 className="mt-1 text-xl font-bold text-primary">Event Details</h2>
                         <dl className="mt-6 space-y-5">
                             {info.map(({ icon: Icon, label, value, badge }) => (
@@ -100,13 +100,13 @@ export default async function EventDetailPage({ params }: Props) {
 
                         <div className="mt-8 space-y-3">
                             {past ? (
-                                <Link href={`/gallery?event=${event.slug}`} className={`${primary} bg-brand-orange text-white hover:opacity-90`}>
+                                <Link href={`/gallery?event=${event.slug}`} className={`${primary} bg-secondary text-white hover:opacity-90`}>
                                     See Gallery
                                 </Link>
                             ) : (
                                 <>
                                     {event.link && (
-                                        <a href={event.link} target="_blank" rel="noopener noreferrer" className={`${primary} bg-brand-orange text-white hover:opacity-90`}>
+                                        <a href={event.link} target="_blank" rel="noopener noreferrer" className={`${primary} bg-secondary text-white hover:opacity-90`}>
                                             Register Now
                                         </a>
                                     )}
@@ -130,10 +130,10 @@ export default async function EventDetailPage({ params }: Props) {
                 <div className="bg-white py-16">
                     <div className="mx-auto max-w-6xl px-4">
                         <div className="mb-10 text-center">
-                            <p className="text-sm font-medium text-brand-orange">Discover more</p>
+                            <p className="text-sm font-medium text-secondary">Discover more</p>
                             <h2 className="mt-2 text-3xl font-bold text-primary">Related Events</h2>
                             <p className="mt-2 text-slate-600">Explore more events and activities from FITALENTA.</p>
-                            <div className="mx-auto mt-3 h-1 w-14 rounded-full bg-brand-orange" />
+                            <div className="mx-auto mt-3 h-1 w-14 rounded-full bg-secondary" />
                         </div>
                         <ul className="grid gap-6 md:grid-cols-3">
                             {relatedEvents.slice(0, 3).map((e) => (
@@ -146,7 +146,7 @@ export default async function EventDetailPage({ params }: Props) {
 
             <div className="py-20 bg-slate-50">
                 <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-4 text-center">
-                    <p className="text-sm font-medium text-brand-blue">Need more information?</p>
+                    <p className="text-sm font-medium text-primary">Need more information?</p>
                     <h2 className="text-3xl font-bold md:text-4xl">Have Questions About This Event?</h2>
                     <p className="text-slate-600">Our team is here to help. Don&apos;t hesitate to reach out for more information.</p>
                     <Link

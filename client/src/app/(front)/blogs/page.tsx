@@ -37,11 +37,11 @@ export default async function BlogPage({ searchParams }: Props) {
             <div className="bg-slate-50 py-16">
                 <div className="mx-auto max-w-6xl px-4">
                     <div className="mb-10 text-center">
-                        <p className="text-sm font-medium text-brand-blue">Latest articles</p>
-                        <h2 className="mt-2 text-3xl font-bold text-brand-navy md:text-4xl">
+                        <p className="text-sm font-medium text-primary">Latest articles</p>
+                        <h2 className="mt-2 text-3xl font-bold text-primary md:text-4xl">
                             Explore Our Articles
                         </h2>
-                        <div className="mx-auto mt-3 h-1 w-14 rounded-full bg-brand-orange" />
+                        <div className="mx-auto mt-3 h-1 w-14 rounded-full bg-secondary" />
                     </div>
 
                     {articles.length === 0 ? (
@@ -62,7 +62,7 @@ export default async function BlogPage({ searchParams }: Props) {
 
             <div className="py-20">
                 <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-4 text-center">
-                    <p className="text-sm font-medium text-brand-blue">Stay connected</p>
+                    <p className="text-sm font-medium text-primary">Stay connected</p>
                     <h2 className="text-3xl font-bold md:text-4xl">Stay Updated with FITALENTA</h2>
                     <p className="text-slate-600">Subscribe to our newsletter for the latest insights and industry trends.</p>
                     <Link

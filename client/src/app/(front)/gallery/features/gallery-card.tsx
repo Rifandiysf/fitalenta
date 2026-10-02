@@ -24,18 +24,18 @@ export function GalleryCard({ item }: { item: GalleryItem }) {
             </Link>
 
             <div className="flex flex-1 flex-col gap-3 p-5">
-                <h3 className="line-clamp-2 min-h-12 text-base font-bold leading-snug text-brand-navy">
+                <h3 className="line-clamp-2 min-h-12 text-base font-bold leading-snug text-primary">
                     <Link href={href}>{item.title}</Link>
                 </h3>
                 {date && (
                     <p className="flex items-center gap-2 text-sm text-slate-500">
-                        <CalendarDays className="size-4 text-brand-blue" />
+                        <CalendarDays className="size-4 text-primary" />
                         {timeAgo(date)}
                     </p>
                 )}
                 <Link
                     href={href}
-                    className="mt-auto flex items-center justify-between pt-2 text-sm font-semibold text-brand-blue"
+                    className="mt-auto flex items-center justify-between pt-2 text-sm font-semibold text-primary"
                 >
                     View Gallery
                     <ArrowRight className="size-4 transition group-hover:translate-x-1" />

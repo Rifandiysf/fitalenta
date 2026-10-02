@@ -65,19 +65,19 @@ export default async function GalleryDetailPage({ params }: Props) {
                         <div className="p-6 sm:p-10">
                             <div className="flex flex-wrap items-center gap-4 text-sm">
                                 {item.category && (
-                                    <span className="rounded-full bg-brand-blue/10 px-4 py-1.5 font-semibold text-brand-blue">
+                                    <span className="rounded-full bg-primary/10 px-4 py-1.5 font-semibold text-primary">
                                         {item.category.name}
                                     </span>
                                 )}
                                 {date && (
                                     <span className="flex items-center gap-2 text-slate-500">
-                                        <CalendarDays className="size-4 text-brand-blue" />
+                                        <CalendarDays className="size-4 text-primary" />
                                         <time dateTime={date}>{formatDate(date)}</time>
                                     </span>
                                 )}
                             </div>
-                            <h2 className="mt-5 text-2xl font-bold text-brand-navy md:text-3xl">{item.title}</h2>
-                            <div className="mt-3 h-1 w-12 rounded-full bg-brand-blue" />
+                            <h2 className="mt-5 text-2xl font-bold text-primary md:text-3xl">{item.title}</h2>
+                            <div className="mt-3 h-1 w-12 rounded-full bg-primary" />
                             {item.description && (
                                 <p className="mt-8 whitespace-pre-line text-lg leading-8 text-slate-600">
                                     {stripHtml(item.description)}
@@ -88,7 +88,7 @@ export default async function GalleryDetailPage({ params }: Props) {
 
                     <Link
                         href="/gallery"
-                        className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-navy px-6 py-3 text-sm font-semibold text-white hover:bg-brand-navy/90"
+                        className="mt-8 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-white hover:bg-primary/90"
                     >
                         <ArrowLeft className="size-4" />
                         Back to Gallery

@@ -2,17 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import type { ArticleItem } from "@/types/article";
-import { ImageUrl } from "@/lib/services/event-service";
-import { stripHtml } from "@/lib/utils";
+import { imageUrl, stripHtml } from "@/lib/utils";
 
 export function FeaturedArticle({ article }: { article: ArticleItem }) {
-    const src = ImageUrl(article.image);
+    const src = imageUrl(article.image);
 
     return (
         <section className="bg-white py-12">
             <div className="mx-auto max-w-6xl px-4">
-                <p className="mb-6 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-brand-blue">
-                    <span className="h-1 w-10 rounded-full bg-brand-orange" />
+                <p className="mb-6 flex items-center gap-3 text-sm font-semibold uppercase tracking-wide text-primary">
+                    <span className="h-1 w-10 rounded-full bg-secondary" />
                     Featured article
                 </p>
                 <div className="grid overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 md:grid-cols-2">
@@ -29,13 +28,13 @@ export function FeaturedArticle({ article }: { article: ArticleItem }) {
                         )}
                     </div>
                     <div className="flex flex-col justify-center gap-5 p-8 md:p-10">
-                        <h2 className="text-3xl font-bold leading-tight text-brand-navy">
+                        <h2 className="text-3xl font-bold leading-tight text-primary">
                             {article.title}
                         </h2>
                         <p className="leading-relaxed text-slate-600">{stripHtml(article.excerpt)}</p>
                         <Link
                             href={`/blog/${article.slug}`}
-                            className="inline-flex w-fit items-center gap-1 rounded-lg bg-brand-navy px-5 py-3 text-sm font-semibold text-white hover:bg-brand-navy/90"
+                            className="inline-flex w-fit items-center gap-1 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary/90"
                         >
                             Read More
                             <ChevronRight className="size-4" />
