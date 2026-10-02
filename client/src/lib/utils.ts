@@ -1,5 +1,3 @@
-import { headers } from "next/headers";
-
 export { cn } from "cn"
 
 const TZ = "Asia/Jakarta";
@@ -16,7 +14,7 @@ export function formatDate(iso: string, locale = "en-US") {
 
 export function formatTime(iso: string) {
     if (!hasTime(iso)) return undefined;
-    const t = new Intl.DateTimeFormat("id-ID", {
+    const time = new Intl.DateTimeFormat("id-ID", {
         hour: "2-digit",
         minute: "2-digit",
         hourCycle: "h23",
@@ -24,7 +22,7 @@ export function formatTime(iso: string) {
     })
         .format(new Date(iso))
         .replace(".", ":");
-    return `${t} WIB`;
+    return `${time} WIB`;
 }
 
 const UNITS: [Intl.RelativeTimeFormatUnit, number][] = [
@@ -45,9 +43,9 @@ export function timeAgo(iso: string, locale = "en") {
 }
 
 export function isPastEvent(iso: string) {
-    const d = new Date(iso);
-    if (!hasTime(iso)) d.setHours(23, 59, 59, 999);
-    return d.getTime() < Date.now();
+    const date = new Date(iso);
+    if (!hasTime(iso)) date.setHours(23, 59, 59, 999);
+    return date.getTime() < Date.now();
 }
 
 export function stripHtml(html: string) {
@@ -64,14 +62,6 @@ export function imageUrl(image?: string | null): string | undefined {
     return `${ASSET_URL}${image.startsWith("/") ? "" : "/"}${image}`;
 }
 
-export async function getClientInfo() {
-    const h = await headers();
-    const ip =
-        h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? h.get("x-real-ip") ?? "";
-    const userAgent = h.get("user-agent") ?? "";
-    return { ip, userAgent };
-}
-
 export async function safely<T>(fn: () => Promise<T>, fallback: T, label: string): Promise<T> {
     try {
         return await fn();
@@ -79,4 +69,24 @@ export async function safely<T>(fn: () => Promise<T>, fallback: T, label: string
         console.error(`[${label}] gagal dimuat:`, err);
         return fallback;
     }
+}
+
+export function formatIDR(value?: number | string | null) {
+    if (value === null || value === undefined || value === "") return "-";
+    const number = Number(value);
+    if (Number.isNaN(number)) return "-";
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+    }).format(number);
+}
+
+export function toLines(text?: string | null): string[] {
+    if (!text) return [];
+    return text
+        .split(/\r?\n/)
+        .map((l) => l.replace(/^\s*(?:[-•*]|\d+[.)])\s+/, "").trim())
+        .filter(Boolean);
 }
