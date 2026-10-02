@@ -11,16 +11,16 @@ export function RelatedArticles({ articles }: { articles: ArticleItem[] }) {
             <div className="mt-2 h-1 w-10 rounded-full bg-secondary" />
 
             <ul className="mt-6 space-y-5">
-                {articles.map((a) => {
-                    const src = imageUrl(a.image);
+                {articles.map((article) => {
+                    const src = imageUrl(article.image);
                     return (
-                        <li key={a.id}>
-                            <Link href={`/blog/${a.slug}`} className="group flex items-start gap-4">
+                        <li key={article.id}>
+                            <Link href={`/articles/${article.slug}`} className="group flex items-start gap-4">
                                 <span className="relative size-16 shrink-0 overflow-hidden rounded-lg bg-slate-100">
                                     {src && <Image src={src} alt="" fill sizes="64px" className="object-cover" />}
                                 </span>
                                 <span className="text-sm font-semibold leading-snug text-primary group-hover:underline">
-                                    {a.title}
+                                    {article.title}
                                 </span>
                             </Link>
                         </li>

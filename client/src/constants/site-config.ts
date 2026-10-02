@@ -15,7 +15,7 @@ export const navItems: readonly NavItem[] = [
     { label: "Events", href: "/events" },
     { label: "Services", href: "/services" },
     { label: "Programs", href: "/programs" },
-    { label: "Blog", href: "/blogs" },
+    { label: "Blog", href: "/articles" },
     { label: "Gallery", href: "/gallery" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },

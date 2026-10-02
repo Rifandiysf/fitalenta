@@ -3,7 +3,7 @@ import { FaFacebookF, FaLinkedinIn, FaWhatsapp, FaXTwitter } from "react-icons/f
 const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "");
 
 export function ShareButtons({ slug, title }: { slug: string; title: string }) {
-    const url = encodeURIComponent(`${SITE_URL}/blogs/${slug}`);
+    const url = encodeURIComponent(`${SITE_URL}/articles/${slug}`);
     const text = encodeURIComponent(title);
 
     const links = [

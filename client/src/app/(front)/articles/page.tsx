@@ -29,7 +29,7 @@ export default async function BlogPage({ searchParams }: Props) {
                 badge="FITALENTA Blog"
                 title="FITALENTA Blog"
                 subtitle="Insights, tips, and news from the world of business and talent management"
-                crumbs={[{ label: "Home", href: "/" }, { label: "Blog" }]}
+                crumbs={[{ label: "Home", href: "/" }, { label: "Articles" }]}
             />
 
             {featured[0] && <FeaturedArticle article={featured[0]} />}
@@ -56,7 +56,7 @@ export default async function BlogPage({ searchParams }: Props) {
                         </ul>
                     )}
 
-                    <Pagination basePath="/blog" pagination={pagination} />
+                    <Pagination basePath="/articles" pagination={pagination} />
                 </div>
             </div>
 

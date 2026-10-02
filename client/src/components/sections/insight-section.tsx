@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Article, articles } from "@/constants/article-constant";
+import type { ArticleItem } from "@/types/article";
+import { imageUrl, safely } from "@/lib/utils";
+import { getFeaturedArticles } from "@/services/article-service";
 
 const HEADING_ID = "insights-heading";
 const SIDE_ARTICLE_COUNT = 3;
@@ -14,21 +16,19 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
     timeZone: "UTC",
 });
 
-function articleHref(article: Article) {
-    return `/insights/${article.slug}`;
-}
-
 function ArticleImage({
     article,
     sizes,
 }: {
-    article: Article;
+    article: ArticleItem;
     sizes: string;
 }) {
-    if (article.image) {
+    const photo = imageUrl(article.image);
+
+    if (photo) {
         return (
             <Image
-                src={article.image}
+                src={photo}
                 alt=""
                 fill
                 sizes={sizes}
@@ -37,7 +37,6 @@ function ArticleImage({
         );
     }
 
-    // Placeholder: isi `image` di articles.ts untuk menggantinya dengan gambar asli.
     return (
         <div
             aria-hidden
@@ -48,26 +47,37 @@ function ArticleImage({
     );
 }
 
-function ArticleMeta({ article }: { article: Article }) {
+function ArticleMeta({ article }: { article: ArticleItem }) {
+    const categoryName = article.category?.name;
+    const parsed = article.publishedAt ? new Date(article.publishedAt) : null;
+    const formattedDate =
+        parsed && !Number.isNaN(parsed.getTime()) ? dateFormatter.format(parsed) : null;
+
+    if (!categoryName && !formattedDate) return null;
+
     return (
         <p className="flex flex-wrap items-center gap-x-3 text-xs font-semibold tracking-[0.12em] text-[#2F6F62] sm:text-sm">
-            <span className="uppercase">{article.category}</span>
-            <span aria-hidden className="h-1 w-1 rounded-full bg-[#10302B]/30" />
-            <time
-                dateTime={article.date}
-                className="font-medium tracking-normal text-[#10302B]/60"
-            >
-                {dateFormatter.format(new Date(article.date))}
-            </time>
+            {categoryName && <span className="uppercase">{categoryName}</span>}
+            {categoryName && formattedDate && (
+                <span aria-hidden className="h-1 w-1 rounded-full bg-[#10302B]/30" />
+            )}
+            {formattedDate && (
+                <time
+                    dateTime={article.publishedAt}
+                    className="font-medium tracking-normal text-[#10302B]/60"
+                >
+                    {formattedDate}
+                </time>
+            )}
         </p>
     );
 }
 
-function FeaturedArticle({ article }: { article: Article }) {
+function FeaturedArticle({ article }: { article: ArticleItem }) {
     return (
         <article>
             <Link
-                href={articleHref(article)}
+                href={`/articles/${article.slug}`}
                 className="group block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4"
             >
                 <div className="relative aspect-16/10 w-full overflow-hidden rounded-2xl">
@@ -91,11 +101,11 @@ function FeaturedArticle({ article }: { article: Article }) {
     );
 }
 
-function ArticleRow({ article }: { article: Article }) {
+function ArticleRow({ article }: { article: ArticleItem }) {
     return (
         <article className="border-t border-[#10302B]/15 first:border-t-0 first:pt-0">
             <Link
-                href={articleHref(article)}
+                href={`/articles/${article.slug}`}
                 className="group flex gap-5 py-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
                 <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-xl sm:h-28 sm:w-28">
@@ -113,7 +123,10 @@ function ArticleRow({ article }: { article: Article }) {
     );
 }
 
-export function InsightsSection() {
+export async function InsightsSection() {
+    const articles = await safely(getFeaturedArticles, [], "articles");
+    if (articles.length === 0) return null;
+
     const [featured, ...rest] = articles;
     const sideArticles = rest.slice(0, SIDE_ARTICLE_COUNT);
 
@@ -144,26 +157,24 @@ export function InsightsSection() {
                     </p>
                 </header>
 
-                {featured && (
-                    <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-[7fr_5fr] lg:gap-16">
-                        <FeaturedArticle article={featured} />
+                <div className="mt-12 grid gap-10 lg:mt-16 lg:grid-cols-[7fr_5fr] lg:gap-16">
+                    <FeaturedArticle article={featured} />
 
-                        {sideArticles.length > 0 && (
-                            <div className="lg:self-center">
-                                {sideArticles.map((article) => (
-                                    <ArticleRow key={article.slug} article={article} />
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                )}
+                    {sideArticles.length > 0 && (
+                        <div className="">
+                            {sideArticles.map((article) => (
+                                <ArticleRow key={article.slug} article={article} />
+                            ))}
+                        </div>
+                    )}
+                </div>
 
                 <Button
                     asChild
                     size="lg"
                     className="mt-12 h-12 bg-primary px-7 text-base font-semibold text-white hover:bg-primary/80 focus-visible:ring-primary"
                 >
-                    <Link href="/insights">
+                    <Link href="/articles">
                         View All Articles
                         <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
                     </Link>

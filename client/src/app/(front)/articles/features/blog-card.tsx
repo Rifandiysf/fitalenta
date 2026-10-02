@@ -6,7 +6,7 @@ import { formatDate, imageUrl, stripHtml } from "@/lib/utils";
 
 export function BlogCard({ article }: { article: ArticleItem }) {
     const src = imageUrl(article.image);
-    const href = `/blogs/${article.slug}`;
+    const href = `/articles/${article.slug}`;
 
     return (
         <article className="flex w-full flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-100 transition hover:shadow-md">

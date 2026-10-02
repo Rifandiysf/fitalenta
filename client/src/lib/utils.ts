@@ -3,13 +3,21 @@ export { cn } from "cn"
 const TZ = "Asia/Jakarta";
 const hasTime = (iso: string) => iso.length > 10;
 
-export function formatDate(iso: string, locale = "en-US") {
+function toValidDate(iso?: string | null): Date | null {
+    if (!iso) return null;
+    const date = new Date(iso);
+    return Number.isNaN(date.getTime()) ? null : date;
+}
+
+export function formatDate(iso?: string | null, locale = "en-US") {
+    const date = toValidDate(iso)
+    if (!date) return "-"
     return new Intl.DateTimeFormat(locale, {
         year: "numeric",
         month: "long",
         day: "numeric",
         timeZone: TZ,
-    }).format(new Date(iso));
+    }).format(date);
 }
 
 export function formatTime(iso: string) {

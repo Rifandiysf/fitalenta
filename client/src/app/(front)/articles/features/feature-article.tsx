@@ -33,7 +33,7 @@ export function FeaturedArticle({ article }: { article: ArticleItem }) {
                         </h2>
                         <p className="leading-relaxed text-slate-600">{stripHtml(article.excerpt)}</p>
                         <Link
-                            href={`/blog/${article.slug}`}
+                            href={`/articles/${article.slug}`}
                             className="inline-flex w-fit items-center gap-1 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-white hover:bg-primary/90"
                         >
                             Read More
