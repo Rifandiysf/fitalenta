@@ -17,16 +17,7 @@ export async function getProgramById(id: number) {
     include: { category: true },
   });
   if (!program) throw new Error("PROGRAM_NOT_FOUND");
-
-  const relatedPrograms = program.categoryId
-    ? await prisma.program.findMany({
-        where: { categoryId: program.categoryId, id: { not: program.id } },
-        orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
-        take: 3,
-      })
-    : [];
-
-  return { program, relatedPrograms };
+  return program;
 }
 
 export async function getAdminPrograms({ page = 1 }: { page?: number }) {

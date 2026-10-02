@@ -18,8 +18,8 @@ export async function index(req: Request, res: Response) {
 export async function show(req: Request, res: Response) {
   try {
     const id = parseInt(getStringParam(req, "id"));
-    const result = await programService.getProgramById(id);
-    return res.json({ success: true, data: result });
+    const program = await programService.getProgramById(id);
+    return res.json({ success: true, data: program });
   } catch (error: any) {
     if (error.message === "PROGRAM_NOT_FOUND") {
       return res.status(404).json({ success: false, message: "Program tidak ditemukan" });
