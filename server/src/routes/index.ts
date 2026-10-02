@@ -17,6 +17,10 @@ import adminPartnerRoutes from "./admin/partner.routes";
 import adminCompanyRoutes from "./admin/company.routes";
 import jobRoutes from "./job.routes";
 import adminJobRoutes from "./admin/job.routes";
+import programCategoryRoutes from "./programCategory.routes";
+import adminProgramCategoryRoutes from "./admin/programCategory.routes";
+import programRoutes from "./program.routes";
+import adminProgramRoutes from "./admin/program.routes";
 
 const router = Router();
 
@@ -38,5 +42,9 @@ router.use("/admin/partners", adminPartnerRoutes);
 router.use("/admin/companies", adminCompanyRoutes);
 router.use("/jobs", jobRoutes);
 router.use("/admin/jobs", adminJobRoutes);
+router.use("/program-categories", programCategoryRoutes);
+router.use("/admin/program-categories", adminProgramCategoryRoutes);
+router.use("/programs", programRoutes);
+router.use("/admin/programs", adminProgramRoutes);
 
 export default router;

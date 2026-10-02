@@ -374,6 +374,7 @@ model Program {
   categoryId           Int?             @map("category_id")
   category             ProgramCategory? @relation(fields: [categoryId], references: [id])
   name                 String
+  programFormat        String?          @map("program_format")
   description          String?          @db.Text
   requirements         String?          @db.Text
   schedule             String?          @db.Text
