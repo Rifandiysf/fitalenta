@@ -7,8 +7,8 @@ import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { contactSchema, type ContactFieldErrors } from "@/lib/validations/contact";
-import { sendContact, toContactError } from "@/lib/services/contact-service";
+import { contactSchema, type ContactFieldErrors } from "@/schemas//contact";
+import { sendContact, toContactError } from "@/services/contact-service";
 
 const field =
     "w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-slate-900 outline-none transition focus:border-[#0e4a8f] focus:ring-2 focus:ring-[#0e4a8f]/20";

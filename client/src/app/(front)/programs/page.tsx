@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ProgramCategory } from "@/types/program";
-import { getPrograms } from "@/lib/services/program-service";
+import { getPrograms } from "@/services/program-service";
 import { CategoryFilter } from "./features/category-filter";
 import { ProgramCard } from "./features/program-card";
 import PageHero from "@/components/common/page-hero";

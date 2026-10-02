@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProgramById } from "@/lib/services/program-service";
+import { getProgramById } from "@/services/program-service";
 import { isFull } from "@/helpers/program-helper";
 import Link from "next/link";
 import { ArrowRight, Rocket } from "lucide-react";

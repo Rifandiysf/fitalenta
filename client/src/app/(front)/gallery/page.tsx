@@ -1,5 +1,5 @@
 import PageHero from '@/components/common/page-hero';
-import { getGallery } from '@/lib/services/gallery-service';
+import { getGallery } from '@/services/gallery-service';
 import { GalleryCard } from './features/gallery-card';
 import { Metadata } from 'next';
 

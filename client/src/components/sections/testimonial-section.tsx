@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Quote, Star } from "lucide-react";
 import type { Testimonial } from "@/types/testimonial";
 import { imageUrl, safely } from "@/lib/utils";
-import { getTestimonials } from "@/lib/services/testimonial-service";
+import { getTestimonials } from "@/services/testimonial-service";
 
 const HEADING_ID = "testimonials-heading";
 

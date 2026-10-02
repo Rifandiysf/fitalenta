@@ -6,7 +6,7 @@ import { ArrowRight, Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { loginSchema, type LoginInput } from "@/lib/validations/auth";
+import { loginSchema, type LoginInput } from "@/schemas/auth";
 import { useLogin } from "@/hooks/use-login";
 
 type FieldErrors = Partial<Record<keyof LoginInput, string>>;

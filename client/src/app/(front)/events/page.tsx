@@ -4,7 +4,7 @@ import { EventSearch } from "./features/event-search";
 import { EventCard } from "./features/event-card";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { getEvents } from "@/lib/services/event-service";
+import { getEvents } from "@/services/event-service";
 import { Pagination } from "@/components/common/pagination";
 
 export const metadata: Metadata = {

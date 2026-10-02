@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { imageUrl } from "@/lib/utils";
 import { safely } from "@/lib/utils";
-import { getPartners } from "@/lib/services/partner-service";
+import { getPartners } from "@/services/partner-service";
 import type { Partner } from "@/types/partner";
 
 const MIN_ITEMS_PER_SET = 8;

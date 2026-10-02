@@ -1,4 +1,4 @@
-import { getArticleBySlug } from "@/lib/services/article-service";
+import { getArticleBySlug } from "@/services/article-service";
 import { formatDate, imageUrl, stripHtml } from "@/lib/utils";
 import type { Metadata } from "next";
 import Image from "next/image";

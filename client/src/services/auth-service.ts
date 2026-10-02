@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import type { LoginInput, RegisterInput } from "@/lib/validations/auth";
+import type { LoginInput, RegisterInput } from "@/schemas//auth";
 import type { AuthUser } from "@/store/auth-store";
 import { ApiResponse } from "@/types/api";
 

@@ -6,7 +6,7 @@ import { ArrowRight, Eye, EyeOff, Loader2, Lock, Mail, Phone, User } from "lucid
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { registerSchema, type RegisterInput } from "@/lib/validations/auth";
+import { registerSchema, type RegisterInput } from "@/schemas/auth";
 import { useRegister } from "@/hooks/use-register";
 
 type FieldErrors = Partial<Record<keyof RegisterInput, string>>;

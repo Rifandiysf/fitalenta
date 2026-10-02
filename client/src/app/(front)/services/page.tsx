@@ -1,7 +1,7 @@
 import PageHero from "@/components/common/page-hero";
 import type { Metadata } from "next";
 import { ServiceCard } from "./features/service-card";
-import { getServices } from "@/lib/services/service-service";
+import { getServices } from "@/services/service-service";
 import Link from "next/link";
 
 export const metadata: Metadata = {

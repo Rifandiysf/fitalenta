@@ -1,5 +1,5 @@
 import PageHero from "@/components/common/page-hero";
-import { getServiceBySlug } from "@/lib/services/service-service";
+import { getServiceBySlug } from "@/services/service-service";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";

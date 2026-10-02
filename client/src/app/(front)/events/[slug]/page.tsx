@@ -6,7 +6,7 @@ import { CalendarDays, CalendarPlus, Clock, MapPin, Tag, Users } from "lucide-re
 import { formatDate, formatTime, imageUrl, isPastEvent, stripHtml } from "@/lib/utils";
 import PageHero from "@/components/common/page-hero";
 import { EventCard } from "../features/event-card";
-import { getEventBySlug } from "@/lib/services/event-service";
+import { getEventBySlug } from "@/services/event-service";
 
 type Props = { params: Promise<{ slug: string }> };
 

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarDays } from "lucide-react";
-import { getGalleryById } from "@/lib/services/gallery-service";
+import { getGalleryById } from "@/services/gallery-service";
 import { formatDate, imageUrl, stripHtml } from "@/lib/utils";
 import PageHero from "@/components/common/page-hero";
 

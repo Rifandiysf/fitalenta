@@ -1,5 +1,5 @@
 import PageHero from "@/components/common/page-hero";
-import { getArticles, getFeaturedArticles } from "@/lib/services/article-service";
+import { getArticles, getFeaturedArticles } from "@/services/article-service";
 import type { Metadata } from "next";
 import { FeaturedArticle } from "./features/feature-article";
 import { BlogCard } from "./features/blog-card";
