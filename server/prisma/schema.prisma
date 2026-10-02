@@ -150,7 +150,7 @@ model Article {
   title      String
   slug       String    @unique
   content    String    @db.Text
-  excerpt    String
+  excerpt    String    @db.Text
   authorId   Int       @map("author_id")
   author     User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   eventDate  DateTime? @map("event_date")
