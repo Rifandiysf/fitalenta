@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ArticleItem } from "@/types/article";
-import { ImageUrl } from "@/lib/services/event-service";
+import { imageUrl } from "@/lib/utils";
 
 export function RelatedArticles({ articles }: { articles: ArticleItem[] }) {
     return (
@@ -12,7 +12,7 @@ export function RelatedArticles({ articles }: { articles: ArticleItem[] }) {
 
             <ul className="mt-6 space-y-5">
                 {articles.map((a) => {
-                    const src = ImageUrl(a.image);
+                    const src = imageUrl(a.image);
                     return (
                         <li key={a.id}>
                             <Link href={`/blog/${a.slug}`} className="group flex items-start gap-4">
