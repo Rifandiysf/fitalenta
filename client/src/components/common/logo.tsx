@@ -14,11 +14,20 @@ export function Logo({ tone = "dark", width, height }: LogoProps) {
             href="/"
             aria-label={`${siteConfig.name}, home`}
             className={`inline-block leading-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-4 ${tone === "dark"
-                    ? "text-primary focus-visible:ring-primary"
-                    : "text-white focus-visible:ring-white focus-visible:ring-offset-[#10302B]"
+                ? "text-primary focus-visible:ring-primary"
+                : "text-white focus-visible:ring-white focus-visible:ring-offset-[#10302B]"
                 }`}
         >
-            <Image src={siteConfig.logo} alt={siteConfig.name} width={width} height={height} />
+            <Image
+                src={siteConfig.logo}
+                alt={siteConfig.name}
+                width={width}
+                height={height}
+                style={{
+                    width: "auto",
+                    height: "auto",
+                }}
+            />
         </Link>
     );
 }

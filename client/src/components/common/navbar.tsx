@@ -30,7 +30,6 @@ export function Navbar() {
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-6 md:px-8">
                 <Logo width={108} height={50}/>
 
-                {/* Desktop */}
                 <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
                     {navItems.map((item) => {
                         const active = isActive(pathname, item.href);
