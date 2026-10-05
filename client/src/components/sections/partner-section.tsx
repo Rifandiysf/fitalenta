@@ -11,15 +11,17 @@ function PartnerCard({ partner }: { partner: Partner }) {
     const logo = imageUrl(partner.logo);
 
     return (
-        <div className="flex h-24 w-44 items-center justify-center border border-[#10302B]/15 bg-white px-6 sm:h-28 sm:w-56">
+        <div className="flex h-24 w-44 items-center justify-center border border-[#10302B]/15 bg-white p-3 sm:h-28 sm:w-56 sm:p-4">
             {logo ? (
-                <Image
-                    src={logo}
-                    alt={partner.name}
-                    width={160}
-                    height={56}
-                    className="h-10 w-auto max-w-full object-contain opacity-70 grayscale transition hover:opacity-100 hover:grayscale-0 sm:h-12"
-                />
+                <div className="relative h-full w-full">
+                    <Image
+                        src={logo}
+                        alt={partner.name}
+                        fill
+                        sizes="(min-width: 640px) 192px, 152px"
+                        className="object-contain grayscale transition hover:opacity-100 hover:grayscale-0"
+                    />
+                </div>
             ) : (
                 <span className="text-center text-base font-semibold text-[#10302B]/60 sm:text-lg">
                     {partner.name}
@@ -47,14 +49,14 @@ function MarqueeRow({
                 className={`fit-marquee-track ${direction === "left" ? "fit-marquee-left" : "fit-marquee-right"}`}
                 style={{ animationDuration: `${duration}s` }}
             >
-                {set.map((p, i) => (
-                    <div key={`${p.id}-${i}`} className="shrink-0 pr-4">
-                        <PartnerCard partner={p} />
+                {set.map((partner, index) => (
+                    <div key={`${partner.id}-${index}`} className="shrink-0 pr-4">
+                        <PartnerCard partner={partner} />
                     </div>
                 ))}
-                {set.map((p, i) => (
-                    <div key={`dup-${p.id}-${i}`} aria-hidden className="fit-marquee-dup shrink-0 pr-4">
-                        <PartnerCard partner={p} />
+                {set.map((partner, index) => (
+                    <div key={`dup-${partner}-${index}`} aria-hidden className="fit-marquee-dup shrink-0 pr-4">
+                        <PartnerCard partner={partner} />
                     </div>
                 ))}
             </div>
