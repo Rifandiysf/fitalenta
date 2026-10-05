@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { getServices, type Service } from "@/constants/service-constant";
+import { getServices } from "@/services/service-service";
+import type { ServiceItem } from "@/types/service";
 
 const HEADING_ID = "services-heading";
 
-function ServiceItem({ service }: { service: Service }) {
+function ServiceItem({ service }: { service: ServiceItem }) {
     return (
         <li className="border-t border-[#10302B]/15 last:border-b">
             <Link
