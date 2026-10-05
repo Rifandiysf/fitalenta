@@ -10,6 +10,7 @@ export type ServiceContent = {
     secondParagraph?: string;
     images?: string;
     closing?: string;
+    description?: string;
 };
 
 export type ServiceItem = {
