@@ -3,6 +3,7 @@ import { Quote, Star } from "lucide-react";
 import type { Testimonial } from "@/types/testimonial";
 import { imageUrl, safely } from "@/lib/utils";
 import { getTestimonials } from "@/services/testimonial-service";
+import { Carousel } from "@/components/common/carousel";
 
 const HEADING_ID = "testimonials-heading";
 
@@ -99,13 +100,18 @@ export async function TestimonialsSection() {
                     </p>
                 </header>
 
-                <ul className="mt-12 columns-1 gap-6 md:columns-2 lg:mt-16 lg:columns-3">
-                    {testimonials.map((testimonial) => (
-                        <li key={testimonial.id} className="mb-6 break-inside-avoid">
-                            <TestimonialCard testimonial={testimonial} />
-                        </li>
-                    ))}
-                </ul>
+                <div className="mt-12 lg:mt-16">
+                    <Carousel
+                        label="Testimoni peserta dan mitra"
+                        perView={{ base: 1, md: 2, lg: 3 }}
+                        prevLabel="Testimoni sebelumnya"
+                        nextLabel="Testimoni berikutnya"
+                    >
+                        {testimonials.map((testimonial) => (
+                            <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+                        ))}
+                    </Carousel>
+                </div>
             </div>
         </section>
     );
