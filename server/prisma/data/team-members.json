@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Agus Ismail S.T., M.B.A",
+    "position": "HR and Sales Expert",
+    "bio": null,
+    "image": "team-members/Agus Ismail, S.T., MBA - HR and Sales Expert.png",
+    "order": 1,
+    "isActive": true
+  },
+  {
+    "name": "Achmad Zakaria, S.Si",
+    "position": "Leadership Expert",
+    "bio": null,
+    "image": "team-members/Achmad Zakaria, S.Si - Leadership Expert.png",
+    "order": 2,
+    "isActive": true
+  },
+  {
+    "name": "Anindya Wadhani, S.T. MBA",
+    "position": "Personal Branding Expert",
+    "bio": null,
+    "image": "team-members/Anindya K. Wardhani, S.T., MBA - Personal Branding Expert.png",
+    "order": 3,
+    "isActive": true
+  },
+  {
+    "name": "Widyani Rochmatin",
+    "position": "Corporate Trainer and Consultant",
+    "bio": null,
+    "image": "team-members/foto_widyati_rochmatin-removebg-preview.png",
+    "order": 4,
+    "isActive": true
+  },
+  {
+    "name": "Nano Sutrisno",
+    "position": "B2B Sales Expert",
+    "bio": null,
+    "image": "team-members/Nano Sutrisno - B2B Sales Expert.png",
+    "order": 5,
+    "isActive": true
+  },
+  {
+    "name": "Rendra Arjakusumah",
+    "position": "Telemarketing Expert",
+    "bio": null,
+    "image": "team-members/pak_rendra_foto-removebg-preview.png",
+    "order": 6,
+    "isActive": true
+  },
+  {
+    "name": "Trisna Hadi",
+    "position": "Digital Marketing Expert",
+    "bio": null,
+    "image": "team-members/trisna_hadi_foto-removebg-preview.png",
+    "order": 7,
+    "isActive": true
+  },
+  {
+    "name": "Yong Ardinal",
+    "position": "Senior Professional in Multinational Energy Industries",
+    "bio": null,
+    "image": "team-members/GE49gyt0zQs9O5rar3d0yYHBUIAv5hoOpxqCExGv.jpg",
+    "order": 8,
+    "isActive": true
+  },
+  {
+    "name": "Zarius Rusli",
+    "position": "Senior Professional in Energy Industries",
+    "bio": null,
+    "image": "team-members/K13jZfYLktNCPH0mB9RnMMLqpj3QnTkPsvtkuzyR.jpg",
+    "order": 9,
+    "isActive": true
+  }
+]
