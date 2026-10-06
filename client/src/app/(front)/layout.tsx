@@ -1,4 +1,3 @@
-import { Footer } from "@/components/common/footer";
 import { Navbar } from "@/components/common/navbar";
 import type { ReactNode } from "react";
 
@@ -9,7 +8,6 @@ export default function UserLayout({ children }: { children: ReactNode }) {
             <div>
                 {children}
             </div>
-            <Footer />
         </div>
     );
 }
