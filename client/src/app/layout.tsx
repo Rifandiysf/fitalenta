@@ -33,11 +33,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <QueryProvider>
-          <Navbar />
           <main>
             {children}
           </main>
-          <Footer />
         </QueryProvider>
       </body>
     </html>
