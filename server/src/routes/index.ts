@@ -21,6 +21,8 @@ import programCategoryRoutes from "./programCategory.routes";
 import adminProgramCategoryRoutes from "./admin/programCategory.routes";
 import programRoutes from "./program.routes";
 import adminProgramRoutes from "./admin/program.routes";
+import teamMemberRoutes from "./teamMember.routes";
+import adminTeamMemberRoutes from "./admin/teamMember.routes";
 
 const router = Router();
 
@@ -46,5 +48,7 @@ router.use("/program-categories", programCategoryRoutes);
 router.use("/admin/program-categories", adminProgramCategoryRoutes);
 router.use("/programs", programRoutes);
 router.use("/admin/programs", adminProgramRoutes);
+router.use("/team-members", teamMemberRoutes); 
+router.use("/admin/team-members", adminTeamMemberRoutes);
 
 export default router;
