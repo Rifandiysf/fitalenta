@@ -3,14 +3,18 @@ export type ServicePoint = {
     desc: string;
 };
 
+export type ServiceSection = {
+    title?: string;
+    ordered?: boolean;
+    points: ServicePoint[];
+};
+
 export type ServiceContent = {
     intro: string;
-    listTitle?: string;
-    points?: ServicePoint[];
-    secondParagraph?: string;
-    images?: string;
+    sections: ServiceSection[];
     closing?: string;
-    description?: string;
+    tagline?: string;
+    images?: string[];
 };
 
 export type ServiceItem = {
@@ -19,11 +23,9 @@ export type ServiceItem = {
     icon?: string | null;
     summary: string;
     content: ServiceContent;
+    isFeatured?: boolean;
 };
 
 export type ServicesListData = ServiceItem[];
 
-export type ServiceDetailData = ServiceItem & {
-    id: number;
-    views: number;
-};
+export type ServiceDetailData = ServiceItem & { id: number; views: number };
