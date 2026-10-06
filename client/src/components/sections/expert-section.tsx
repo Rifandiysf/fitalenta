@@ -2,34 +2,36 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, User } from "lucide-react";
 
+import { Carousel } from "@/components/common/carousel";
 import { Button } from "@/components/ui/button";
-import { Expert, experts } from "@/constants/expert-constant";
+import { getPublicTeamMembers } from "@/services/expert-service";
+import { imageUrl } from "@/lib/utils";
+import type { TeamMember } from "@/types/expert";
 
 const HEADING_ID = "experts-heading";
 
-/** Warna placeholder foto; berputar sesuai urutan expert. */
 const PLACEHOLDER_TONES = [
     "from-[#7FB0A2] to-[#2F6F62]",
     "from-[#2F6F62] to-primary",
     "from-primary to-[#10302B]",
 ] as const;
 
-function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
+function ExpertCard({ member, index }: { member: TeamMember; index: number }) {
     const tone = PLACEHOLDER_TONES[index % PLACEHOLDER_TONES.length];
+    const photo = imageUrl(member.image);
 
     return (
         <article>
             <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl">
-                {expert.photo ? (
+                {photo ? (
                     <Image
-                        src={expert.photo}
-                        alt={expert.name}
+                        src={photo}
+                        alt={member.name}
                         fill
                         sizes="(min-width: 1024px) 384px, (min-width: 640px) 50vw, 100vw"
                         className="object-cover"
                     />
                 ) : (
-                    // Placeholder: isi `photo` di experts.ts untuk menggantinya dengan foto asli.
                     <div
                         aria-hidden
                         className={`flex h-full w-full items-end justify-center bg-linear-to-br ${tone}`}
@@ -44,14 +46,18 @@ function ExpertCard({ expert, index }: { expert: Expert; index: number }) {
             </div>
 
             <h3 className="mt-5 text-xl font-semibold tracking-tight sm:text-2xl">
-                {expert.name}
+                {member.name}
             </h3>
-            <p className="mt-1 text-base text-[#2F6F62] sm:text-lg">{expert.role}</p>
+            <p className="mt-1 text-base text-[#2F6F62] sm:text-lg">{member.position}</p>
         </article>
     );
 }
 
-export function ExpertsSection() {
+export async function ExpertsSection() {
+    const members = await getPublicTeamMembers();
+
+    if (members.length === 0) return null;
+
     return (
         <section
             id="experts"
@@ -91,13 +97,18 @@ export function ExpertsSection() {
                     </Button>
                 </header>
 
-                <ul className="mt-12 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
-                    {experts.map((expert, index) => (
-                        <li key={expert.name}>
-                            <ExpertCard expert={expert} index={index} />
-                        </li>
+                <Carousel
+                    className="mt-12 lg:mt-16"
+                    label="Our experts"
+                    perView={{ base: 1, md: 2, lg: 3 }}
+                    gap="lg"
+                    prevLabel="Previous experts"
+                    nextLabel="Next experts"
+                >
+                    {members.map((member, index) => (
+                        <ExpertCard key={member.id} member={member} index={index} />
                     ))}
-                </ul>
+                </Carousel>
             </div>
         </section>
     );

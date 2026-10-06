@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import { Navbar } from "@/components/common/navbar";
-import { Footer } from "@/components/common/footer";
 import { QueryProvider } from "@/lib/providers/query-provider";
 
 const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
