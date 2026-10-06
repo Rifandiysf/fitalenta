@@ -25,52 +25,18 @@ interface ScrapedClient {
   logo_url: string;
 }
 
-interface ScrapedService {
-  name: string;
+interface ServiceSeed {
+  slug: string;
+  title: string;
   icon: string;
-  short: string;
-  description: string;
+  summary: string;
+  content: unknown;
+  isFeatured?: boolean;
 }
 
 function readJson<T>(filename: string): T {
   const filePath = path.join(process.cwd(), "prisma", "data", filename);
   return JSON.parse(fs.readFileSync(filePath, "utf-8"));
-}
-
-async function seedTestimonials() {
-  const testimonials = readJson<ScrapedTestimonial[]>("testimonials.json");
-
-  let count = 0;
-  for (const t of testimonials) {
-    await prisma.testimonial.create({
-      data: {
-        clientName: t.client_name,
-        company: t.company,
-        content: t.content,
-        rating: t.rating,
-        isFeatured: false,
-      },
-    });
-    count++;
-  }
-  console.log(`${count} testimoni berhasil di-seed`);
-}
-
-async function seedClients() {
-  const clients = readJson<ScrapedClient[]>("clients.json");
-
-  let count = 0;
-  for (const c of clients) {
-    await prisma.client.create({
-      data: {
-        name: c.name,
-        logo: c.logo_url,
-        isFeatured: false,
-      },
-    });
-    count++;
-  }
-  console.log(`${count} klien/mitra berhasil di-seed`);
 }
 
 function slugify(text: string): string {
@@ -82,34 +48,68 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+async function seedTestimonials() {
+  const testimonials = readJson<ScrapedTestimonial[]>("testimonials.json");
+
+  let created = 0;
+  for (const t of testimonials) {
+    const exists = await prisma.testimonial.findFirst({
+      where: { clientName: t.client_name, company: t.company },
+    });
+    if (exists) continue;
+
+    await prisma.testimonial.create({
+      data: {
+        clientName: t.client_name,
+        company: t.company,
+        content: t.content,
+        rating: t.rating,
+        isFeatured: false,
+      },
+    });
+    created++;
+  }
+  console.log(`${created} testimoni baru di-seed (${testimonials.length - created} sudah ada)`);
+}
+
+async function seedClients() {
+  const clients = readJson<ScrapedClient[]>("clients.json");
+
+  let created = 0;
+  for (const c of clients) {
+    const exists = await prisma.client.findFirst({ where: { name: c.name } });
+    if (exists) continue;
+
+    await prisma.client.create({
+      data: {
+        name: c.name,
+        logo: c.logo_url,
+        isFeatured: false,
+      },
+    });
+    created++;
+  }
+  console.log(`${created} klien/mitra baru di-seed (${clients.length - created} sudah ada)`);
+}
+
 async function seedServices() {
-  const services = readJson<ScrapedService[]>("services.json");
+  const services = readJson<ServiceSeed[]>("services.json");
 
   let count = 0;
   for (const s of services) {
-    const slug = slugify(s.name);
+    const slug = s.slug || slugify(s.title);
+    const data = {
+      title: s.title,
+      summary: s.summary,
+      icon: s.icon,
+      content: s.content as any,
+      isFeatured: s.isFeatured ?? false,
+    };
+
     await prisma.service.upsert({
       where: { slug },
-      update: {
-        title: s.name,
-        summary: s.short,
-        icon: s.icon,
-        content: {
-          intro: s.short,
-          description: s.description,
-        },
-      },
-      create: {
-        slug,
-        title: s.name,
-        summary: s.short,
-        icon: s.icon,
-        content: {
-          intro: s.short,
-          description: s.description,
-        },
-        isFeatured: false,
-      },
+      update: data,
+      create: { slug, ...data },
     });
     count++;
   }
