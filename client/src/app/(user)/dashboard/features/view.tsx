@@ -1,23 +1,73 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
-import { Briefcase, ClipboardCheck, Inbox, NotebookText } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
+import { Bell, Briefcase, ClipboardCheck, Inbox, NotebookText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { MyRegistration } from "@/types/dashboard";
-import { StatCard } from "./stat-card";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { getUserDashboard } from "@/services/dashboard-service";
 import { RefreshButton } from "./refresh";
+import { StatCard } from "./stat-card";
+import { RegistrationDetail } from "./registration-detail";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
 import { statusLabel } from "@/constants/dashboard-constant";
-import { RegistrationTable } from "./registration-table";
 
-type Props = {
-    userName: string;
-    registrations: MyRegistration[];
-};
+export function DashboardSkeleton() {
+    return (
+        <div aria-busy="true" aria-label="Memuat dashboard" className="space-y-8">
+            <div className="space-y-3">
+                <Skeleton className="h-10 w-80 max-w-full" />
+                <Skeleton className="h-4 w-56" />
+                <Skeleton className="h-4 w-72 max-w-full" />
+            </div>
+            <div className="grid gap-5 md:grid-cols-3">
+                {Array.from({ length: 3 }, (_, i) => (
+                    <Skeleton key={i} className="h-36 rounded-2xl" />
+                ))}
+            </div>
+            <Card className="gap-0 py-0">
+                <CardHeader className="border-b px-6 py-5"><Skeleton className="h-6 w-48" /></CardHeader>
+                <CardContent className="p-6"><Skeleton className="h-40 w-full" /></CardContent>
+            </Card>
+        </div>
+    );
+}
 
-export function DashboardView({ userName, registrations }: Props) {
-    const latest = registrations[0];
-    const placement = [latest?.placement?.company, latest?.placement?.location]
-        .filter(Boolean)
-        .join(", ");
+const isUnauthorized = (err: unknown) => isAxiosError(err) && err.response?.status === 401;
+
+export function DashboardView() {
+    const router = useRouter();
+    const { data: user } = useCurrentUser();
+    const { data, error, isPending, isFetching, refetch } = useQuery({
+        queryKey: ["user-dashboard"],
+        queryFn: getUserDashboard,
+        staleTime: 30_000,
+        retry: (count, err) => !isUnauthorized(err) && count < 2,
+    });
+
+    const unauthorized = isUnauthorized(error);
+    useEffect(() => {
+        if (unauthorized) router.replace("/login?next=/dashboard");
+    }, [unauthorized, router]);
+
+    if (isPending || unauthorized) return <DashboardSkeleton />;
+
+    if (error) {
+        return (
+            <Card className="mx-auto max-w-md text-center">
+                <CardContent className="space-y-4 py-10">
+                    <h1 className="text-xl font-bold text-primary">Dashboard tidak dapat dimuat</h1>
+                    <p className="text-sm text-muted-foreground">Periksa koneksi Anda lalu coba lagi.</p>
+                    <Button onClick={() => refetch()} disabled={isFetching}>Coba lagi</Button>
+                </CardContent>
+            </Card>
+        );
+    }
 
     return (
         <div className="space-y-8">
@@ -27,21 +77,29 @@ export function DashboardView({ userName, registrations }: Props) {
                         Dashboard Status Program
                     </h1>
                     <p className="mt-3 text-muted-foreground">
-                        Selamat Datang, <strong className="text-primary">{userName}</strong>
+                        Selamat Datang{user?.name && <>, <strong className="text-primary">{user.name}</strong></>}
                     </p>
                     <p className="mt-1 text-sm text-slate-600">
-                        {registrations.length === 0
-                            ? "Anda belum memiliki program yang terdaftar."
-                            : `Anda memiliki ${registrations.length} program yang terdaftar.`}
+                        {data.hasRegistration
+                            ? "Berikut perkembangan program yang Anda ikuti."
+                            : "Anda belum memiliki program yang terdaftar."}
                     </p>
                 </div>
-                <RefreshButton />
+                <RefreshButton onRefresh={() => refetch()} loading={isFetching} />
             </header>
 
+            {data.unreadNotifications > 0 && (
+                <Alert>
+                    <Bell aria-hidden />
+                    <AlertTitle>{data.unreadNotifications} notifikasi belum dibaca</AlertTitle>
+                    <AlertDescription>Periksa pembaruan terbaru terkait pendaftaran Anda.</AlertDescription>
+                </Alert>
+            )}
+
             <section aria-label="Ringkasan" className="grid gap-5 md:grid-cols-3">
-                <StatCard icon={ClipboardCheck} title="Status Seleksi" value={latest && statusLabel(latest.status)} />
-                <StatCard icon={Briefcase} title="Penempatan Kerja" value={placement} />
-                <StatCard icon={NotebookText} title="Program Saya" value={latest?.program.name} />
+                <StatCard icon={ClipboardCheck} title="Status Seleksi" value={statusLabel(data.selectionStatus, "registration")} />
+                <StatCard icon={Briefcase} title="Penempatan Kerja" value={statusLabel(data.placementStatus, "placement")} />
+                <StatCard icon={NotebookText} title="Program Saya" value={data.program?.name} />
             </section>
 
             <Card className="gap-0 py-0">
@@ -49,7 +107,9 @@ export function DashboardView({ userName, registrations }: Props) {
                     <CardTitle className="text-xl text-primary">Detail Program Anda</CardTitle>
                 </CardHeader>
                 <CardContent className="p-0">
-                    {registrations.length === 0 ? (
+                    {data.hasRegistration ? (
+                        <RegistrationDetail data={data} />
+                    ) : (
                         <div className="flex flex-col items-center px-6 py-14 text-center">
                             <span className="grid size-20 place-items-center rounded-2xl bg-slate-50 ring-1 ring-slate-100">
                                 <Inbox className="size-9 text-slate-400" strokeWidth={1.5} aria-hidden />
@@ -59,10 +119,6 @@ export function DashboardView({ userName, registrations }: Props) {
                             <Button asChild className="mt-6 bg-primary hover:bg-primary/90">
                                 <Link href="/programs">Daftar Program Magang</Link>
                             </Button>
-                        </div>
-                    ) : (
-                        <div className="overflow-x-auto">
-                            <RegistrationTable registrations={registrations} />
                         </div>
                     )}
                 </CardContent>

@@ -1,23 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export function RefreshButton() {
-    const router = useRouter();
-    const [pending, startTransition] = useTransition();
-
+export function RefreshButton({ onRefresh, loading }: { onRefresh: () => void; loading: boolean }) {
     return (
         <Button
             variant="outline"
-            disabled={pending}
-            onClick={() => startTransition(() => router.refresh())}
+            disabled={loading}
+            onClick={onRefresh}
             className="border-primary font-semibold text-primary"
         >
-            <RefreshCw className={pending ? "animate-spin" : undefined} aria-hidden />
-            {pending ? "Memuat..." : "Refresh"}
+            <RefreshCw className={loading ? "animate-spin" : undefined} aria-hidden />
+            {loading ? "Memuat..." : "Refresh"}
         </Button>
     );
 }
