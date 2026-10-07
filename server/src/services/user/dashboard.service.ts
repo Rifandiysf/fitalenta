@@ -38,11 +38,6 @@ export async function getDashboardSummary(userId: number) {
   const latestPayment = latestRegistration?.payments?.[0] ?? null;
 
   return {
-    user: {
-      id: user?.id ?? null,
-      name: user?.name ?? null,
-      email: user?.email ?? null,
-    },
     program: latestRegistration?.program ?? null,
     registrationStatus: latestRegistration?.registrationStatus ?? null,
     registrationCode: latestRegistration?.registrationCode ?? null,
