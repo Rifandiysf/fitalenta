@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { registerUser, loginUser } from "../services/auth.service";
 import { setAuthCookie, clearAuthCookie } from "../utils/cookie";
+import prisma from "../config/prisma";
 
 export async function register(req: Request, res: Response) {
   try {
@@ -72,5 +73,27 @@ export async function logout(req: Request, res: Response) {
 }
 
 export async function me(req: Request, res: Response) {
-  return res.json({ success: true, data: { user: req.user } });
+  try {
+    const { userId, email, role } = req.user!;
+    const dbUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { name: true, phone: true },
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        user: {
+          userId,
+          email,
+          role,
+          name: dbUser?.name ?? null,
+          phone: dbUser?.phone ?? null,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Me error:", error);
+    return res.status(500).json({ success: false, message: "Terjadi kesalahan pada server" });
+  }
 }
