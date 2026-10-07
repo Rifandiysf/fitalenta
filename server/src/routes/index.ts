@@ -23,6 +23,11 @@ import programRoutes from "./program.routes";
 import adminProgramRoutes from "./admin/program.routes";
 import teamMemberRoutes from "./teamMember.routes";
 import adminTeamMemberRoutes from "./admin/teamMember.routes";
+import userDashboardRoutes from "./user/dashboard.routes";
+import userProfileRoutes from "./user/profile.routes";
+import userRegistrationRoutes from "./user/registration.routes";
+import userPaymentRoutes from "./user/payment.routes";
+import userNotificationRoutes from "./user/notification.routes";
 
 const router = Router();
 
@@ -50,5 +55,10 @@ router.use("/programs", programRoutes);
 router.use("/admin/programs", adminProgramRoutes);
 router.use("/team-members", teamMemberRoutes); 
 router.use("/admin/team-members", adminTeamMemberRoutes);
+router.use("/user/dashboard", userDashboardRoutes);
+router.use("/user/profile", userProfileRoutes);
+router.use("/user/registrations", userRegistrationRoutes);
+router.use("/user/payments", userPaymentRoutes);
+router.use("/user/notifications", userNotificationRoutes);
 
 export default router;

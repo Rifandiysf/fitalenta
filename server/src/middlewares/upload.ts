@@ -34,3 +34,4 @@ export const uploadGalleryImage = createUploader("gallery");
 export const uploadTestimonialImage = createUploader("testimonials");
 export const uploadPartnerLogo = createUploader("partners");
 export const uploadCompanyLogo = createUploader("company-logos");
+export const uploadPaymentProof = createUploader("payment-proofs");
