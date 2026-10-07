@@ -77,7 +77,7 @@ export async function me(req: Request, res: Response) {
     const { userId, email, role } = req.user!;
     const dbUser = await prisma.user.findUnique({
       where: { id: userId },
-      select: { name: true, phone: true },
+      select: { name: true },
     });
 
     return res.json({
@@ -88,7 +88,6 @@ export async function me(req: Request, res: Response) {
           email,
           role,
           name: dbUser?.name ?? null,
-          phone: dbUser?.phone ?? null,
         },
       },
     });
