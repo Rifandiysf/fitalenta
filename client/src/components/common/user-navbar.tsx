@@ -16,6 +16,7 @@ import {
 
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
 const LINKS = [
     { href: "/dashboard", label: "Dashboard" },
@@ -28,8 +29,9 @@ function isActive(pathname: string, href: string) {
     return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function UserNavbar({ userName }: { userName: string }) {
+export function UserNavbar() {
     const pathname = usePathname();
+    const { data } = useCurrentUser();
 
     return (
         <header className="sticky top-0 z-50 border-b border-[#10302B]/10 bg-primary text-white">
@@ -80,7 +82,7 @@ export function UserNavbar({ userName }: { userName: string }) {
                             </Avatar>
 
                             <span className="hidden max-w-32 truncate sm:inline">
-                                {userName}
+                                {data?.name}
                             </span>
 
                             <ChevronDown
@@ -94,7 +96,7 @@ export function UserNavbar({ userName }: { userName: string }) {
                             className="w-52"
                         >
                             <DropdownMenuLabel className="truncate">
-                                {userName}
+                                {data?.name}
                             </DropdownMenuLabel>
 
                             <DropdownMenuSeparator />

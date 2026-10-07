@@ -137,7 +137,7 @@ export function LoginForm() {
 
             <p className="text-center text-sm text-muted-foreground">
                 Belum punya akun?{" "}
-                <Link href="/auth/register" className="font-semibold text-primary hover:underline">
+                <Link href="/register" className="font-semibold text-primary hover:underline">
                     Registrasi di sini
                 </Link>
             </p>
