@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import dotenv from "dotenv";
 import routes from "./routes";
+import { errorHandler } from "./middlewares/error-handler";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.get("/api/health", (req: Request, res: Response) => {
 });
 
 app.use("/api", routes);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

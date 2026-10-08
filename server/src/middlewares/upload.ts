@@ -1,8 +1,28 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import { AppError } from "../utils/app-error";
+import {
+  REGISTRATION_ALLOWED_MIME_TYPES,
+  REGISTRATION_FILES,
+  REGISTRATION_UPLOAD_FOLDER,
+} from "../config/registration.config";
 
-function createUploader(folder: string) {
+const IMAGE_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+
+interface UploaderOptions {
+  allowedMimeTypes?: string[];
+  invalidTypeMessage?: string;
+  maxFileSizeMB?: number;
+}
+
+function createUploader(folder: string, options: UploaderOptions = {}) {
+  const {
+    allowedMimeTypes = IMAGE_MIME_TYPES,
+    invalidTypeMessage = "Format gambar tidak didukung (hanya JPG, PNG, WEBP, GIF)",
+    maxFileSizeMB = 5,
+  } = options;
+
   const uploadPath = path.join(process.cwd(), "uploads", folder);
   if (!fs.existsSync(uploadPath)) {
     fs.mkdirSync(uploadPath, { recursive: true });
@@ -19,11 +39,10 @@ function createUploader(folder: string) {
 
   return multer({
     storage,
-    limits: { fileSize: 5 * 1024 * 1024 },
+    limits: { fileSize: maxFileSizeMB * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
-      const allowed = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-      if (allowed.includes(file.mimetype)) cb(null, true);
-      else cb(new Error("Format gambar tidak didukung (hanya JPG, PNG, WEBP, GIF)"));
+      if (allowedMimeTypes.includes(file.mimetype)) cb(null, true);
+      else cb(new AppError("INVALID_FILE_TYPE", 400, invalidTypeMessage));
     },
   });
 }
@@ -35,3 +54,7 @@ export const uploadTestimonialImage = createUploader("testimonials");
 export const uploadPartnerLogo = createUploader("partners");
 export const uploadCompanyLogo = createUploader("company-logos");
 export const uploadPaymentProof = createUploader("payment-proofs");
+export const uploadRegistrationFiles = createUploader(REGISTRATION_UPLOAD_FOLDER, {
+  allowedMimeTypes: REGISTRATION_ALLOWED_MIME_TYPES,
+  invalidTypeMessage: "Format file tidak didukung (hanya JPG, PNG, WEBP, PDF)",
+}).fields(REGISTRATION_FILES.map(({ field }) => ({ name: field, maxCount: 1 })));
