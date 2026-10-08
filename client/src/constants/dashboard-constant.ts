@@ -45,12 +45,14 @@ const prettify = (s: string) => {
     return t.charAt(0).toUpperCase() + t.slice(1);
 };
 
-export function getStatus(value: string | null | undefined, kind: StatusKind): Entry | undefined {
-    if (!value) return undefined;
-    return STATUS[kind][normalize(value)] ?? { label: prettify(value), tone: "neutral" };
+export function getStatus(value: unknown, kind: StatusKind): Entry | undefined {
+    if (value === null || value === undefined || value === "") return undefined;
+
+    const str = String(value);
+    return STATUS[kind][normalize(str)] ?? { label: prettify(str), tone: "neutral" };
 }
 
-export const statusLabel = (value: string | null | undefined, kind: StatusKind) =>
+export const statusLabel = (value: unknown, kind: StatusKind) =>
     getStatus(value, kind)?.label;
 
 export const PAYMENT_METHOD_LABEL: Record<string, string> = {

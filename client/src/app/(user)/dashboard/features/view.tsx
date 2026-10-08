@@ -69,6 +69,10 @@ export function DashboardView() {
         );
     }
 
+    console.log("dashboard data:", data);
+    console.log("selectionStatus:", typeof data.selectionStatus, data.selectionStatus);
+    console.log("placementStatus:", typeof data.placementStatus, data.placementStatus);
+
     return (
         <div className="space-y-8">
             <header className="flex flex-wrap items-start justify-between gap-4">
@@ -97,9 +101,21 @@ export function DashboardView() {
             )}
 
             <section aria-label="Ringkasan" className="grid gap-5 md:grid-cols-3">
-                <StatCard icon={ClipboardCheck} title="Status Seleksi" value={statusLabel(data.selectionStatus, "registration")} />
-                <StatCard icon={Briefcase} title="Penempatan Kerja" value={statusLabel(data.placementStatus, "placement")} />
-                <StatCard icon={NotebookText} title="Program Saya" value={data.program?.name} />
+                <StatCard
+                    icon={ClipboardCheck}
+                    title="Status Seleksi"
+                    value={statusLabel(data.selectionStatus?.status, "registration")}
+                />
+                <StatCard
+                    icon={Briefcase}
+                    title="Penempatan Kerja"
+                    value={statusLabel(data.placementStatus?.status, "placement")}
+                />
+                <StatCard
+                    icon={NotebookText}
+                    title="Program Saya"
+                    value={data.program?.name}
+                />
             </section>
 
             <Card className="gap-0 py-0">

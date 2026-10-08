@@ -1,12 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRight, User } from "lucide-react";
 
 import { Carousel } from "@/components/common/carousel";
-import { Button } from "@/components/ui/button";
 import { getPublicTeamMembers } from "@/services/expert-service";
 import { imageUrl } from "@/lib/utils";
 import type { TeamMember } from "@/types/expert";
+import { User } from "lucide-react";
 
 const HEADING_ID = "experts-heading";
 
@@ -84,17 +82,6 @@ export async function ExpertsSection() {
                             experience in their respective fields.
                         </p>
                     </div>
-
-                    <Button
-                        asChild
-                        size="lg"
-                        className="h-12 self-start bg-primary px-7 text-base font-semibold text-white hover:bg-primary/80 focus-visible:ring-primary lg:self-auto"
-                    >
-                        <Link href="/experts">
-                            Meet Our Experts
-                            <ArrowRight className="ml-2 h-4 w-4" aria-hidden />
-                        </Link>
-                    </Button>
                 </header>
 
                 <Carousel
