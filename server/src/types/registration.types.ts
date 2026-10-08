@@ -31,10 +31,51 @@ export interface CreateRegistrationInput extends RegistrationProfileInput {
   phone?: string;
 }
 
-export interface CreateRegistrationResult {
+export interface RegionResult {
+  provinceCode: string | null;
+  provinceName: string | null;
+  cityCode: string | null;
+  cityName: string | null;
+  address: string | null;
+}
+
+export interface RegistrationResult {
   registrationId: number;
   registrationCode: string;
-  invoiceNumber: string;
-  amount: string;
-  installmentPlan: string | null;
+  registrationStatus: string;
+  registrationDate: Date;
+  program: {
+    id: number | null;
+    name: string;
+    programFormat: string | null;
+  };
+  payment: {
+    invoiceNumber: string;
+    amount: string;
+    status: string;
+    installmentPlan: string | null;
+  };
+  applicant: {
+    fullName: string;
+    email: string;
+    phone: string | null;
+    nik: string | null;
+    gender: string | null;
+    birthPlace: string | null;
+    birthDate: string | null;
+    lastEducation: string | null;
+    major: string | null;
+    educationInstitution: string | null;
+    currentActivity: string | null;
+    maritalStatus: string | null;
+    parentRelationship: string | null;
+    parentPhone: string | null;
+    ktp: RegionResult;
+    domicile: RegionResult;
+  };
+  documents: {
+    photoPath: string | null;
+    n4CertificatePath: string | null;
+    sswCertificatePath: string | null;
+  };
 }

@@ -2,10 +2,11 @@ import prisma from "../../config/prisma";
 import { Prisma } from "../../../generated/prisma/client";
 import { MAX_CODE_COLLISION_RETRIES } from "../../config/registration.config";
 import { RegistrationErrors } from "../../errors/registration.errors";
-import { CreateRegistrationInput, CreateRegistrationResult } from "../../types/registration.types";
+import { CreateRegistrationInput, RegistrationResult } from "../../types/registration.types";
 import { nextInvoiceNumber, nextRegistrationCode } from "../../utils/code-generator";
 import { assertProgramAcceptsRegistration } from "./registration-policy";
 import { RegistrationFilePaths, assertRequiredFiles } from "./registration-files";
+import { registrationResultInclude, toRegistrationResult } from "./registration.mapper";
 
 export async function getMyRegistrations(userId: number) {
   return prisma.registration.findMany({
@@ -58,7 +59,7 @@ async function registerInTransaction(
   userId: number,
   input: CreateRegistrationInput,
   filePaths: RegistrationFilePaths
-): Promise<CreateRegistrationResult> {
+): Promise<RegistrationResult> {
   const { programId, birthDate, fullName, phone, ...profile } = input;
 
   const user = await tx.user.findUnique({ where: { id: userId }, select: { id: true } });
@@ -79,6 +80,13 @@ async function registerInTransaction(
   const registrationCode = await nextRegistrationCode(tx);
   const invoiceNumber = await nextInvoiceNumber(tx);
 
+  if (fullName || phone) {
+    await tx.user.update({
+      where: { id: userId },
+      data: { ...(fullName ? { name: fullName } : {}), ...(phone ? { phone } : {}) },
+    });
+  }
+
   const registration = await tx.registration.create({
     data: {
       userId,
@@ -98,30 +106,17 @@ async function registerInTransaction(
       selectionStatuses: { create: {} },
       placementStatuses: { create: {} },
     },
-    select: { id: true },
+    include: registrationResultInclude,
   });
 
-  if (fullName || phone) {
-    await tx.user.update({
-      where: { id: userId },
-      data: { ...(fullName ? { name: fullName } : {}), ...(phone ? { phone } : {}) },
-    });
-  }
-
-  return {
-    registrationId: registration.id,
-    registrationCode,
-    invoiceNumber,
-    amount: program.trainingCost.toString(),
-    installmentPlan: program.installmentPlan,
-  };
+  return toRegistrationResult(registration);
 }
 
 export async function createRegistration(
   userId: number,
   input: CreateRegistrationInput,
   filePaths: RegistrationFilePaths
-): Promise<CreateRegistrationResult> {
+): Promise<RegistrationResult> {
   assertRequiredFiles(filePaths);
 
   for (let attempt = 1; ; attempt++) {
