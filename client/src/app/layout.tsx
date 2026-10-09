@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/lib/providers/query-provider";
-import { Footer } from "@/components/common/footer";
 import { ReactNode } from "react";
 
 const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
@@ -36,7 +35,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <main>
             {children}
           </main>
-          <Footer />
         </QueryProvider>
       </body>
     </html>
