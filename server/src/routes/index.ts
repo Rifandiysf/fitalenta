@@ -30,6 +30,7 @@ import userPaymentRoutes from "./user/payment.routes";
 import userNotificationRoutes from "./user/notification.routes";
 import adminDashboardRoutes from "./admin/dashboard.routes";
 import adminUserRoutes from "./admin/user.routes";
+import aboutRoutes from "./about.routes";
 
 const router = Router();
 
@@ -57,6 +58,7 @@ router.use("/programs", programRoutes);
 router.use("/admin/programs", adminProgramRoutes);
 router.use("/team-members", teamMemberRoutes); 
 router.use("/admin/team-members", adminTeamMemberRoutes);
+router.use("/about", aboutRoutes);
 router.use("/user/dashboard", userDashboardRoutes);
 router.use("/user/profile", userProfileRoutes);
 router.use("/user/registrations", userRegistrationRoutes);

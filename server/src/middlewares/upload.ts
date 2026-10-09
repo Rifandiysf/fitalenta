@@ -2,6 +2,7 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { AppError } from "../utils/app-error";
+import { ABOUT_UPLOAD_FOLDER, TEAM_MEMBER_UPLOAD_FOLDER } from "../config/about.config";
 import {
   REGISTRATION_ALLOWED_MIME_TYPES,
   REGISTRATION_FILES,
@@ -53,6 +54,8 @@ export const uploadGalleryImage = createUploader("gallery");
 export const uploadTestimonialImage = createUploader("testimonials");
 export const uploadPartnerLogo = createUploader("partners");
 export const uploadCompanyLogo = createUploader("company-logos");
+export const uploadTeamMemberImage = createUploader(TEAM_MEMBER_UPLOAD_FOLDER);
+export const uploadAboutImage = createUploader(ABOUT_UPLOAD_FOLDER);
 export const uploadPaymentProof = createUploader("payment-proofs");
 export const uploadRegistrationFiles = createUploader(REGISTRATION_UPLOAD_FOLDER, {
   allowedMimeTypes: REGISTRATION_ALLOWED_MIME_TYPES,

@@ -1,105 +1,77 @@
 import { Request, Response } from "express";
-import * as teamMemberService from "../../services/teamMember.service";
-import { getStringQuery } from "../../utils/request";
-
-function toBoolean(value: unknown, fallback: boolean): boolean {
-  if (value === undefined || value === null || value === "") return fallback;
-  return value === true || value === "true";
-}
-
-function toOrder(value: unknown): number {
-  const n = parseInt(String(value ?? "0"));
-  return Number.isNaN(n) ? 0 : n;
-}
+import { matchedData } from "express-validator";
+import { ABOUT_UPLOAD_FOLDER, AboutImageSlot } from "../../config/about.config";
+import { TeamMemberErrors } from "../../errors/teamMember.errors";
+import * as aboutService from "../../services/about.service";
+import * as teamMemberService from "../../services/admin/teamMember.service";
+import {
+  AboutUpdateInput,
+  CreateExpertInput,
+  ExpertListFilters,
+  UpdateExpertInput,
+} from "../../types/team-member.types";
+import { toPublicUploadPath } from "../../utils/file";
 
 export async function index(req: Request, res: Response) {
-  try {
-    const pageParam = getStringQuery(req, "page");
-    const page = pageParam ? parseInt(pageParam) : 1;
-    const result = await teamMemberService.getAdminTeamMembers({ page: page > 0 ? page : 1 });
-    return res.json({ success: true, data: result });
-  } catch (error) {
-    console.error("Get admin team members error:", error);
-    return res.status(500).json({ success: false, message: "Terjadi kesalahan pada server" });
-  }
+  const data = await teamMemberService.getCms(matchedData<ExpertListFilters>(req));
+  return res.json({ success: true, data });
 }
 
-export async function show(req: Request, res: Response) {
-  try {
-    const id = parseInt(req.params.id as string);
-    const teamMember = await teamMemberService.getTeamMemberById(id);
-    return res.json({ success: true, data: teamMember });
-  } catch (error: any) {
-    if (error.message === "TEAM_MEMBER_NOT_FOUND") {
-      return res.status(404).json({ success: false, message: "Anggota tim tidak ditemukan" });
-    }
-    console.error("Get team member detail error:", error);
-    return res.status(500).json({ success: false, message: "Terjadi kesalahan pada server" });
-  }
+export async function listExperts(req: Request, res: Response) {
+  const { items, meta, summary } = await teamMemberService.listExperts(matchedData<ExpertListFilters>(req));
+  return res.json({ success: true, data: items, meta, summary });
 }
 
-export async function store(req: Request, res: Response) {
-  try {
-    const { name, position, bio, image, order, isActive } = req.body || {};
-
-    if (!name || !position) {
-      return res.status(400).json({ success: false, message: "Nama dan posisi wajib diisi" });
-    }
-
-    const teamMember = await teamMemberService.createTeamMember({
-      name,
-      position,
-      bio: bio || null,
-      image: image || null,
-      order: toOrder(order),
-      isActive: toBoolean(isActive, true),
-    });
-
-    return res.status(201).json({ success: true, message: "Anggota tim berhasil dibuat", data: teamMember });
-  } catch (error) {
-    console.error("Create team member error:", error);
-    return res.status(500).json({ success: false, message: "Terjadi kesalahan pada server" });
-  }
+export async function showExpert(req: Request, res: Response) {
+  const { id } = matchedData<{ id: number }>(req);
+  const data = await teamMemberService.getExpertById(id);
+  return res.json({ success: true, data });
 }
 
-export async function update(req: Request, res: Response) {
-  try {
-    const id = parseInt(req.params.id as string);
-    const { name, position, bio, image, order, isActive } = req.body || {};
-
-    if (!name || !position) {
-      return res.status(400).json({ success: false, message: "Nama dan posisi wajib diisi" });
-    }
-
-    const teamMember = await teamMemberService.updateTeamMember(id, {
-      name,
-      position,
-      bio: bio || null,
-      image: image || null,
-      order: toOrder(order),
-      isActive: toBoolean(isActive, true),
-    });
-
-    return res.json({ success: true, message: "Anggota tim berhasil diperbarui", data: teamMember });
-  } catch (error: any) {
-    if (error.message === "TEAM_MEMBER_NOT_FOUND") {
-      return res.status(404).json({ success: false, message: "Anggota tim tidak ditemukan" });
-    }
-    console.error("Update team member error:", error);
-    return res.status(500).json({ success: false, message: "Terjadi kesalahan pada server" });
-  }
+export async function storeExpert(req: Request, res: Response) {
+  const data = await teamMemberService.createExpert(matchedData<CreateExpertInput>(req), req.file);
+  return res.status(201).json({ success: true, message: "Expert berhasil dibuat", data });
 }
 
-export async function destroy(req: Request, res: Response) {
-  try {
-    const id = parseInt(req.params.id as string);
-    await teamMemberService.deleteTeamMember(id);
-    return res.json({ success: true, message: "Anggota tim berhasil dihapus" });
-  } catch (error: any) {
-    if (error.message === "TEAM_MEMBER_NOT_FOUND") {
-      return res.status(404).json({ success: false, message: "Anggota tim tidak ditemukan" });
-    }
-    console.error("Delete team member error:", error);
-    return res.status(500).json({ success: false, message: "Terjadi kesalahan pada server" });
-  }
+export async function updateExpert(req: Request, res: Response) {
+  const { id, ...input } = matchedData<UpdateExpertInput & { id: number }>(req);
+  const data = await teamMemberService.updateExpert(id, input, req.file);
+  return res.json({ success: true, message: "Expert berhasil diperbarui", data });
+}
+
+export async function destroyExpert(req: Request, res: Response) {
+  const { id } = matchedData<{ id: number }>(req);
+  await teamMemberService.deleteExpert(id);
+  return res.json({ success: true, message: "Expert berhasil dihapus" });
+}
+
+export async function reorderExperts(req: Request, res: Response) {
+  const { ids } = matchedData<{ ids: number[] }>(req);
+  const data = await teamMemberService.reorderExperts(ids);
+  return res.json({ success: true, message: "Urutan expert berhasil diperbarui", data });
+}
+
+export async function showAbout(_req: Request, res: Response) {
+  const data = await aboutService.getAbout();
+  return res.json({ success: true, data });
+}
+
+export async function updateAbout(req: Request, res: Response) {
+  const data = await aboutService.updateAbout(matchedData<AboutUpdateInput>(req));
+  return res.json({ success: true, message: "Konten About berhasil diperbarui", data });
+}
+
+export async function uploadAboutImage(req: Request, res: Response) {
+  const { slot } = matchedData<{ slot: AboutImageSlot }>(req);
+  if (!req.file) throw TeamMemberErrors.imageRequired();
+
+  const path = toPublicUploadPath(ABOUT_UPLOAD_FOLDER, req.file.filename);
+  const data = await aboutService.setAboutImage(slot, path);
+  return res.json({ success: true, message: "Gambar About berhasil diperbarui", data });
+}
+
+export async function destroyAboutImage(req: Request, res: Response) {
+  const { slot } = matchedData<{ slot: AboutImageSlot }>(req);
+  const data = await aboutService.setAboutImage(slot, null);
+  return res.json({ success: true, message: "Gambar About berhasil dihapus", data });
 }
