@@ -28,6 +28,8 @@ import userProfileRoutes from "./user/profile.routes";
 import userRegistrationRoutes from "./user/registration.routes";
 import userPaymentRoutes from "./user/payment.routes";
 import userNotificationRoutes from "./user/notification.routes";
+import adminDashboardRoutes from "./admin/dashboard.routes";
+import adminUserRoutes from "./admin/user.routes";
 
 const router = Router();
 
@@ -60,5 +62,7 @@ router.use("/user/profile", userProfileRoutes);
 router.use("/user/registrations", userRegistrationRoutes);
 router.use("/user/payments", userPaymentRoutes);
 router.use("/user/notifications", userNotificationRoutes);
+router.use("/admin/dashboard", adminDashboardRoutes);
+router.use("/admin/users", adminUserRoutes);
 
 export default router;

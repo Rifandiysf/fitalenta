@@ -6,7 +6,7 @@ export interface CodeFormat {
   pad: number;
 }
 
-export const REGISTRATION_CODE_FORMAT: CodeFormat = { prefix: "REG", scope: "year", pad: 5 };
+export const REGISTRATION_CODE_FORMAT: CodeFormat = { prefix: "FTL", scope: "year", pad: 4 };
 export const INVOICE_CODE_FORMAT: CodeFormat = { prefix: "INV", scope: "month", pad: 5 };
 
 export const REGISTRATION_TIMEZONE_OFFSET_HOURS = 7;

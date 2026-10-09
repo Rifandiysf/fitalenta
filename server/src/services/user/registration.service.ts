@@ -4,6 +4,7 @@ import { MAX_CODE_COLLISION_RETRIES } from "../../config/registration.config";
 import { RegistrationErrors } from "../../errors/registration.errors";
 import { CreateRegistrationInput, RegistrationResult } from "../../types/registration.types";
 import { nextInvoiceNumber, nextRegistrationCode } from "../../utils/code-generator";
+import { isUniqueViolation } from "../../utils/prisma-error";
 import { assertProgramAcceptsRegistration } from "./registration-policy";
 import { RegistrationFilePaths, assertRequiredFiles } from "./registration-files";
 import { registrationResultInclude, toRegistrationResult } from "./registration.mapper";
@@ -36,9 +37,6 @@ export async function getMyRegistrationById(userId: number, id: number) {
   return registration;
 }
 
-function isUniqueViolation(error: unknown): boolean {
-  return error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002";
-}
 
 async function reserveSlot(
   tx: Prisma.TransactionClient,
