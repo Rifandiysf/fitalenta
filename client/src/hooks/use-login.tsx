@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth-store";
 import { login } from "@/services/auth-service";
+import { getHomeByRole, normalizeRole } from "@/lib/auth-role";
 
 export function useLogin() {
     const router = useRouter();
@@ -13,7 +14,7 @@ export function useLogin() {
         mutationFn: login,
         onSuccess: ({ user }) => {
             setUser(user);
-            router.push("/dashboard");
+            router.push(getHomeByRole(normalizeRole(user.role)));
             router.refresh();
         },
     });
