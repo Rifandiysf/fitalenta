@@ -30,6 +30,7 @@ import userPaymentRoutes from "./user/payment.routes";
 import userNotificationRoutes from "./user/notification.routes";
 import adminDashboardRoutes from "./admin/dashboard.routes";
 import adminUserRoutes from "./admin/user.routes";
+import adminSelectionPlacementRoutes from "./admin/selectionPlacement.routes";
 import aboutRoutes from "./about.routes";
 
 const router = Router();
@@ -66,5 +67,6 @@ router.use("/user/payments", userPaymentRoutes);
 router.use("/user/notifications", userNotificationRoutes);
 router.use("/admin/dashboard", adminDashboardRoutes);
 router.use("/admin/users", adminUserRoutes);
+router.use("/admin/selection-placements", adminSelectionPlacementRoutes);
 
 export default router;

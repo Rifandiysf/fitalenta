@@ -1,9 +1,17 @@
 import prisma from "../config/prisma";
 import { Prisma } from "../../generated/prisma/client";
-import { ABOUT_SETTING_GROUP, ABOUT_SETTING_KEY, AboutImageSlot } from "../config/about.config";
+import {
+  ABOUT_SETTING_GROUP,
+  ABOUT_SETTING_KEY,
+  AboutImageSlot,
+} from "../config/about.config";
 import { DEFAULT_ABOUT_CONTENT } from "../config/about.defaults";
 import { TeamMemberErrors } from "../errors/teamMember.errors";
-import { AboutContent, AboutDocument, AboutUpdateInput } from "../types/team-member.types";
+import {
+  AboutContent,
+  AboutDocument,
+  AboutUpdateInput,
+} from "../types/team-member.types";
 import { removePublicUpload, withUploadCleanup } from "../utils/file";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -24,9 +32,17 @@ function mergeWithDefaults(stored: unknown): AboutDocument {
   };
 }
 
-async function readAbout(): Promise<{ content: AboutDocument; updatedAt: Date | null }> {
-  const row = await prisma.setting.findUnique({ where: { key: ABOUT_SETTING_KEY } });
-  return { content: mergeWithDefaults(row?.value), updatedAt: row?.updatedAt ?? null };
+async function readAbout(): Promise<{
+  content: AboutDocument;
+  updatedAt: Date | null;
+}> {
+  const row = await prisma.setting.findUnique({
+    where: { key: ABOUT_SETTING_KEY },
+  });
+  return {
+    content: mergeWithDefaults(row?.value),
+    updatedAt: row?.updatedAt ?? null,
+  };
 }
 
 async function saveAbout(content: AboutDocument): Promise<Date> {
@@ -34,7 +50,12 @@ async function saveAbout(content: AboutDocument): Promise<Date> {
   const row = await prisma.setting.upsert({
     where: { key: ABOUT_SETTING_KEY },
     update: { value },
-    create: { key: ABOUT_SETTING_KEY, value, type: "json", group: ABOUT_SETTING_GROUP },
+    create: {
+      key: ABOUT_SETTING_KEY,
+      value,
+      type: "json",
+      group: ABOUT_SETTING_GROUP,
+    },
   });
   return row.updatedAt;
 }
@@ -43,7 +64,11 @@ function readSlot(content: AboutDocument, slot: AboutImageSlot): string | null {
   return slot === "story" ? content.story.image : content[slot];
 }
 
-function writeSlot(content: AboutDocument, slot: AboutImageSlot, path: string | null): AboutDocument {
+function writeSlot(
+  content: AboutDocument,
+  slot: AboutImageSlot,
+  path: string | null,
+): AboutDocument {
   return slot === "story"
     ? { ...content, story: { ...content.story, image: path } }
     : { ...content, [slot]: path };
@@ -54,7 +79,9 @@ export async function getAbout(): Promise<AboutContent> {
   return { ...content, updatedAt };
 }
 
-export async function updateAbout(input: AboutUpdateInput): Promise<AboutContent> {
+export async function updateAbout(
+  input: AboutUpdateInput,
+): Promise<AboutContent> {
   if (Object.values(input).every((value) => value === undefined)) {
     throw TeamMemberErrors.nothingToUpdate();
   }
@@ -62,18 +89,31 @@ export async function updateAbout(input: AboutUpdateInput): Promise<AboutContent
   const { content } = await readAbout();
   const next: AboutDocument = {
     ...content,
-    hero: { ...content.hero, ...input.hero },
-    story: { ...content.story, ...input.story },
+    hero: {
+      title: input.hero?.title ?? content.hero.title,
+      subtitle: input.hero?.subtitle ?? content.hero.subtitle,
+    },
+    story: {
+      ...content.story,
+      paragraphs: input.story?.paragraphs ?? content.story.paragraphs,
+    },
     vision: input.vision ?? content.vision,
     missions: input.missions ?? content.missions,
-    journey: input.journey ?? content.journey,
-    values: input.values ?? content.values,
+    journey:
+      input.journey?.map(({ year, text }) => ({ year, text })) ??
+      content.journey,
+    values:
+      input.values?.map(({ icon, title, desc }) => ({ icon, title, desc })) ??
+      content.values,
   };
 
   return { ...next, updatedAt: await saveAbout(next) };
 }
 
-export async function setAboutImage(slot: AboutImageSlot, path: string | null): Promise<AboutContent> {
+export async function setAboutImage(
+  slot: AboutImageSlot,
+  path: string | null,
+): Promise<AboutContent> {
   const { content } = await readAbout();
   const previous = readSlot(content, slot);
   const next = writeSlot(content, slot, path);

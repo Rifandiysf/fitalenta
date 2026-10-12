@@ -20,8 +20,8 @@ export const ABOUT_LIMITS = {
 } as const;
 
 export const EXPERT_LIMITS = {
-  name: 255,
-  position: 255,
+  name: 191,
+  position: 191,
   bio: 5000,
   order: 9999,
   reorderItems: 200,

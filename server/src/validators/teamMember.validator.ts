@@ -1,23 +1,24 @@
 import { body, param, query, ValidationChain } from "express-validator";
 import { ABOUT_IMAGE_SLOTS, ABOUT_LIMITS, EXPERT_LIMITS, ICON_NAME_PATTERN } from "../config/about.config";
 import { idParamRule, paginationRules, searchRule } from "./common.validator";
+import { booleanRule, intRule, textRule } from "./rule-factories";
 
-interface TextOptions {
-  label: string;
-  max: number;
-  optional?: boolean;
-  allowEmpty?: boolean;
-}
+// interface TextOptions {
+//   label: string;
+//   max: number;
+//   optional?: boolean;
+//   allowEmpty?: boolean;
+// }
 
-function textRule(field: string, { label, max, optional = false, allowEmpty = false }: TextOptions): ValidationChain {
-  const presence = optional
-    ? body(field).optional()
-    : body(field).exists().withMessage(`${label} wajib diisi`).bail();
-  const text = presence.isString().withMessage(`${label} harus berupa teks`).bail().trim();
-  const filled = allowEmpty ? text : text.notEmpty().withMessage(`${label} tidak boleh kosong`).bail();
+// function textRule(field: string, { label, max, optional = false, allowEmpty = false }: TextOptions): ValidationChain {
+//   const presence = optional
+//     ? body(field).optional()
+//     : body(field).exists().withMessage(`${label} wajib diisi`).bail();
+//   const text = presence.isString().withMessage(`${label} harus berupa teks`).bail().trim();
+//   const filled = allowEmpty ? text : text.notEmpty().withMessage(`${label} tidak boleh kosong`).bail();
 
-  return filled.isLength({ max }).withMessage(`${label} maksimal ${max} karakter`);
-}
+//   return filled.isLength({ max }).withMessage(`${label} maksimal ${max} karakter`);
+// }
 
 function listRule(field: string, label: string, max: number, min = 0): ValidationChain {
   return body(field)
@@ -30,25 +31,19 @@ function objectRule(field: string, label: string): ValidationChain {
   return body(field).optional().isObject().withMessage(`${label} harus berupa object`);
 }
 
-function booleanRule(chain: ValidationChain, label: string): ValidationChain {
-  return chain
-    .optional({ values: "null" })
-    .isBoolean()
-    .withMessage(`${label} harus true atau false`)
-    .toBoolean();
-}
-
-const orderRule = body("order")
-  .optional({ values: "null" })
-  .isInt({ min: 0, max: EXPERT_LIMITS.order })
-  .withMessage(`Urutan harus berupa angka 0 sampai ${EXPERT_LIMITS.order}`)
-  .toInt();
+// function booleanRule(chain: ValidationChain, label: string): ValidationChain {
+//   return chain
+//     .optional({ values: "null" })
+//     .isBoolean()
+//     .withMessage(`${label} harus true atau false`)
+//     .toBoolean();
+// }
 
 const expertFieldRules = (optional: boolean): ValidationChain[] => [
   textRule("name", { label: "Nama", max: EXPERT_LIMITS.name, optional }),
   textRule("position", { label: "Posisi", max: EXPERT_LIMITS.position, optional }),
-  textRule("bio", { label: "Bio", max: EXPERT_LIMITS.bio, optional: true, allowEmpty: true }),
-  orderRule,
+  textRule("bio", { label: "Bio", max: EXPERT_LIMITS.bio, nullable: true }),
+  intRule("order", { label: "Urutan", min: 0, max: EXPERT_LIMITS.order, optional: true }),
   booleanRule(body("isActive"), "isActive"),
 ];
 
