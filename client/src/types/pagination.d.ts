@@ -4,3 +4,10 @@ export type Pagination = {
     total: number;
     totalPages: number;
 };
+
+export type AdminPageMeta = {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+};
