@@ -69,10 +69,6 @@ export function DashboardView() {
         );
     }
 
-    console.log("dashboard data:", data);
-    console.log("selectionStatus:", typeof data.selectionStatus, data.selectionStatus);
-    console.log("placementStatus:", typeof data.placementStatus, data.placementStatus);
-
     return (
         <div className="space-y-8">
             <header className="flex flex-wrap items-start justify-between gap-4">
