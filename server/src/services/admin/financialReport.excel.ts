@@ -64,6 +64,7 @@ export function buildReportWorkbook(rows: ReportRow[]): ExcelJS.Workbook {
       amount: Number(row.amount),
       amountPaid: Number(row.amountPaid),
       status: PAYMENT_STATUS_LABELS[row.status],
+      termin: row.termin.label,
       paymentMethod: PAYMENT_METHOD_LABELS[row.paymentMethod],
       paymentDate: row.paymentDate ? toExcelDate(row.paymentDate) : null,
       createdAt: toExcelDate(row.createdAt),
@@ -84,6 +85,10 @@ const INSTRUCTIONS: [string, string][] = [
   ["Amount", "WAJIB. Total tagihan dalam rupiah, contoh: 16000000."],
   ["Amount Paid", "Opsional. Jumlah yang sudah dibayar. Default 0 untuk data baru."],
   ["Status", `Opsional. Pilihan: ${Object.values(PAYMENT_STATUS_LABELS).join(", ")}.`],
+  [
+    "Termin",
+    'Opsional. Isi "Tunai" untuk pembayaran sekali bayar, atau "Cicilan 2" / "Cicilan 2/4" (cicilan ke-2 dari 4) untuk pembayaran bertahap. Harus sesuai dengan Status dan Amount Paid. Jika Status kosong, status Cicilan diturunkan dari Termin. Total termin hanya untuk keterangan dan tidak disimpan.',
+  ],
   ["Payment Method", `Opsional. Pilihan: ${Object.values(PAYMENT_METHOD_LABELS).join(", ")}. Default Transfer.`],
   ["Payment Date", "Opsional. Format YYYY-MM-DD atau DD/MM/YYYY."],
   ["Created At", "Opsional. Tanggal tagihan dibuat; default hari impor. Tidak mengubah tagihan yang sudah ada."],

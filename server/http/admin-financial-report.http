@@ -13,11 +13,16 @@ Content-Type: application/json
 }
 
 ###
-# 2. Daftar laporan (paginasi + filter: search, status, paymentMethod, dateFrom, dateTo)
+# 2. Daftar laporan (paginasi + filter: search, status, termin=cash|installment, paymentMethod, dateFrom, dateTo)
+# Setiap baris memuat objek termin: { type, current, total, label }
 GET {{baseUrl}}/admin/financial-reports?page=1&limit=20&status=paid&dateFrom=2026-10-01&dateTo=2026-10-31
 
 ###
-# 3. Ringkasan sesuai filter
+# 2b. Hanya pembayaran bercicilan / hanya tunai
+GET {{baseUrl}}/admin/financial-reports?termin=installment
+
+###
+# 3. Ringkasan sesuai filter (termasuk cashCount & installmentCount)
 GET {{baseUrl}}/admin/financial-reports/summary?dateFrom=2026-10-01&dateTo=2026-10-31
 
 ###

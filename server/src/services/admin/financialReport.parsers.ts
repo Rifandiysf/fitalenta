@@ -2,6 +2,7 @@ import { PaymentMethod, PaymentStatus } from "../../../generated/prisma/client";
 import { PAYMENT_LIMITS } from "../../config/payment.config";
 import { PAYMENT_METHOD_LABELS, PAYMENT_STATUS_LABELS } from "../../config/financial-report.config";
 import { RawCell } from "./financialReport.excel";
+import { ParsedTermin, parseTerminText } from "./financialReport.termin";
 
 export type Parsed<T> = { ok: true; value: T | null } | { ok: false; message: string };
 
@@ -40,6 +41,14 @@ export function parseStatus(cell: RawCell): Parsed<PaymentStatus> {
   const status = typeof cell === "string" ? STATUS_LOOKUP.get(normalize(cell)) : undefined;
   if (!status) return fail(`Status tidak dikenali, gunakan salah satu: ${Object.values(PAYMENT_STATUS_LABELS).join(", ")}`);
   return { ok: true, value: status };
+}
+
+export function parseTermin(cell: RawCell): Parsed<ParsedTermin> {
+  if (cell === null) return blank();
+  if (typeof cell !== "string") return fail('Termin harus berupa teks, contoh: "Tunai" atau "Cicilan 2/4"');
+
+  const parsed = parseTerminText(cell);
+  return parsed.ok ? { ok: true, value: parsed.value } : fail(parsed.message);
 }
 
 export function parseMethod(cell: RawCell): Parsed<PaymentMethod> {

@@ -16,6 +16,7 @@ export const REPORT_COLUMNS = [
   { key: "amount", header: "Amount", width: 16 },
   { key: "amountPaid", header: "Amount Paid", width: 16 },
   { key: "status", header: "Status", width: 16 },
+  { key: "termin", header: "Termin", width: 26 },
   { key: "paymentMethod", header: "Payment Method", width: 18 },
   { key: "paymentDate", header: "Payment Date", width: 18 },
   { key: "createdAt", header: "Created At", width: 20 },
@@ -42,6 +43,13 @@ export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
   transfer: "Transfer",
   cash: "Tunai",
   credit_card: "Kartu Kredit",
+};
+
+export const TERMIN_TYPES = ["cash", "installment"] as const;
+
+export const TERMIN_TYPE_LABELS: Record<(typeof TERMIN_TYPES)[number], string> = {
+  cash: "Tunai (Sekali Bayar)",
+  installment: "Cicilan",
 };
 
 export const IMPORT_LIMITS = {

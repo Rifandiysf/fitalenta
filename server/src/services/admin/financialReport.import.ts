@@ -20,7 +20,9 @@ import {
   parseMoney,
   parseStatus,
   parseText,
+  parseTermin,
 } from "./financialReport.parsers";
+import { ParsedTermin, installmentNumberOf } from "./financialReport.termin";
 
 const Decimal = Prisma.Decimal;
 const HEADER = Object.fromEntries(REPORT_COLUMNS.map(({ key, header }) => [key, header])) as Record<ReportColumnKey, string>;
@@ -35,6 +37,7 @@ interface PreparedRow {
   amount: number;
   amountPaid: number | null;
   status: PaymentStatus | null;
+  termin: ParsedTermin | null;
   paymentMethod: PaymentMethod | null;
   paymentDate: Date | null;
   createdAt: Date | null;
@@ -52,7 +55,6 @@ interface PlannedWrite {
 type Report = (row: number, field: ReportColumnKey | null, message: string) => void;
 
 const cents = (value: number) => Math.round(value * 100);
-const installmentNumberOf = (status: PaymentStatus) => /^installment_(\d)$/.exec(status)?.[1];
 
 function parseRow(raw: RawImportRow, report: Report): PreparedRow | null {
   const { rowNumber, cells } = raw;
@@ -80,6 +82,7 @@ function parseRow(raw: RawImportRow, report: Report): PreparedRow | null {
   const amount = required("amount", parseMoney(cells.amount, HEADER.amount));
   const amountPaid = read("amountPaid", parseMoney(cells.amountPaid, HEADER.amountPaid));
   const status = read("status", parseStatus(cells.status));
+  const termin = read("termin", parseTermin(cells.termin));
   const paymentMethod = read("paymentMethod", parseMethod(cells.paymentMethod));
   const paymentDate = read("paymentDate", parseDate(cells.paymentDate, HEADER.paymentDate));
   const createdAt = read("createdAt", parseDate(cells.createdAt, HEADER.createdAt));
@@ -94,7 +97,34 @@ function parseRow(raw: RawImportRow, report: Report): PreparedRow | null {
   }
 
   if (!valid || !email || !programName || amount === null) return null;
-  return { rowNumber, invoiceNumber, receiptNumber, email, programName, amount, amountPaid, status, paymentMethod, paymentDate, createdAt };
+  return { rowNumber, invoiceNumber, receiptNumber, email, programName, amount, amountPaid, status, termin, paymentMethod, paymentDate, createdAt };
+}
+
+function statusFromTermin(termin: ParsedTermin | null, amount: number, amountPaid: number): PaymentStatus | null {
+  if (termin?.type !== "installment" || !termin.current) return null;
+  if (cents(amountPaid) >= cents(amount)) return "paid";
+  if (cents(amountPaid) > 0) return `installment_${termin.current}` as PaymentStatus;
+  return null;
+}
+
+function checkTermin(termin: ParsedTermin, status: PaymentStatus, hasInstallmentPlan: boolean): string | null {
+  const label = PAYMENT_STATUS_LABELS[status];
+  const statusNumber = installmentNumberOf(status);
+
+  if (termin.type === "cash") {
+    if (statusNumber) return `Termin Tunai tidak sesuai dengan status ${label}`;
+    if (hasInstallmentPlan) return "Tagihan ini memakai skema cicilan, Termin tidak boleh Tunai";
+    return null;
+  }
+
+  if (status === "pending" && termin.current) return `Termin Cicilan ${termin.current} tetapi status ${label}`;
+  if (statusNumber && termin.current !== null && termin.current !== statusNumber) {
+    return `Termin Cicilan ${termin.current} tidak sesuai dengan status ${label}`;
+  }
+  if (status === "paid" && termin.total !== null && termin.current !== null && termin.current !== termin.total) {
+    return `Status ${label} mensyaratkan cicilan terakhir (${termin.total}/${termin.total})`;
+  }
+  return null;
 }
 
 function checkConsistency(status: PaymentStatus, amount: number, amountPaid: number): string | null {
@@ -104,7 +134,7 @@ function checkConsistency(status: PaymentStatus, amount: number, amountPaid: num
     return `Status ${label} mensyaratkan Amount Paid sama dengan Amount`;
   }
   if (status === "pending" && amountPaid > 0) return `Status ${label} tetapi Amount Paid lebih dari 0`;
-  if (installmentNumberOf(status) && (amountPaid <= 0 || cents(amountPaid) >= cents(amount))) {
+  if (installmentNumberOf(status) !== null && (amountPaid <= 0 || cents(amountPaid) >= cents(amount))) {
     return `Status ${label} mensyaratkan Amount Paid lebih dari 0 dan kurang dari Amount`;
   }
   return null;
@@ -122,7 +152,14 @@ async function planWrites(rows: PreparedRow[], report: Report): Promise<PlannedW
     }),
     prisma.payment.findMany({
       where: { invoiceNumber: { in: invoiceNumbers } },
-      select: { id: true, invoiceNumber: true, registrationId: true, status: true, amountPaid: true },
+      select: {
+        id: true,
+        invoiceNumber: true,
+        registrationId: true,
+        status: true,
+        amountPaid: true,
+        installmentAmounts: true,
+      },
     }),
     prisma.payment.findMany({
       where: { receiptNumber: { in: receiptNumbers } },
@@ -176,7 +213,7 @@ async function planWrites(rows: PreparedRow[], report: Report): Promise<PlannedW
     }
 
     const amountPaid = row.amountPaid ?? (existing ? Number(existing.amountPaid.toString()) : 0);
-    let status = row.status ?? existing?.status ?? null;
+    let status = row.status ?? statusFromTermin(row.termin, row.amount, amountPaid) ?? existing?.status ?? null;
     if (!status) {
       if (cents(amountPaid) === 0) status = "pending";
       else if (cents(amountPaid) >= cents(row.amount)) status = "paid";
@@ -186,6 +223,13 @@ async function planWrites(rows: PreparedRow[], report: Report): Promise<PlannedW
     if (status) {
       const problem = checkConsistency(status, row.amount, amountPaid);
       if (problem) fail("amountPaid", problem);
+
+      if (row.termin) {
+        const plan = existing?.installmentAmounts;
+        const hasPlan = Array.isArray(plan) && plan.length > 0;
+        const terminProblem = checkTermin(row.termin, status, hasPlan);
+        if (terminProblem) fail("termin", terminProblem);
+      }
     }
 
     if (problems.count > 0 || !status) continue;
@@ -210,7 +254,8 @@ async function applyWrites(plan: PlannedWrite[], adminId: number): Promise<{ cre
         let updated = 0;
 
         for (const { row, registrationId, paymentId, previous, status, amountPaid } of plan) {
-          const installment = installmentNumberOf(status);
+          const installmentNo =
+            installmentNumberOf(status) ?? (row.termin?.type === "installment" ? row.termin.current : null);
           const change = new Decimal(amountPaid).minus(previous?.amountPaid ?? 0);
           const safeChange = change.abs().lt(AMOUNT_CHANGED_LIMIT) ? change : null;
           let targetId: number;
@@ -227,7 +272,7 @@ async function applyWrites(plan: PlannedWrite[], adminId: number): Promise<{ cre
                 status,
                 paymentMethod: row.paymentMethod ?? "transfer",
                 paymentDate: row.paymentDate,
-                currentInstallmentNumber: installment ? Number(installment) : 0,
+                currentInstallmentNumber: installmentNo ?? 0,
                 isManualInvoice: true,
                 issuedAt,
                 ...(row.createdAt ? { createdAt: row.createdAt } : {}),
@@ -245,7 +290,7 @@ async function applyWrites(plan: PlannedWrite[], adminId: number): Promise<{ cre
                 ...(row.paymentMethod ? { paymentMethod: row.paymentMethod } : {}),
                 ...(row.paymentDate ? { paymentDate: row.paymentDate } : {}),
                 ...(row.receiptNumber ? { receiptNumber: row.receiptNumber } : {}),
-                ...(installment ? { currentInstallmentNumber: Number(installment) } : {}),
+                ...(installmentNo ? { currentInstallmentNumber: installmentNo } : {}),
               },
             });
             targetId = paymentId;

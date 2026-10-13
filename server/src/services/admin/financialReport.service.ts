@@ -4,6 +4,7 @@ import { EXPORT_MAX_ROWS } from "../../config/financial-report.config";
 import { FinancialReportErrors } from "../../errors/financialReport.errors";
 import { ReportFilters, ReportRow, ReportSummary } from "../../types/financial-report.types";
 import { PaginationMeta, buildPaginationMeta, resolvePagination } from "../../utils/pagination";
+import { resolveTermin, terminWhere } from "./financialReport.termin";
 
 const JAKARTA_OFFSET_MS = 7 * 3_600_000;
 const DAY_MS = 86_400_000;
@@ -30,6 +31,7 @@ function toReportRow(payment: ReportRecord): ReportRow {
     amount: payment.amount.toString(),
     amountPaid: payment.amountPaid.toString(),
     status: payment.status,
+    termin: resolveTermin(payment),
     paymentMethod: payment.paymentMethod,
     paymentDate: payment.paymentDate,
     createdAt: payment.createdAt,
@@ -41,7 +43,7 @@ function assertDateRange({ dateFrom, dateTo }: ReportFilters): void {
 }
 
 function buildWhere(filters: ReportFilters): Prisma.PaymentWhereInput {
-  const { search, status, paymentMethod, dateFrom, dateTo } = filters;
+  const { search, status, termin, paymentMethod, dateFrom, dateTo } = filters;
   const createdAt: Prisma.DateTimeFilter = {};
   if (dateFrom) createdAt.gte = new Date(dateFrom.getTime() - JAKARTA_OFFSET_MS);
   if (dateTo) createdAt.lt = new Date(dateTo.getTime() + DAY_MS - JAKARTA_OFFSET_MS);
@@ -49,6 +51,7 @@ function buildWhere(filters: ReportFilters): Prisma.PaymentWhereInput {
   return {
     issuedAt: { not: null },
     ...(status ? { status } : {}),
+    ...(termin ? { AND: [terminWhere(termin)] } : {}),
     ...(paymentMethod ? { paymentMethod } : {}),
     ...(dateFrom || dateTo ? { createdAt } : {}),
     ...(search
@@ -86,9 +89,11 @@ export async function getReportSummary(filters: ReportFilters): Promise<ReportSu
   const where = buildWhere(filters);
   const active: Prisma.PaymentWhereInput = { AND: [where, { status: { not: "cancelled" } }] };
 
-  const [totalRecords, paidCount, all, billable] = await Promise.all([
+  const [totalRecords, paidCount, cashCount, installmentCount, all, billable] = await Promise.all([
     prisma.payment.count({ where }),
     prisma.payment.count({ where: { AND: [where, { status: "paid" }] } }),
+    prisma.payment.count({ where: { AND: [where, terminWhere("cash")] } }),
+    prisma.payment.count({ where: { AND: [where, terminWhere("installment")] } }),
     prisma.payment.aggregate({ where, _sum: { amountPaid: true } }),
     prisma.payment.aggregate({ where: active, _sum: { amount: true, amountPaid: true } }),
   ]);
@@ -99,6 +104,8 @@ export async function getReportSummary(filters: ReportFilters): Promise<ReportSu
   return {
     totalRecords,
     paidCount,
+    cashCount,
+    installmentCount,
     totalBilled: totalBilled.toString(),
     totalCollected: new Prisma.Decimal(all._sum.amountPaid ?? 0).toString(),
     totalOutstanding: totalBilled.minus(billablePaid).toString(),
