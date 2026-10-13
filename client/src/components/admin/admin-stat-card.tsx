@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 type AdminStatCardProps = {
     title: string;
-    value?: number;
+    value?: number | string;
     note: string;
     icon: LucideIcon;
 };
@@ -18,8 +18,14 @@ export function AdminStatCard({ title, value, note, icon: Icon }: AdminStatCardP
                 </span>
                 <div className="min-w-0 space-y-0.5">
                     <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{title}</p>
-                    <div className="text-2xl leading-8 font-semibold tabular-nums">
-                        {value === undefined ? <Skeleton className="my-1 h-6 w-12" /> : value.toLocaleString("id-ID")}
+                    <div className="truncate text-2xl leading-8 font-semibold tabular-nums">
+                        {value === undefined ? (
+                            <Skeleton className="my-1 h-6 w-12" />
+                        ) : typeof value === "number" ? (
+                            value.toLocaleString("id-ID")
+                        ) : (
+                            value
+                        )}
                     </div>
                     <p className="truncate text-xs text-muted-foreground">{note}</p>
                 </div>
