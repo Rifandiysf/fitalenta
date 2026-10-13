@@ -8,6 +8,7 @@ import {
   REGISTRATION_FILES,
   REGISTRATION_UPLOAD_FOLDER,
 } from "../config/registration.config";
+import { IMPORT_LIMITS, XLSX_MIME } from "../config/financial-report.config";
 
 const IMAGE_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
@@ -61,3 +62,15 @@ export const uploadRegistrationFiles = createUploader(REGISTRATION_UPLOAD_FOLDER
   allowedMimeTypes: REGISTRATION_ALLOWED_MIME_TYPES,
   invalidTypeMessage: "Format file tidak didukung (hanya JPG, PNG, WEBP, PDF)",
 }).fields(REGISTRATION_FILES.map(({ field }) => ({ name: field, maxCount: 1 })));
+const SPREADSHEET_MIME_TYPES = [XLSX_MIME, "application/octet-stream"];
+
+export const uploadReportSpreadsheet = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: IMPORT_LIMITS.maxFileSizeMB * 1024 * 1024, files: 1 },
+  fileFilter: (req, file, cb) => {
+    const isXlsx =
+      path.extname(file.originalname).toLowerCase() === ".xlsx" && SPREADSHEET_MIME_TYPES.includes(file.mimetype);
+    if (isXlsx) cb(null, true);
+    else cb(new AppError("INVALID_FILE_TYPE", 400, "Format file harus Excel (.xlsx)"));
+  },
+});

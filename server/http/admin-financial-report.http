@@ -1,0 +1,41 @@
+@baseUrl = http://localhost:5000/api
+@adminEmail = admin@fitalenta.id
+@adminPassword = Admin@123
+
+###
+# 1. Login admin (cookie tersimpan otomatis)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+###
+# 2. Daftar laporan (paginasi + filter: search, status, paymentMethod, dateFrom, dateTo)
+GET {{baseUrl}}/admin/financial-reports?page=1&limit=20&status=paid&dateFrom=2026-10-01&dateTo=2026-10-31
+
+###
+# 3. Ringkasan sesuai filter
+GET {{baseUrl}}/admin/financial-reports/summary?dateFrom=2026-10-01&dateTo=2026-10-31
+
+###
+# 4. Ekspor Excel (filter sama dengan daftar, tanpa paginasi)
+GET {{baseUrl}}/admin/financial-reports/export?status=paid
+
+###
+# 5. Unduh template impor (sheet "Laporan Keuangan" + "Petunjuk")
+GET {{baseUrl}}/admin/financial-reports/template
+
+###
+# 6. Impor: dryRun=true hanya memeriksa file, dryRun=false menyimpan (all-or-nothing)
+POST {{baseUrl}}/admin/financial-reports/import?dryRun=true
+Content-Type: multipart/form-data; boundary=----fitalenta
+
+------fitalenta
+Content-Disposition: form-data; name="file"; filename="laporan.xlsx"
+Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+
+< ./laporan.xlsx
+------fitalenta--
