@@ -520,6 +520,7 @@ model Payment {
   installmentAmounts       Json?         @map("installment_amounts")
   currentInstallmentNumber Int           @default(0) @map("current_installment_number")
   nextDueDate              DateTime?     @map("next_due_date") @db.Date
+  issuedAt                 DateTime?     @map("issued_at")
 
   paymentHistory PaymentHistory[]
 

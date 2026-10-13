@@ -2,7 +2,7 @@ import prisma from "../../config/prisma";
 
 export async function getMyPayments(userId: number) {
   return prisma.payment.findMany({
-    where: { registration: { userId } },
+    where: { registration: { userId }, issuedAt: { not: null } },
     include: { registration: { include: { program: true } } },
     orderBy: { createdAt: "desc" },
   });
@@ -10,7 +10,7 @@ export async function getMyPayments(userId: number) {
 
 export async function attachPaymentProof(userId: number, paymentId: number, proofImagePath: string) {
   const payment = await prisma.payment.findFirst({
-    where: { id: paymentId, registration: { userId } },
+    where: { id: paymentId, registration: { userId }, issuedAt: { not: null } },
   });
   if (!payment) throw new Error("PAYMENT_NOT_FOUND");
 

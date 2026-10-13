@@ -1,0 +1,212 @@
+@baseUrl = http://localhost:5000/api
+@adminEmail = admin@fitalenta.id
+@adminPassword = Admin@123
+@participantEmail = siti.rahmawati@example.com
+@participantPassword = rahasia123
+@registrationId = 1
+
+###
+# 0. GAGAL 401: token tidak valid
+GET {{baseUrl}}/admin/payments
+Cookie: access_token=token-palsu
+
+###
+# 1. Login admin
+# @name loginAdmin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+###
+# 2. Ringkasan (totalInvoices, drafts, outstanding, paid, totalCollected)
+GET {{baseUrl}}/admin/payments/summary
+
+###
+# 3. Opsi filter
+GET {{baseUrl}}/admin/payments/options
+
+###
+# 4. Daftar tagihan (filter: search, status, invoiceState=draft|issued, page, limit)
+GET {{baseUrl}}/admin/payments?invoiceState=issued&status=pending
+
+###
+# 5. GAGAL 400: filter tidak valid
+GET {{baseUrl}}/admin/payments?status=salah&invoiceState=apa
+
+###
+# 6. BUAT TAGIHAN: pembayaran penuh (hasil: draft, issuedAt = null)
+# @name createInvoice
+POST {{baseUrl}}/admin/payments
+Content-Type: application/json
+
+{
+  "registrationId": {{registrationId}},
+  "amount": 16000000,
+  "dueDate": "2026-11-13",
+  "notes": "Biaya diklat"
+}
+
+###
+# 7. BUAT TAGIHAN: cicilan (total cicilan harus sama dengan amount)
+# @name createInstallmentInvoice
+POST {{baseUrl}}/admin/payments
+Content-Type: application/json
+
+{
+  "registrationId": {{registrationId}},
+  "amount": 16000000,
+  "dueDate": "2026-11-13",
+  "installmentAmounts": [5000000, 5000000, 6000000]
+}
+
+###
+# 8. GAGAL 400 INSTALLMENT_MISMATCH: total cicilan 10 jt != 16 jt
+POST {{baseUrl}}/admin/payments
+Content-Type: application/json
+
+{
+  "registrationId": {{registrationId}},
+  "amount": 16000000,
+  "installmentAmounts": [5000000, 5000000]
+}
+
+###
+# 9. GAGAL 400 VALIDATION_ERROR: semua field wajib kosong
+POST {{baseUrl}}/admin/payments
+Content-Type: application/json
+
+{}
+
+###
+# 10. GAGAL 404 REGISTRATION_NOT_FOUND
+POST {{baseUrl}}/admin/payments
+Content-Type: application/json
+
+{
+  "registrationId": 999999,
+  "amount": 1000000
+}
+
+###
+# 11. Detail tagihan + riwayat (actions.canIssue = true, canVerify = false)
+GET {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}
+
+###
+# 12. GAGAL 404 PAYMENT_NOT_FOUND
+GET {{baseUrl}}/admin/payments/999999
+
+###
+# 13. GAGAL 409 INVOICE_NOT_ISSUED: verifikasi sebelum diterbitkan
+POST {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}/verify
+
+###
+# 14. Export PDF draft (ada label "DRAFT - BELUM DITERBITKAN")
+GET {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}/invoice
+
+###
+# 15. TERBITKAN TAGIHAN (dueDate opsional, menimpa jatuh tempo draft)
+POST {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}/issue
+Content-Type: application/json
+
+{
+  "dueDate": "2026-11-20"
+}
+
+###
+# 16. GAGAL 409 INVOICE_ALREADY_ISSUED: terbitkan dua kali
+POST {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}/issue
+
+###
+# 17. GAGAL 409 NO_PENDING_PROOF: sudah terbit tapi peserta belum upload bukti
+POST {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}/verify
+
+###
+# 18. Login PESERTA (cookie admin tertimpa; peserta harus pemilik registrationId di atas)
+# @name loginParticipant
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{participantEmail}}",
+  "password": "{{participantPassword}}"
+}
+
+###
+# 19. Peserta hanya melihat tagihan yang sudah terbit (draft #7 tidak muncul)
+GET {{baseUrl}}/user/payments
+
+###
+# 20. Peserta upload bukti bayar (wajib gambar JPG/PNG/WEBP/GIF; siapkan http/dummy/proof.png)
+POST {{baseUrl}}/user/payments/{{createInvoice.response.body.data.id}}/proof
+Content-Type: multipart/form-data; boundary=----proof
+
+------proof
+Content-Disposition: form-data; name="proof"; filename="proof.png"
+Content-Type: image/png
+
+ ./dummy/proof.png
+------proof--
+
+###
+# 21. Login ADMIN lagi (wajib sebelum verifikasi)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+###
+# 22. VERIFIKASI PEMBAYARAN (bayar penuh: status jadi paid, amountPaid = 16 jt, kwitansi RCP-...)
+POST {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}/verify
+Content-Type: application/json
+
+{
+  "notes": "Bukti transfer sesuai mutasi"
+}
+
+###
+# 23. GAGAL 409 PAYMENT_ALREADY_SETTLED: verifikasi ulang tagihan lunas
+POST {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}/verify
+
+###
+# 24. Riwayat perubahan: 3 entri (dibuat, diterbitkan, diverifikasi)
+GET {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}
+
+###
+# 25. Export PDF invoice yang sudah lunas
+GET {{baseUrl}}/admin/payments/{{createInvoice.response.body.data.id}}/invoice
+
+###
+# ===== ALUR CICILAN (tagihan #7) =====
+# Ulangi: terbitkan (#26) -> login peserta -> upload bukti -> login admin -> verifikasi.
+# Setiap verifikasi menaikkan status: installment_1, installment_2, lalu paid di cicilan ke-3.
+
+###
+# 26. Terbitkan tagihan cicilan
+POST {{baseUrl}}/admin/payments/{{createInstallmentInvoice.response.body.data.id}}/issue
+
+###
+# 27. Verifikasi cicilan ke-1 setelah peserta upload bukti
+# Hasil: status installment_1, amountPaid 5 jt, installment.current = 1.
+# nextDueDate = jatuh tempo cicilan ke-2
+POST {{baseUrl}}/admin/payments/{{createInstallmentInvoice.response.body.data.id}}/verify
+Content-Type: application/json
+
+{
+  "nextDueDate": "2026-12-13"
+}
+
+###
+# 28. GAGAL 409 NO_PENDING_PROOF: langsung verifikasi lagi tanpa bukti baru
+# (bukti cicilan ke-1 sudah terpakai)
+POST {{baseUrl}}/admin/payments/{{createInstallmentInvoice.response.body.data.id}}/verify
+
+###
+# 29. PDF cicilan: "Cicilan Ke-2 Biaya Program" / Rp 5.000.000 (cicilan berikutnya)
+GET {{baseUrl}}/admin/payments/{{createInstallmentInvoice.response.body.data.id}}/invoice
