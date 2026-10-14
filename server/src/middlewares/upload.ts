@@ -9,6 +9,7 @@ import {
   REGISTRATION_UPLOAD_FOLDER,
 } from "../config/registration.config";
 import { IMPORT_LIMITS, XLSX_MIME } from "../config/financial-report.config";
+import { PAYMENT_PROOF_UPLOAD_FOLDER } from "../config/payment.config";
 
 const IMAGE_MIME_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 
@@ -57,7 +58,7 @@ export const uploadPartnerLogo = createUploader("partners");
 export const uploadCompanyLogo = createUploader("company-logos");
 export const uploadTeamMemberImage = createUploader(TEAM_MEMBER_UPLOAD_FOLDER);
 export const uploadAboutImage = createUploader(ABOUT_UPLOAD_FOLDER);
-export const uploadPaymentProof = createUploader("payment-proofs");
+export const uploadPaymentProof = createUploader(PAYMENT_PROOF_UPLOAD_FOLDER);
 export const uploadRegistrationFiles = createUploader(REGISTRATION_UPLOAD_FOLDER, {
   allowedMimeTypes: REGISTRATION_ALLOWED_MIME_TYPES,
   invalidTypeMessage: "Format file tidak didukung (hanya JPG, PNG, WEBP, PDF)",

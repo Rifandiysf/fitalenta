@@ -1,10 +1,9 @@
 import { Router } from "express";
 import * as adminJobController from "../../controllers/admin/job.controller";
-import { authenticate } from "../../middlewares/authenticate";
-import { authorize } from "../../middlewares/authorize";
+import { cmsAccess } from "../../middlewares/access";
 
 const router = Router();
-router.use(authenticate, authorize("admin", "editor"));
+router.use(...cmsAccess);
 router.get("/", adminJobController.index);
 router.get("/:id", adminJobController.show);
 router.post("/", adminJobController.store);

@@ -1,8 +1,6 @@
 import { Router } from "express";
 import * as teamMemberController from "../../controllers/admin/teamMember.controller";
-import { ADMIN_PANEL_ROLES } from "../../config/admin.config";
-import { authenticate } from "../../middlewares/authenticate";
-import { authorize } from "../../middlewares/authorize";
+import { cmsAccess } from "../../middlewares/access";
 import { uploadAboutImage, uploadTeamMemberImage } from "../../middlewares/upload";
 import { validate } from "../../middlewares/validate";
 import {
@@ -17,7 +15,7 @@ import {
 
 const router = Router();
 
-router.use(authenticate, authorize(...ADMIN_PANEL_ROLES));
+router.use(...cmsAccess);
 
 router.get("/", validate(listExpertsRules), teamMemberController.index);
 

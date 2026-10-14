@@ -35,7 +35,7 @@ type HistoryRecord = PaymentDetailRecord["paymentHistory"][number];
 
 const decimalOrNull = (value: Prisma.Decimal | null) => (value ? value.toString() : null);
 
-function toInstallment(payment: PaymentSnapshot) {
+export function toInstallment(payment: PaymentSnapshot) {
   const amounts = parseInstallmentAmounts(payment.installmentAmounts);
   if (!amounts) return null;
 

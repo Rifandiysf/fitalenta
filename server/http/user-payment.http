@@ -1,0 +1,62 @@
+@baseUrl = http://localhost:5000/api
+@participantEmail = siti.rahmawati@example.com
+@participantPassword = rahasia123
+@paymentId = 1
+
+###
+# 0. GAGAL 401: belum login
+GET {{baseUrl}}/user/payments
+
+###
+# 1. Login peserta
+# @name loginParticipant
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{participantEmail}}",
+  "password": "{{participantPassword}}"
+}
+
+###
+# 2. Ringkasan tagihan peserta
+GET {{baseUrl}}/user/payments/summary
+
+###
+# 3. Daftar tagihan (filter: status, page, limit)
+GET {{baseUrl}}/user/payments?status=pending&page=1&limit=10
+
+###
+# 4. GAGAL 400: filter tidak valid
+GET {{baseUrl}}/user/payments?status=salah&page=0
+
+###
+# 5. Detail tagihan
+GET {{baseUrl}}/user/payments/{{paymentId}}
+
+###
+# 6. GAGAL 404: tagihan milik peserta lain / draft / tidak ada
+GET {{baseUrl}}/user/payments/999999
+
+###
+# 7. Invoice PDF (tambah ?download=true untuk unduh)
+GET {{baseUrl}}/user/payments/{{paymentId}}/invoice
+
+###
+# 8. Unggah bukti pembayaran (field: proof; JPG/PNG/WEBP/GIF, maks 5 MB)
+POST {{baseUrl}}/user/payments/{{paymentId}}/proof
+Content-Type: multipart/form-data; boundary=Boundary
+
+--Boundary
+Content-Disposition: form-data; name="proof"; filename="photo.png"
+Content-Type: image/png
+
+< ./dummy/photo.png
+--Boundary--
+
+###
+# 9. GAGAL 400: tanpa file bukti
+POST {{baseUrl}}/user/payments/{{paymentId}}/proof
+Content-Type: multipart/form-data; boundary=Boundary
+
+--Boundary--

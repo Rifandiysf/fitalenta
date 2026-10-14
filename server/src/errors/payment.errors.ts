@@ -18,6 +18,10 @@ export const PaymentErrors = {
       409,
       "Tidak ada bukti pembayaran baru yang menunggu verifikasi untuk tagihan ini"
     ),
+  proofRequired: () =>
+    new AppError("PROOF_REQUIRED", 400, "Bukti pembayaran wajib diunggah", [
+      { field: "proof", message: "Bukti pembayaran wajib diunggah" },
+    ]),
   concurrentUpdate: () =>
     new AppError("PAYMENT_CONFLICT", 409, "Tagihan baru saja diperbarui, silakan muat ulang lalu coba lagi"),
   codeGenerationFailed: () =>

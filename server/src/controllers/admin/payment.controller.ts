@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { matchedData } from "express-validator";
 import * as paymentService from "../../services/admin/payment.service";
-import { streamInvoicePdf } from "../../services/admin/admin.invoicePdf";
+import { sendInvoicePdf } from "../../services/admin/admin.invoicePdf";
 import {
   CreateInvoiceInput,
   IssueInvoiceInput,
@@ -48,13 +48,8 @@ export async function verify(req: Request, res: Response) {
   return res.json({ success: true, message: "Pembayaran berhasil diverifikasi", data });
 }
 
-export async function invoicePdf(req: Request, res: Response) {
-  const { id, download } = matchedData<{ id: number; download?: boolean }>(req);
-  const invoice = await paymentService.getPaymentById(id);
-  const disposition = download ? "attachment" : "inline";
-
-  res.setHeader("Content-Type", "application/pdf");
-  res.setHeader("Content-Disposition", `${disposition}; filename="${invoice.invoiceNumber}.pdf"`);
-  res.setHeader("Cache-Control", "private, no-store");
-  streamInvoicePdf(invoice, res);
-}
+  export async function invoicePdf(req: Request, res: Response) {
+    const { id, download } = matchedData<{ id: number; download?: boolean }>(req);
+    const invoice = await paymentService.getPaymentById(id);
+    sendInvoicePdf(res, invoice, download);
+  }

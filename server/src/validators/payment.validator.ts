@@ -13,6 +13,11 @@ export const listPaymentsRules: ValidationChain[] = [
   enumQueryRule("invoiceState", "Status tagihan", [...INVOICE_STATE_VALUES]),
 ];
 
+export const listMyPaymentsRules: ValidationChain[] = [
+  ...paginationRules,
+  enumQueryRule("status", "Status pembayaran", STATUS_VALUES),
+];
+
 export const paymentIdRules: ValidationChain[] = [idParamRule];
 
 export const exportInvoiceRules: ValidationChain[] = [

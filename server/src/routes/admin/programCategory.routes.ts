@@ -1,10 +1,9 @@
 import { Router } from "express";
 import * as adminProgramCategoryController from "../../controllers/admin/programCategory.controller";
-import { authenticate } from "../../middlewares/authenticate";
-import { authorize } from "../../middlewares/authorize";
+import { cmsAccess } from "../../middlewares/access";
 
 const router = Router();
-router.use(authenticate, authorize("admin", "editor"));
+router.use(...cmsAccess);
 router.get("/", adminProgramCategoryController.index);
 router.post("/", adminProgramCategoryController.store);
 router.put("/:id", adminProgramCategoryController.update);

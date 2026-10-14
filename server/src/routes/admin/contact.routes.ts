@@ -1,11 +1,10 @@
 import { Router } from "express";
 import * as adminContactController from "../../controllers/admin/contact.controller";
-import { authenticate } from "../../middlewares/authenticate";
-import { authorize } from "../../middlewares/authorize";
+import { cmsAccess } from "../../middlewares/access";
 
 const router = Router();
 
-router.use(authenticate, authorize("admin", "editor"));
+router.use(...cmsAccess);
 
 router.get("/", adminContactController.index);
 router.get("/:id", adminContactController.show);

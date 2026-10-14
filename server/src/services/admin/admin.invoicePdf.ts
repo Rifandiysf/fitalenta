@@ -1,3 +1,4 @@
+import { Response } from "express";
 import fs from "fs";
 import path from "path";
 import PDFDocument from "pdfkit";
@@ -203,4 +204,12 @@ export function streamInvoicePdf(invoice: PaymentDetail, output: Writable): void
   drawMotto(doc);
 
   doc.end();
+}
+export function sendInvoicePdf(res: Response, invoice: PaymentDetail, download = false): void {
+  const disposition = download ? "attachment" : "inline";
+
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", `${disposition}; filename="${invoice.invoiceNumber}.pdf"`);
+  res.setHeader("Cache-Control", "private, no-store");
+  streamInvoicePdf(invoice, res);
 }

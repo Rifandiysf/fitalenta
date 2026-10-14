@@ -1,11 +1,10 @@
 import { Router } from "express";
 import * as adminPartnerController from "../../controllers/admin/partner.controller";
-import { authenticate } from "../../middlewares/authenticate";
-import { authorize } from "../../middlewares/authorize";
+import { cmsAccess } from "../../middlewares/access";
 import { uploadPartnerLogo } from "../../middlewares/upload";
 
 const router = Router();
-router.use(authenticate, authorize("admin", "editor"));
+router.use(...cmsAccess);
 
 router.get("/clients", adminPartnerController.indexClients);
 router.post("/clients", uploadPartnerLogo.single("logo"), adminPartnerController.storeClient);

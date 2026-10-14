@@ -34,6 +34,7 @@ import adminUserRoutes from "./admin/user.routes";
 import adminSelectionPlacementRoutes from "./admin/selectionPlacement.routes";
 import aboutRoutes from "./about.routes";
 import adminFinancialReportRoutes from "./admin/financialReport.routes";
+import adminCmsRoutes from "./admin/cms.routes";
 
 const router = Router();
 
@@ -72,5 +73,6 @@ router.use("/admin/dashboard", adminDashboardRoutes);
 router.use("/admin/users", adminUserRoutes);
 router.use("/admin/selection-placements", adminSelectionPlacementRoutes);
 router.use("/admin/financial-reports", adminFinancialReportRoutes);
+router.use("/admin/cms", adminCmsRoutes);
 
 export default router;

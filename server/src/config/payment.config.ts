@@ -10,6 +10,13 @@ export const PAYMENT_LIMITS = {
   installmentMax: 6,
 } as const;
 
+export const PAYMENT_PROOF_UPLOAD_FOLDER = "payment-proofs";
+
+export const PAYMENT_PROOF_HISTORY_NOTES = {
+  uploaded: "Bukti pembayaran diunggah peserta",
+  replaced: "Bukti pembayaran diganti peserta",
+} as const;
+
 export const SETTLED_PAYMENT_STATUSES: PaymentStatus[] = ["paid", "cancelled"];
 
 export const INVOICE_STATE_VALUES = ["draft", "issued"] as const;

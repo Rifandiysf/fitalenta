@@ -1,8 +1,6 @@
 import { Router } from "express";
 import * as reportController from "../../controllers/admin/financialReport.controller";
-import { ADMIN_PANEL_ROLES } from "../../config/admin.config";
-import { authenticate } from "../../middlewares/authenticate";
-import { authorize } from "../../middlewares/authorize";
+import { superAdminAccess } from "../../middlewares/access";
 import { uploadReportSpreadsheet } from "../../middlewares/upload";
 import { validate } from "../../middlewares/validate";
 import {
@@ -13,7 +11,7 @@ import {
 
 const router = Router();
 
-router.use(authenticate, authorize(...ADMIN_PANEL_ROLES));
+router.use(...superAdminAccess);
 router.get("/", validate(listReportRules), reportController.index);
 router.get("/summary", validate(reportFilterRules), reportController.summary);
 router.get("/export", validate(reportFilterRules), reportController.exportXlsx);
