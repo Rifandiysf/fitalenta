@@ -38,7 +38,8 @@ export async function proxy(request: NextRequest) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
-    if (pathname.startsWith("/dashboard") && role === "admin") {
+    const isUserArea = pathname.startsWith("/dashboard") || pathname.startsWith("/pembayaran");
+    if (isUserArea && role === "admin") {
         return NextResponse.redirect(new URL("/admin/dashboard", request.url));
     }
 
@@ -46,5 +47,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/login", "/register", "/admin/:path*", "/dashboard/:path*"],
+    matcher: ["/login", "/register", "/admin/:path*", "/dashboard/:path*", "/pembayaran/:path*"],
 };
