@@ -17,6 +17,7 @@ import {
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { useLogout } from "@/hooks/use-logout";
 
 const LINKS = [
     { href: "/dashboard", label: "Dashboard" },
@@ -31,6 +32,7 @@ function isActive(pathname: string, href: string) {
 
 export function UserNavbar() {
     const pathname = usePathname();
+    const logout = useLogout();
     const { data } = useCurrentUser();
 
     return (
@@ -115,7 +117,7 @@ export function UserNavbar() {
 
                             <DropdownMenuSeparator className="lg:hidden" />
 
-                            <DropdownMenuItem variant="destructive">
+                            <DropdownMenuItem variant="destructive" disabled={logout.isPending} onSelect={() => logout.mutate()}>
                                 <LogOut aria-hidden />
                                 Keluar
                             </DropdownMenuItem>
