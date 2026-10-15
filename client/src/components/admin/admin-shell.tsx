@@ -3,7 +3,7 @@
 import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ADMIN_ROLES } from "@/constants/admin-nav";
+import { ADMIN_AREA, type AdminAreaConfig } from "@/constants/admin-nav";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { AdminHeader } from "./admin-header";
 import { AdminSidebarContent } from "./admin-sidebar";
@@ -24,27 +24,31 @@ function ShellSkeleton() {
     );
 }
 
-/** Kerangka panel admin: sidebar, header, dan penjaga akses berdasarkan role. */
-export function AdminShell({ children }: { children: ReactNode }) {
+type AdminShellProps = {
+    children: ReactNode;
+    area?: AdminAreaConfig;
+};
+
+export function AdminShell({ children, area = ADMIN_AREA }: AdminShellProps) {
     const router = useRouter();
     const { data: user, isError } = useCurrentUser();
-    const allowed = user ? ADMIN_ROLES.includes(user.role) : false;
+    const allowed = user ? area.roles.includes(user.role) : false;
 
     useEffect(() => {
-        if (isError) router.replace("/login?next=/admin");
+        if (isError) router.replace(`/login?next=${area.basePath}`);
         else if (user && !allowed) router.replace("/dashboard");
-    }, [isError, user, allowed, router]);
+    }, [isError, user, allowed, router, area.basePath]);
 
     if (!user || !allowed) return <ShellSkeleton />;
 
     return (
         <div className="flex min-h-svh bg-muted/30">
             <aside className="sticky top-0 hidden h-svh w-64 shrink-0 border-r bg-sidebar text-sidebar-foreground lg:block">
-                <AdminSidebarContent user={user} />
+                <AdminSidebarContent user={user} area={area} />
             </aside>
 
             <div className="flex min-w-0 flex-1 flex-col">
-                <AdminHeader user={user} />
+                <AdminHeader user={user} area={area} />
                 <div className="flex-1 p-4 md:p-6">{children}</div>
             </div>
         </div>
