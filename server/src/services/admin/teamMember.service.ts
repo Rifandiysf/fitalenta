@@ -8,12 +8,10 @@ import {
   ExpertListFilters,
   ExpertListResult,
   ExpertSummary,
-  TeamMemberCms,
   UpdateExpertInput,
 } from "../../types/team-member.types";
 import { removePublicUpload, toUploadedPath, withUploadCleanup } from "../../utils/file";
 import { buildPaginationMeta, resolvePagination } from "../../utils/pagination";
-import { getAbout } from "../about.service";
 
 const ORDER_BY: Prisma.TeamMemberOrderByWithRelationInput[] = [{ order: "asc" }, { id: "asc" }];
 
@@ -72,11 +70,6 @@ export async function listExperts(filters: ExpertListFilters): Promise<ExpertLis
   ]);
 
   return { items: members.map(toExpertItem), meta: buildPaginationMeta(total, page, limit), summary };
-}
-
-export async function getCms(filters: ExpertListFilters): Promise<TeamMemberCms> {
-  const [expert, team_member] = await Promise.all([listExperts(filters), getAbout()]);
-  return { expert, team_member };
 }
 
 export async function getExpertById(id: number): Promise<ExpertItem> {

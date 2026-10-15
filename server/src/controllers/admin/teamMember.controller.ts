@@ -13,8 +13,8 @@ import {
 import { toPublicUploadPath } from "../../utils/file";
 
 export async function index(req: Request, res: Response) {
-  const data = await teamMemberService.getCms(matchedData<ExpertListFilters>(req));
-  return res.json({ success: true, data });
+  const { items, meta, summary } = await teamMemberService.listExperts(matchedData<ExpertListFilters>(req));
+  return res.json({ success: true, data: items, meta, summary });
 }
 
 export async function listExperts(req: Request, res: Response) {

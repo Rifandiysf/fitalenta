@@ -69,8 +69,3 @@ export interface UpdateExpertInput {
   isActive?: boolean;
   removeImage?: boolean;
 }
-
-export interface TeamMemberCms {
-  expert: ExpertListResult;
-  team_member: AboutContent;
-}
