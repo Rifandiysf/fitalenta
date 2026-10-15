@@ -31,8 +31,8 @@ export function RegistrationDetail({ data }: { data: DashboardData }) {
                 <span className="font-mono">{data.registrationCode ?? "-"}</span>
             </Item>
             <Item label="Status Pendaftaran"><StatusBadge kind="registration" value={data.registrationStatus} /></Item>
-            <Item label="Status Seleksi"><StatusBadge kind="registration" value={data.selectionStatus} /></Item>
-            <Item label="Status Penempatan"><StatusBadge kind="placement" value={data.placementStatus} /></Item>
+            <Item label="Status Seleksi"><StatusBadge kind="registration" value={data.selectionStatus?.status} /></Item>
+            <Item label="Status Penempatan"><StatusBadge kind="placement" value={data.placementStatus?.status} /></Item>
             <Item label="Pembayaran"><StatusBadge kind="payment" value={data.payment?.status} /></Item>
             {data.payment?.method && (
                 <Item label="Metode Pembayaran">
