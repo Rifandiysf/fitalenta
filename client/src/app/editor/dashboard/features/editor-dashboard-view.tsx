@@ -23,7 +23,7 @@ export function EditorDashboardView() {
                     {user ? `Halo, ${user.name}` : "Dashboard Editor"}
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                    Kelola konten yang tampil di website FITALENTA: artikel, event, dan galeri.
+                    Kelola konten yang tampil di website FITALENTA: artikel, event, galeri, layanan, testimoni, dan tim.
                 </p>
             </div>
 
