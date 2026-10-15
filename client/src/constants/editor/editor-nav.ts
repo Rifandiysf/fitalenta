@@ -1,4 +1,13 @@
-import { CalendarDays, Images, LayoutDashboard, Newspaper } from "lucide-react";
+import {
+    BriefcaseBusiness,
+    Building2,
+    CalendarDays,
+    Images,
+    LayoutDashboard,
+    MessageSquareQuote,
+    Newspaper,
+    Users,
+} from "lucide-react";
 import type { AdminAreaConfig } from "@/constants/admin-nav";
 
 export const EDITOR_ROLES: readonly string[] = ["admin", "editor"];
@@ -17,6 +26,16 @@ export const EDITOR_AREA: AdminAreaConfig = {
                 { title: "Artikel", href: "/editor/articles" },
                 { title: "Event", href: "/editor/events" },
                 { title: "Galeri", href: "/editor/gallery" },
+            ],
+        },
+        {
+            type: "group",
+            title: "Profil Perusahaan",
+            icon: Building2,
+            items: [
+                { title: "Layanan", href: "/editor/services" },
+                { title: "Testimoni", href: "/editor/testimonials" },
+                { title: "Tim", href: "/editor/team-members" },
             ],
         },
     ],
@@ -43,5 +62,26 @@ export const EDITOR_SHORTCUTS = [
         href: "/editor/gallery",
         createHref: null,
         icon: Images,
+    },
+    {
+        title: "Layanan",
+        description: "Kelola daftar layanan beserta konten detail tiap layanan.",
+        href: "/editor/services",
+        createHref: "/editor/services/new",
+        icon: BriefcaseBusiness,
+    },
+    {
+        title: "Testimoni",
+        description: "Atur testimoni klien, rating, dan penandaan unggulan.",
+        href: "/editor/testimonials",
+        createHref: null,
+        icon: MessageSquareQuote,
+    },
+    {
+        title: "Tim",
+        description: "Kelola anggota tim, pakar, dan konten halaman About.",
+        href: "/editor/team-members",
+        createHref: null,
+        icon: Users,
     },
 ] as const;
