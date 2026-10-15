@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { PROGRAMS_PER_PAGE } from "@/constants/admin-program-constant";
+import { PROGRAMS_PER_PAGE } from "@/constants/admin/admin-program-constant";
 import type { ApiResponse } from "@/types/api";
 import type { AdminPageMeta } from "@/types/pagination";
 import type {
@@ -10,7 +10,7 @@ import type {
     AdminProgramParams,
     AdminProgramPayload,
     AdminProgramSummary,
-} from "@/types/admin-program";
+} from "@/types/admin/admin-program";
 
 export async function getAdminProgramSummary(): Promise<AdminProgramSummary> {
     const { data } = await api.get<ApiResponse<AdminProgramSummary>>("/admin/programs/summary");

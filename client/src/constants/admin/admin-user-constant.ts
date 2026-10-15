@@ -1,4 +1,4 @@
-import type { AdminUserRole } from "@/types/admin-user";
+import type { AdminUserRole } from "@/types/admin/admin-user";
 
 export const ADMIN_USER_ROLES = ["user", "editor", "admin"] as const satisfies readonly AdminUserRole[];
 

@@ -10,14 +10,14 @@ import {
     getPaymentSummary,
     issueInvoice,
     verifyPayment,
-} from "@/services/admin-payment-service";
+} from "@/services/admin/admin-payment-service";
 import type {
     CreateInvoicePayload,
     IssueInvoicePayload,
     PaymentDetail,
     PaymentParams,
     VerifyPaymentPayload,
-} from "@/types/admin-payment";
+} from "@/types/admin/admin-payment";
 
 const PAYMENTS_KEY = ["admin", "payments"] as const;
 const detailKey = (id: number | undefined) => [...PAYMENTS_KEY, "detail", id] as const;

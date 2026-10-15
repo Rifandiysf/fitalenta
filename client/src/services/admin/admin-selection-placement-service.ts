@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { PARTICIPANTS_PER_PAGE } from "@/constants/selection-placement-constant";
+import { PARTICIPANTS_PER_PAGE } from "@/constants/admin/selection-placement-constant";
 import type { ApiResponse } from "@/types/api";
 import type { AdminPageMeta } from "@/types/pagination";
 import type {
@@ -9,7 +9,7 @@ import type {
     ParticipantUpdatePayload,
     SelectionPlacementOptions,
     SelectionPlacementSummary,
-} from "@/types/selection-placement";
+} from "@/types/admin/selection-placement";
 
 const BASE_URL = "/admin/selection-placements";
 

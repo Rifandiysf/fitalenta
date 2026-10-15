@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PLACEMENT_STATUS, SELECTION_STATUS } from "@/constants/admin-status";
-import { getInitials } from "@/helpers/admin-selection-placement-helper";
+import { PLACEMENT_STATUS, SELECTION_STATUS } from "@/constants/admin/admin-status";
+import { getInitials } from "@/helpers/admin/admin-selection-placement-helper";
 import { cn } from "@/lib/utils";
 import type { AdminPageMeta } from "@/types/pagination";
-import type { Participant } from "@/types/selection-placement";
+import type { Participant } from "@/types/admin/selection-placement";
 import { StatusBadge, ToneBadge } from "@/app/admin/dashboard/features/status-badge";
 import { EmptyRow } from "@/app/admin/dashboard/features/table-card";
 

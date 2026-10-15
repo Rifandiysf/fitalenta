@@ -1,11 +1,11 @@
 import { Filter, RotateCcw, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { PAYMENT_METHOD_META, PAYMENT_STATUS_VALUES } from "@/constants/admin-payment-constant";
-import { PAYMENT_STATUS, statusLabel } from "@/constants/admin-status";
-import { TERMIN_OPTIONS } from "@/constants/financial-report-constant";
-import type { PaymentMethod, PaymentStatus } from "@/types/admin-payment";
-import type { ReportFilters, TerminType } from "@/types/financial-report";
+import { PAYMENT_METHOD_META, PAYMENT_STATUS_VALUES } from "@/constants/admin/admin-payment-constant";
+import { PAYMENT_STATUS, statusLabel } from "@/constants/admin/admin-status";
+import { TERMIN_OPTIONS } from "@/constants/admin/financial-report-constant";
+import type { PaymentMethod, PaymentStatus } from "@/types/admin/admin-payment";
+import type { ReportFilters, TerminType } from "@/types/admin/financial-report";
 
 const controlClass =
     "h-10 w-full rounded-md border bg-background px-3 text-xs outline-none focus-visible:ring-2 focus-visible:ring-ring/50 disabled:opacity-60";

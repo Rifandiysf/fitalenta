@@ -9,10 +9,10 @@ import {
     useAdminPayments,
     useAdminPaymentSummary,
     useExportInvoice,
-} from "@/hooks/use-admin-payments";
+} from "@/hooks/admin/use-admin-payments";
 import { useDebounced } from "@/hooks/use-debounced";
-import { saveBlob } from "@/helpers/admin-payment-helper";
-import type { PaymentDetail, PaymentItem, PaymentParams } from "@/types/admin-payment";
+import { saveBlob } from "@/helpers/admin/admin-payment-helper";
+import type { PaymentDetail, PaymentItem, PaymentParams } from "@/types/admin/admin-payment";
 import { InvoiceFormSheet } from "./invoice-form-sheet";
 import { IssueInvoiceDialog } from "./issue-invoice-dialog";
 import { PaymentDetailSheet } from "./payment-detail-sheet";

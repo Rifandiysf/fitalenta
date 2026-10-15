@@ -1,5 +1,5 @@
 import { BadgeCheck, CloudUpload, FileText, Repeat, ShieldCheck, Wallet, type LucideIcon } from "lucide-react";
-import type { StatusTone } from "@/constants/admin-status";
+import { StatusTone } from "./admin/admin-status";
 import type { UserPaymentState } from "@/types/user-payment";
 
 export const MY_PAYMENTS_PER_PAGE = 5;

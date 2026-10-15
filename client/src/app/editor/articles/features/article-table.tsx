@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ARTICLE_STATUS_META } from "@/constants/editor/editor-article-constant";
-import { formatShortDate, formatShortTime } from "@/helpers/admin-helper";
+import { formatShortDate, formatShortTime } from "@/helpers/admin/admin-helper";
 import { excerptPreview, getArticleStatus } from "@/helpers/editor/editor-content-helper";
 import { cn } from "@/lib/utils";
 import type { EditorArticle } from "@/types/editor/editor-article";

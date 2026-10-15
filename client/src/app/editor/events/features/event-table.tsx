@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EVENT_STATUS_META } from "@/constants/editor/editor-event-constant";
-import { formatShortDate, formatShortTime } from "@/helpers/admin-helper";
+import { formatShortDate, formatShortTime } from "@/helpers/admin/admin-helper";
 import { getEventStatus } from "@/helpers/editor/editor-content-helper";
 import { cn } from "@/lib/utils";
 import type { EditorEvent } from "@/types/editor/editor-event";

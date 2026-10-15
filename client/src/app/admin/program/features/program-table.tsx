@@ -4,9 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { PROGRAM_STATUS_META } from "@/constants/admin-program-constant";
+import { PROGRAM_STATUS_META } from "@/constants/admin/admin-program-constant";
 import { cn, formatIDR } from "@/lib/utils";
-import type { AdminProgram } from "@/types/admin-program";
+import type { AdminProgram } from "@/types/admin/admin-program";
 import { QuotaBar } from "./quota-bar";
 
 const COLUMNS = ["Program", "Kategori", "Durasi", "Kuota", "Biaya", "Status", "Aksi"];

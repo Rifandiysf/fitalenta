@@ -3,9 +3,9 @@ import { Eye, FileText, Mail, Pencil, Phone, RefreshCw, Users } from "lucide-rea
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { INTERVIEW_STATUS, PAYMENT_STATUS, PLACEMENT_STATUS, SELECTION_STATUS } from "@/constants/admin-status";
+import { INTERVIEW_STATUS, PAYMENT_STATUS, PLACEMENT_STATUS, SELECTION_STATUS } from "@/constants/admin/admin-status";
 import { formatIDR } from "@/lib/utils";
-import type { AdminRegistrationListItem, PaginationMeta } from "@/types/admin-dashboard";
+import type { AdminRegistrationListItem, PaginationMeta } from "@/types/admin/admin-dashboard";
 import { StatusBadge, ToneBadge } from "./status-badge";
 import { EmptyRow } from "./table-card";
 

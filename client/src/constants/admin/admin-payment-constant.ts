@@ -1,6 +1,6 @@
 import { Banknote, CreditCard, Landmark, type LucideIcon } from "lucide-react";
-import type { StatusMap } from "@/constants/admin-status";
-import type { InvoiceState, PaymentMethod, PaymentStatus } from "@/types/admin-payment";
+import type { StatusMap } from "@/constants/admin/admin-status";
+import type { InvoiceState, PaymentMethod, PaymentStatus } from "@/types/admin/admin-payment";
 
 export const PAYMENTS_PER_PAGE = 10;
 

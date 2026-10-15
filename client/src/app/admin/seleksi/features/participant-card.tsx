@@ -1,9 +1,9 @@
 import { CalendarDays, Clock, GraduationCap, Mail, Phone } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
-import { getInitials } from "@/helpers/admin-selection-placement-helper";
+import { getInitials } from "@/helpers/admin/admin-selection-placement-helper";
 import { formatDate, imageUrl } from "@/lib/utils";
-import type { Participant } from "@/types/selection-placement";
+import type { Participant } from "@/types/admin/selection-placement";
 
 function InfoRow({ icon: Icon, children }: { icon: typeof Mail; children: React.ReactNode }) {
     return (

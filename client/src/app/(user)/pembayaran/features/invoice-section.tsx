@@ -4,7 +4,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshButton } from "@/app/(user)/dashboard/features/refresh";
-import { PAYMENT_STATUS_VALUES } from "@/constants/admin-payment-constant";
+import { PAYMENT_STATUS_VALUES } from "@/constants/admin/admin-payment-constant";
 import { statusLabel } from "@/constants/dashboard-constant";
 import { cn } from "@/lib/utils";
 import type { AdminPageMeta } from "@/types/pagination";

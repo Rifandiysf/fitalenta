@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea";
 import type { ProgramForm } from "@/hooks/use-program-form";
 import { formatIDR } from "@/lib/utils";
-import type { ProgramFormValues } from "@/schemas/admin-program";
+import type { ProgramFormValues } from "@/schemas/admin/admin-program";
 
 type FieldName = keyof ProgramFormValues;
 type StringField = { [K in FieldName]: ProgramFormValues[K] extends string ? K : never }[FieldName];

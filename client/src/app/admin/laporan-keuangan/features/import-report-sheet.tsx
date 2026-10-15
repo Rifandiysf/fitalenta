@@ -6,9 +6,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { IMPORT_ACCEPT } from "@/constants/financial-report-constant";
-import { useImportFinancialReport } from "@/hooks/use-admin-financial-report";
-import type { ImportResult } from "@/types/financial-report";
+import { IMPORT_ACCEPT } from "@/constants/admin/financial-report-constant";
+import { useImportFinancialReport } from "@/hooks/admin/use-admin-financial-report";
+import type { ImportResult } from "@/types/admin/financial-report";
 
 function formatSize(bytes: number) {
     return bytes < 1024 * 1024 ? `${Math.max(1, Math.round(bytes / 1024))} KB` : `${(bytes / 1024 / 1024).toFixed(1)} MB`;

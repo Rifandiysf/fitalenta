@@ -3,8 +3,8 @@ import {
     getAdminDashboardSummary,
     getAdminFilterOptions,
     getAdminRegistrations,
-} from "@/services/admin-dashboard-service";
-import type { AdminRegistrationQuery } from "@/types/admin-dashboard";
+} from "@/services/admin/admin-dashboard-service";
+import type { AdminRegistrationQuery } from "@/types/admin/admin-dashboard";
 
 export function useAdminDashboard(query: AdminRegistrationQuery) {
     const summary = useQuery({

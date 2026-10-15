@@ -4,16 +4,16 @@ import { useState } from "react";
 import { ChartNoAxesCombined, CircleAlert, CircleCheck, X } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { INITIAL_REPORT_FILTERS } from "@/constants/financial-report-constant";
+import { INITIAL_REPORT_FILTERS } from "@/constants/admin/financial-report-constant";
 import {
     useDownloadReportTemplate,
     useExportFinancialReport,
     useFinancialReport,
     useFinancialReportSummary,
-} from "@/hooks/use-admin-financial-report";
+} from "@/hooks/admin/use-admin-financial-report";
 import { useDebounced } from "@/hooks/use-debounced";
 import { saveFile } from "@/lib/file-download";
-import type { ImportResult } from "@/types/financial-report";
+import type { ImportResult } from "@/types/admin/financial-report";
 import { ImportReportSheet } from "./import-report-sheet";
 import { ReportActionsCard } from "./report-actions-card";
 import { ReportFiltersCard, type FilterState } from "./report-filters";

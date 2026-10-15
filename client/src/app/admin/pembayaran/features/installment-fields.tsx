@@ -1,8 +1,8 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MAX_INSTALLMENTS, MIN_INSTALLMENTS } from "@/constants/admin-payment-constant";
-import { sumAmounts } from "@/helpers/admin-payment-helper";
+import { MAX_INSTALLMENTS, MIN_INSTALLMENTS } from "@/constants/admin/admin-payment-constant";
+import { sumAmounts } from "@/helpers/admin/admin-payment-helper";
 import { cn, formatIDR } from "@/lib/utils";
 
 const COUNT_OPTIONS = Array.from({ length: MAX_INSTALLMENTS - MIN_INSTALLMENTS + 1 }, (_, i) => MIN_INSTALLMENTS + i);

@@ -1,6 +1,6 @@
-import { PASSED_SELECTION_STATUS } from "@/constants/selection-placement-constant";
-import type { SelectionPlacementFormValues } from "@/schemas/admin-selection-placement";
-import type { Participant, ParticipantUpdatePayload } from "@/types/selection-placement";
+import { PASSED_SELECTION_STATUS } from "@/constants/admin/selection-placement-constant";
+import type { SelectionPlacementFormValues } from "@/schemas/admin/admin-selection-placement";
+import type { Participant, ParticipantUpdatePayload } from "@/types/admin/selection-placement";
 
 const blankToNull = (value: string) => {
     const trimmed = value.trim();

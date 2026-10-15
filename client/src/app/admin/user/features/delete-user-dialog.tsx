@@ -12,8 +12,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useDeleteAdminUser } from "@/hooks/use-admin-users";
-import type { AdminUser } from "@/types/admin-user";
+import { useDeleteAdminUser } from "@/hooks/admin/use-admin-users";
+import type { AdminUser } from "@/types/admin/admin-user";
 
 type DeleteUserDialogProps = {
     user: AdminUser;

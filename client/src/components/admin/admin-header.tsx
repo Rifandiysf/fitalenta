@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { ExternalLink, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ADMIN_AREA, getAdminPageTitle, type AdminAreaConfig } from "@/constants/admin-nav";
+import { ADMIN_AREA, getAdminPageTitle, type AdminAreaConfig } from "@/constants/admin/admin-nav";
 import type { AuthUser } from "@/store/auth-store";
 import { AdminSidebarContent } from "./admin-sidebar";
 

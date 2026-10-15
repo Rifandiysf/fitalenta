@@ -1,4 +1,4 @@
-import type { AdminProgramStatus } from "@/types/admin-program";
+import type { AdminProgramStatus } from "@/types/admin/admin-program";
 
 export const PROGRAMS_PER_PAGE = 10;
 

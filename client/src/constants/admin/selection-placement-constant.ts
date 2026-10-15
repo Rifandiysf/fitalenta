@@ -1,4 +1,4 @@
-import type { PlacementStatus, SelectionStatus } from "@/types/selection-placement";
+import type { PlacementStatus, SelectionStatus } from "@/types/admin/selection-placement";
 
 export const PARTICIPANTS_PER_PAGE = 20;
 

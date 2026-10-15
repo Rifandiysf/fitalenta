@@ -1,4 +1,4 @@
-import type { AdminUser, AdminUserUpdatePayload } from "@/types/admin-user";
+import type { AdminUser, AdminUserUpdatePayload } from "@/types/admin/admin-user";
 
 type FormData = {
     name: string;

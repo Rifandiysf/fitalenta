@@ -1,6 +1,6 @@
 import { formatIDR } from "@/lib/utils";
-import { paymentPercent } from "@/helpers/admin-payment-helper";
-import type { PaymentItem } from "@/types/admin-payment";
+import { paymentPercent } from "@/helpers/admin/admin-payment-helper";
+import type { PaymentItem } from "@/types/admin/admin-payment";
 
 type ProgressProps = Pick<PaymentItem, "amount" | "amountPaid">;
 

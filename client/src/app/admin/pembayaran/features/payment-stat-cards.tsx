@@ -1,7 +1,7 @@
 import { CircleCheck, FilePen, Hourglass, TrendingUp } from "lucide-react";
 import { AdminStatCard } from "@/components/admin/admin-stat-card";
 import { formatIDR } from "@/lib/utils";
-import type { PaymentSummary } from "@/types/admin-payment";
+import type { PaymentSummary } from "@/types/admin/admin-payment";
 
 export function PaymentStatCards({ summary }: { summary?: PaymentSummary }) {
     return (

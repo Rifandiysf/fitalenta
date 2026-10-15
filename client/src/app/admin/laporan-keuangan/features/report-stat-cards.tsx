@@ -1,7 +1,7 @@
 import { CircleCheck, FileText, TrendingUp, TriangleAlert } from "lucide-react";
 import { AdminStatCard } from "@/components/admin/admin-stat-card";
 import { formatIDR } from "@/lib/utils";
-import type { ReportSummary } from "@/types/financial-report";
+import type { ReportSummary } from "@/types/admin/financial-report";
 
 export function ReportStatCards({ summary }: { summary?: ReportSummary }) {
     return (

@@ -9,8 +9,8 @@ import {
     getAdminPrograms,
     getAdminProgramSummary,
     updateAdminProgram,
-} from "@/services/admin-program-service";
-import type { AdminProgramParams, AdminProgramPayload } from "@/types/admin-program";
+} from "@/services/admin/admin-program-service";
+import type { AdminProgramParams, AdminProgramPayload } from "@/types/admin/admin-program";
 
 const ADMIN_PROGRAMS_KEY = ["admin", "programs"] as const;
 

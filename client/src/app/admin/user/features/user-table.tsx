@@ -4,10 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ROLE_META } from "@/constants/admin-user-constant";
-import { formatShortDate, formatShortTime, getInitials } from "@/helpers/admin-helper";
+import { ROLE_META } from "@/constants/admin/admin-user-constant";
+import { formatShortDate, formatShortTime, getInitials } from "@/helpers/admin/admin-helper";
 import { cn } from "@/lib/utils";
-import type { AdminUser } from "@/types/admin-user";
+import type { AdminUser } from "@/types/admin/admin-user";
 
 const COLUMNS = ["User", "Email", "Telepon", "Tipe user", "Tanggal daftar", "Aksi"];
 

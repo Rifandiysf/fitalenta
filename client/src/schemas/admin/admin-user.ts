@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ADMIN_USER_ROLES } from "@/constants/admin-user-constant";
+import { ADMIN_USER_ROLES } from "@/constants/admin/admin-user-constant";
 
 const PASSWORD_MIN = 6; // mirror PASSWORD_MIN_LENGTH di server
 const PASSWORD_MAX = 72; // mirror PASSWORD_MAX_LENGTH di server

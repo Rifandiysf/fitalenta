@@ -5,10 +5,10 @@ import { Check, CircleAlert, Search, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAdminParticipants } from "@/hooks/use-admin-selection-placements";
+import { useAdminParticipants } from "@/hooks/admin/use-admin-selection-placements";
 import { useDebounced } from "@/hooks/use-debounced";
 import { cn } from "@/lib/utils";
-import type { Participant } from "@/types/selection-placement";
+import type { Participant } from "@/types/admin/selection-placement";
 import { a11y } from "./form-field";
 
 export type RegistrationOption = {

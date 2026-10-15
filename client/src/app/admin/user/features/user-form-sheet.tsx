@@ -8,11 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { ADMIN_USER_ROLES, ROLE_META } from "@/constants/admin-user-constant";
-import { buildUpdatePayload } from "@/helpers/admin-user-helper";
-import { useSaveAdminUser } from "@/hooks/use-admin-users";
-import { createUserSchema, updateUserSchema, type UserFormValues } from "@/schemas/admin-user";
-import type { AdminUser } from "@/types/admin-user";
+import { ADMIN_USER_ROLES, ROLE_META } from "@/constants/admin/admin-user-constant";
+import { buildUpdatePayload } from "@/helpers/admin/admin-user-helper";
+import { useSaveAdminUser } from "@/hooks/admin/use-admin-users";
+import { createUserSchema, updateUserSchema, type UserFormValues } from "@/schemas/admin/admin-user";
+import type { AdminUser } from "@/types/admin/admin-user";
 
 type FieldName = keyof UserFormValues;
 

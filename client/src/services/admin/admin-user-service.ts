@@ -8,8 +8,8 @@ import type {
     AdminUserParams,
     AdminUserSummary,
     AdminUserUpdatePayload,
-} from "@/types/admin-user";
-import { USERS_PER_PAGE } from "@/constants/admin-user-constant";
+} from "@/types/admin/admin-user";
+import { USERS_PER_PAGE } from "@/constants/admin/admin-user-constant";
 
 export async function getAdminUserSummary(): Promise<AdminUserSummary> {
     const { data } = await api.get<ApiResponse<AdminUserSummary>>("/admin/users/summary");

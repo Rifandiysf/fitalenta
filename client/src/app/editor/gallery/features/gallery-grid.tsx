@@ -3,7 +3,7 @@ import { CalendarDays, ImageIcon, Pencil, Star, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatShortDate } from "@/helpers/admin-helper";
+import { formatShortDate } from "@/helpers/admin/admin-helper";
 import { imageUrl } from "@/lib/utils";
 import type { EditorGalleryItem } from "@/types/editor/editor-gallery";
 

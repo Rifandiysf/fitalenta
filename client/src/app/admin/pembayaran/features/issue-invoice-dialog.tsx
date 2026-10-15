@@ -14,10 +14,10 @@ import {
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
-import { useIssueInvoice } from "@/hooks/use-admin-payments";
+import { useIssueInvoice } from "@/hooks/admin/use-admin-payments";
 import { formatIDR } from "@/lib/utils";
-import { validateOptionalDate } from "@/schemas/admin-payment";
-import type { PaymentDetail, PaymentItem } from "@/types/admin-payment";
+import { validateOptionalDate } from "@/schemas/admin/admin-payment";
+import type { PaymentDetail, PaymentItem } from "@/types/admin/admin-payment";
 import { a11y, Field } from "./form-field";
 
 type Props = {

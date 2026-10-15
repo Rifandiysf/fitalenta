@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 import { fetchFile } from "@/lib/file-download";
-import { REPORT_PER_PAGE } from "@/constants/financial-report-constant";
+import { REPORT_PER_PAGE } from "@/constants/admin/financial-report-constant";
 import type { ApiResponse } from "@/types/api";
 import type { AdminPageMeta } from "@/types/pagination";
 import type {
@@ -11,7 +11,7 @@ import type {
     ReportParams,
     ReportRow,
     ReportSummary,
-} from "@/types/financial-report";
+} from "@/types/admin/financial-report";
 
 const BASE_URL = "/admin/financial-reports";
 

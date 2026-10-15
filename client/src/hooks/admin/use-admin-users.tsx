@@ -7,8 +7,8 @@ import {
     getAdminUsers,
     getAdminUserSummary,
     updateAdminUser,
-} from "@/services/admin-user-service";
-import type { AdminUserCreatePayload, AdminUserParams, AdminUserUpdatePayload } from "@/types/admin-user";
+} from "@/services/admin/admin-user-service";
+import type { AdminUserCreatePayload, AdminUserParams, AdminUserUpdatePayload } from "@/types/admin/admin-user";
 
 const ADMIN_USERS_KEY = ["admin", "users"] as const;
 

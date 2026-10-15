@@ -1,5 +1,5 @@
 import { PAYMENT_PROOF_RULES } from "@/constants/user-payment-constant";
-import { formatShortDate } from "@/helpers/admin-helper";
+import { formatShortDate } from "@/helpers/admin/admin-helper";
 import type { MyPaymentItem } from "@/types/user-payment";
 
 export function validateProofFile(file: File): string | null {

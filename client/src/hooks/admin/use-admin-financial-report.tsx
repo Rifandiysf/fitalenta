@@ -7,8 +7,8 @@ import {
     getFinancialReport,
     getFinancialReportSummary,
     importFinancialReport,
-} from "@/services/admin-financial-report-service";
-import type { ReportFilters, ReportParams } from "@/types/financial-report";
+} from "@/services/admin/admin-financial-report-service";
+import type { ReportFilters, ReportParams } from "@/types/admin/financial-report";
 
 const REPORT_KEY = ["admin", "financial-reports"] as const;
 

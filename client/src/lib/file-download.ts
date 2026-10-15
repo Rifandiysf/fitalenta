@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import type { DownloadedFile } from "@/types/financial-report";
+import type { DownloadedFile } from "@/types/admin/financial-report";
 
 async function readBlobMessage(blob: Blob, fallback: string): Promise<string> {
     try {

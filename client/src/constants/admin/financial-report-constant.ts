@@ -1,4 +1,4 @@
-import type { ReportFilters, TerminType } from "@/types/financial-report";
+import type { ReportFilters, TerminType } from "@/types/admin/financial-report";
 
 export const REPORT_PER_PAGE = 20;
 

@@ -7,8 +7,8 @@ import {
     getSelectionPlacementOptions,
     getSelectionPlacementSummary,
     updateParticipant,
-} from "@/services/admin-selection-placement-service";
-import type { ParticipantParams, ParticipantUpdatePayload } from "@/types/selection-placement";
+} from "@/services/admin/admin-selection-placement-service";
+import type { ParticipantParams, ParticipantUpdatePayload } from "@/types/admin/selection-placement";
 
 const SELECTION_PLACEMENTS_KEY = ["admin", "selection-placements"] as const;
 

@@ -1,6 +1,6 @@
-import { formatShortDate } from "@/helpers/admin-helper";
-import type { InvoiceFormValues } from "@/schemas/admin-payment";
-import type { CreateInvoicePayload, PaymentItem } from "@/types/admin-payment";
+import { formatShortDate } from "@/helpers/admin/admin-helper";
+import type { InvoiceFormValues } from "@/schemas/admin/admin-payment";
+import type { CreateInvoicePayload, PaymentItem } from "@/types/admin/admin-payment";
 
 const blankToUndefined = (value: string) => {
     const trimmed = value.trim();

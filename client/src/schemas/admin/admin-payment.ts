@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { MAX_INSTALLMENTS, MIN_INSTALLMENTS } from "@/constants/admin-payment-constant";
+import { MAX_INSTALLMENTS, MIN_INSTALLMENTS } from "@/constants/admin/admin-payment-constant";
 import { formatIDR } from "@/lib/utils";
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;

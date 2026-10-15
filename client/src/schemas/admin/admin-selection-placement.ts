@@ -5,7 +5,7 @@ import {
     PASSED_SELECTION_STATUS,
     PLACEMENT_STATUS_VALUES,
     SELECTION_STATUS_VALUES,
-} from "@/constants/selection-placement-constant";
+} from "@/constants/admin/selection-placement-constant";
 
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 

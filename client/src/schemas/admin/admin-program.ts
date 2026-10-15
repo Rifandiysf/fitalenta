@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { INSTALLMENT_PLAN_PATTERN, PROGRAM_LIMITS } from "@/constants/admin-program-constant";
+import { INSTALLMENT_PLAN_PATTERN, PROGRAM_LIMITS } from "@/constants/admin/admin-program-constant";
 
 const STATUS_VALUES = ["active", "inactive", "full"] as const;
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;

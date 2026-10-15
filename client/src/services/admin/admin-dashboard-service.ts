@@ -7,7 +7,7 @@ import type {
     AdminRegistrationListItem,
     AdminRegistrationQuery,
     PaginationMeta,
-} from "@/types/admin-dashboard";
+} from "@/types/admin/admin-dashboard";
 
 export async function getAdminDashboardSummary(): Promise<AdminDashboardSummary> {
     const { data } = await api.get<ApiResponse<AdminDashboardSummary>>("/admin/dashboard/summary");

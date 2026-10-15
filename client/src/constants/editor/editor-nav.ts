@@ -8,7 +8,7 @@ import {
     Newspaper,
     Users,
 } from "lucide-react";
-import type { AdminAreaConfig } from "@/constants/admin-nav";
+import type { AdminAreaConfig } from "@/constants/admin/admin-nav";
 
 export const EDITOR_ROLES: readonly string[] = ["admin", "editor"];
 

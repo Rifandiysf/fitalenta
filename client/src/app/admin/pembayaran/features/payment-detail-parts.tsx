@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { Check, Circle, CircleDot } from "lucide-react";
-import { PAYMENT_STATUS, statusLabel } from "@/constants/admin-status";
-import { formatShortDate, formatShortTime } from "@/helpers/admin-helper";
-import { getInstallmentSteps } from "@/helpers/admin-payment-helper";
+import { PAYMENT_STATUS, statusLabel } from "@/constants/admin/admin-status";
+import { formatShortDate, formatShortTime } from "@/helpers/admin/admin-helper";
+import { getInstallmentSteps } from "@/helpers/admin/admin-payment-helper";
 import { cn, formatIDR } from "@/lib/utils";
-import type { PaymentHistoryItem, PaymentItem } from "@/types/admin-payment";
+import type { PaymentHistoryItem, PaymentItem } from "@/types/admin/admin-payment";
 import { ProgressBar } from "./payment-progress";
 
 export function SectionTitle({ children }: { children: ReactNode }) {

@@ -1,5 +1,5 @@
 import type { AdminPageMeta } from "@/types/pagination";
-import type { PaymentMethod, PaymentStatus } from "@/types/admin-payment";
+import type { PaymentMethod, PaymentStatus } from "@/types/admin/admin-payment";
 
 export type TerminType = "cash" | "installment";
 

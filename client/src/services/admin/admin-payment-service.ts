@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import { PAYMENTS_PER_PAGE } from "@/constants/admin-payment-constant";
+import { PAYMENTS_PER_PAGE } from "@/constants/admin/admin-payment-constant";
 import type { ApiResponse } from "@/types/api";
 import type { AdminPageMeta } from "@/types/pagination";
 import type {
@@ -12,7 +12,7 @@ import type {
     PaymentParams,
     PaymentSummary,
     VerifyPaymentPayload,
-} from "@/types/admin-payment";
+} from "@/types/admin/admin-payment";
 
 const BASE_URL = "/admin/payments";
 

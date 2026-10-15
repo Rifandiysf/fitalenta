@@ -1,6 +1,6 @@
-import { NEW_PROGRAM_DEFAULTS } from "@/constants/admin-program-constant";
-import type { ProgramFormValues } from "@/schemas/admin-program";
-import type { AdminProgram, AdminProgramDetail } from "@/types/admin-program";
+import { NEW_PROGRAM_DEFAULTS } from "@/constants/admin/admin-program-constant";
+import type { ProgramFormValues } from "@/schemas/admin/admin-program";
+import type { AdminProgram, AdminProgramDetail } from "@/types/admin/admin-program";
 
 export function createEmptyProgramForm(): ProgramFormValues {
     return {
