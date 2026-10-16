@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
 import * as contactService from "../../services/contact.service";
 import { getStringQuery } from "../../utils/request";
+import { INVALID_PAGE_RESPONSE, parsePageQuery } from "../../utils/pagination";
 
 export async function index(req: Request, res: Response) {
   try {
-    const pageParam = getStringQuery(req, "page");
-    const result = await contactService.getAdminContactMessages({ page: pageParam ? parseInt(pageParam) : 1 });
+    const page = parsePageQuery(getStringQuery(req, "page"));
+    if (page === null) return res.status(400).json(INVALID_PAGE_RESPONSE);
+    const result = await contactService.getAdminContactMessages({ page });
     return res.json({ success: true, data: result });
   } catch (error) {
     console.error("Get contact messages error:", error);

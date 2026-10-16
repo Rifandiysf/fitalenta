@@ -116,6 +116,7 @@ export async function createUser(input: CreateUserInput, currentUserId: number):
         email: input.email,
         phone: input.phone,
         role: input.role ?? "user",
+        emailVerifiedAt: new Date(),
         password: await hashPassword(input.password),
       },
       select: userSelect,
