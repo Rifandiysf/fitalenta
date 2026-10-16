@@ -20,7 +20,7 @@ function ExpertCard({ member, index }: { member: TeamMember; index: number }) {
 
     return (
         <article>
-            <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl">
+            <div className="relative aspect-5/6 w-full overflow-hidden rounded-2xl bg-linear-to-br from-[#071d40] to-[#0e4a8f]">
                 {photo ? (
                     <Image
                         src={photo}

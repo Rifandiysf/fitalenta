@@ -7,7 +7,7 @@ const SPLIT_THRESHOLD = 10;
 function PartnerCard({ partner }: { partner: Partner }) {
 
     return (
-        <div className="flex h-24 w-44 items-center justify-center border border-[#10302B]/15 bg-white p-3 sm:h-28 sm:w-56 sm:p-4">
+        <div className="flex h-24 w-44 items-center justify-center border border-[#10302B]/15 rounded-md bg-white p-3 sm:h-28 sm:w-56 sm:p-4">
             <div className="relative h-full w-full">
                 <Image
                     src={partner.logo}
