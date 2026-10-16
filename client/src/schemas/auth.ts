@@ -33,3 +33,13 @@ export const registerSchema = z
     });
 
 export type RegisterInput = z.infer<typeof registerSchema>;
+
+export const resendVerificationSchema = z.object({
+    email: z
+        .string()
+        .min(1, "Email wajib diisi")
+        .email("Masukkan email yang valid"),
+});
+
+export type ResendVerificationInput = z.infer<typeof resendVerificationSchema>;
+export type CaptchaPayload = { turnstileToken?: string };

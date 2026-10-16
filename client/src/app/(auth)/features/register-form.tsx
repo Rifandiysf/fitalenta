@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { ArrowRight, Eye, EyeOff, Loader2, Lock, Mail, Phone, User } from "lucide-react";
+import { TurnstileField } from "@/components/common/turnstile-field";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { registerSchema, type RegisterInput } from "@/schemas/auth";
 import { useRegister } from "@/hooks/use-register";
+import { useTurnstile } from "@/hooks/use-turnstile";
 
 type FieldErrors = Partial<Record<keyof RegisterInput, string>>;
 
@@ -26,6 +28,7 @@ export function RegisterForm() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const { mutate, isPending, error } = useRegister();
+    const turnstile = useTurnstile();
 
     function handleChange<K extends keyof RegisterInput>(field: K, value: RegisterInput[K]) {
         setValues((prev) => ({ ...prev, [field]: value }));
@@ -34,6 +37,7 @@ export function RegisterForm() {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        if (!turnstile.ready) return;
 
         const result = registerSchema.safeParse(values);
         if (!result.success) {
@@ -46,7 +50,7 @@ export function RegisterForm() {
             return;
         }
 
-        mutate(result.data);
+        mutate({ ...result.data, turnstileToken: turnstile.token }, { onSettled: turnstile.reset });
     }
 
     return (
@@ -214,9 +218,12 @@ export function RegisterForm() {
                 </p>
             )}
 
+            <TurnstileField controller={turnstile} />
+
             <Button
                 type="submit"
-                disabled={isPending}
+                disabled={isPending || !turnstile.ready}
+                suppressHydrationWarning
                 className="h-12 w-full bg-secondary text-base font-semibold text-secondary-foreground hover:bg-secondary/90"
             >
                 {isPending ? (
