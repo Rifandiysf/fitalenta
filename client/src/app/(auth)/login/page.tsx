@@ -23,7 +23,7 @@ const highlights = [
     },
 ];
 
-type Props = { searchParams: Promise<{ registered?: string; verified?: string }> };
+type Props = { searchParams: Promise<{ registered?: string; verified?: string; reset?: string }> };
 
 export default async function LoginPage({ searchParams }: Props) {
     const notice = resolveLoginNotice(await searchParams);

@@ -20,7 +20,6 @@ type FieldErrors = Partial<Record<keyof LoginInput, string>>;
 const initialValues: LoginInput = { email: "", password: "" };
 
 type Props = {
-    /** Banner informasi, mis. setelah registrasi atau verifikasi email. */
     notice?: string;
 };
 
@@ -34,7 +33,6 @@ export function LoginForm({ notice }: Props) {
     const turnstile = useTurnstile();
     const cooldown = useCooldown(RESEND_COOLDOWN_SECONDS);
 
-    // 403 EMAIL_NOT_VERIFIED: akun ada tetapi belum diverifikasi, tawarkan kirim ulang.
     const needsVerification = isApiError(error) && error.code === AUTH_ERROR_CODE.emailNotVerified;
 
     function handleChange<K extends keyof LoginInput>(field: K, value: LoginInput[K]) {
@@ -58,7 +56,6 @@ export function LoginForm({ notice }: Props) {
         }
 
         resend.reset();
-        // Token Turnstile sekali pakai, jadi widget di-reset setelah setiap percobaan (berhasil atau gagal).
         mutate({ ...result.data, turnstileToken: turnstile.token }, { onSettled: turnstile.reset });
     }
 
@@ -112,7 +109,12 @@ export function LoginForm({ notice }: Props) {
             </div>
 
             <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <div className="flex items-center justify-between gap-3">
+                    <Label htmlFor="password">Password</Label>
+                    <Link href="/forgot-password" className="text-sm font-medium text-primary hover:underline">
+                        Lupa password?
+                    </Link>
+                </div>
                 <div className="relative">
                     <Lock
                         aria-hidden
@@ -195,7 +197,6 @@ export function LoginForm({ notice }: Props) {
             <Button
                 type="submit"
                 disabled={isPending || !turnstile.ready}
-                // Browser bisa memulihkan status disabled saat reload (mis. Firefox) sebelum hydration.
                 suppressHydrationWarning
                 className="h-12 w-full bg-secondary text-base font-semibold text-secondary-foreground hover:bg-secondary/90"
             >

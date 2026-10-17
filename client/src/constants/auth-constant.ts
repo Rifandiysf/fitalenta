@@ -15,11 +15,17 @@ export const LOGIN_NOTICES = {
     registered:
         "Pendaftaran diproses. Jika data valid, email verifikasi telah dikirim. Cek inbox atau folder spam, lalu klik tautan verifikasi sebelum login.",
     verified: "Email berhasil diverifikasi. Silakan login.",
+    reset: "Password berhasil diubah. Silakan login dengan password baru.",
 } as const;
 
 export type LoginNoticeKey = keyof typeof LOGIN_NOTICES;
 
-export function resolveLoginNotice(params: { registered?: string; verified?: string }): string | undefined {
+export function resolveLoginNotice(params: {
+    registered?: string;
+    verified?: string;
+    reset?: string;
+}): string | undefined {
+    if (params.reset === "1") return LOGIN_NOTICES.reset;
     if (params.verified === "1") return LOGIN_NOTICES.verified;
     if (params.registered === "1") return LOGIN_NOTICES.registered;
     return undefined;

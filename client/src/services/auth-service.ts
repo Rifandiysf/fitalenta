@@ -1,5 +1,11 @@
 import { api } from "@/lib/axios";
-import type { CaptchaPayload, LoginInput, RegisterInput, ResendVerificationInput } from "@/schemas/auth";
+import type {
+    CaptchaPayload,
+    ForgotPasswordInput,
+    LoginInput,
+    RegisterInput,
+    ResendVerificationInput,
+} from "@/schemas/auth";
 import type { AuthUser } from "@/store/auth-store";
 import { ApiResponse } from "@/types/api";
 
@@ -22,6 +28,21 @@ export async function verifyEmail(token: string): Promise<string> {
 
 export async function resendVerification(payload: ResendVerificationInput & CaptchaPayload): Promise<string> {
     const { data } = await api.post<ApiResponse<null>>("/auth/resend-verification", payload);
+    return data.message;
+}
+
+export async function forgotPassword(payload: ForgotPasswordInput & CaptchaPayload): Promise<string> {
+    const { data } = await api.post<ApiResponse<null>>("/auth/forgot-password", payload);
+    return data.message;
+}
+
+export async function resetPassword(payload: { token: string; newPassword: string }): Promise<string> {
+    const { data } = await api.post<ApiResponse<null>>("/auth/reset-password", payload);
+    return data.message;
+}
+
+export async function changePassword(payload: { currentPassword: string; newPassword: string }): Promise<string> {
+    const { data } = await api.post<ApiResponse<null>>("/auth/change-password", payload);
     return data.message;
 }
 

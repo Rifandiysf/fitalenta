@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, LogOut, User } from "lucide-react";
+import { useState } from "react";
+import { ChevronDown, KeyRound, LogOut, User } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -14,6 +15,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import { ChangePasswordSheet } from "./change-password-sheet";
 import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/use-current-user";
@@ -32,8 +34,9 @@ function isActive(pathname: string, href: string) {
 
 export function UserNavbar() {
     const pathname = usePathname();
-    const logout = useLogout();
     const { data } = useCurrentUser();
+    const logout = useLogout();
+    const [passwordOpen, setPasswordOpen] = useState(false);
 
     return (
         <header className="sticky top-0 z-50 border-b border-[#10302B]/10 bg-primary text-white">
@@ -117,7 +120,16 @@ export function UserNavbar() {
 
                             <DropdownMenuSeparator className="lg:hidden" />
 
-                            <DropdownMenuItem variant="destructive" disabled={logout.isPending} onSelect={() => logout.mutate()}>
+                            <DropdownMenuItem onSelect={() => setPasswordOpen(true)}>
+                                <KeyRound aria-hidden />
+                                Ubah password
+                            </DropdownMenuItem>
+
+                            <DropdownMenuItem
+                                variant="destructive"
+                                disabled={logout.isPending}
+                                onSelect={() => logout.mutate()}
+                            >
                                 <LogOut aria-hidden />
                                 Keluar
                             </DropdownMenuItem>
@@ -125,6 +137,8 @@ export function UserNavbar() {
                     </DropdownMenu>
                 </div>
             </div>
+
+            {passwordOpen && <ChangePasswordSheet onClose={() => setPasswordOpen(false)} />}
         </header>
     );
 }
