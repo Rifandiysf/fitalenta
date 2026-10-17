@@ -20,6 +20,7 @@ import { Logo } from "./logo";
 import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useLogout } from "@/hooks/use-logout";
+import { LogoutOverlay } from "@/components/common/logout-overlay";
 
 const LINKS = [
     { href: "/dashboard", label: "Dashboard" },
@@ -139,6 +140,7 @@ export function UserNavbar() {
             </div>
 
             {passwordOpen && <ChangePasswordSheet onClose={() => setPasswordOpen(false)} />}
+            <LogoutOverlay show={logout.isPending || logout.isSuccess} />
         </header>
     );
 }

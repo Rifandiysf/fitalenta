@@ -8,7 +8,6 @@ type ContentThumbnailProps = {
     className?: string;
 };
 
-/** Thumbnail kecil untuk tabel. `unoptimized`: gambar dari server upload tidak perlu lewat optimizer Next. */
 export function ContentThumbnail({ image, alt, className }: ContentThumbnailProps) {
     const src = imageUrl(image);
 

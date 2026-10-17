@@ -26,6 +26,7 @@ import { authLinks, navItems } from "@/constants/site-config";
 import { cn } from "@/lib/utils";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { useLogout } from "@/hooks/use-logout";
+import { LogoutOverlay } from "@/components/common/logout-overlay";
 
 const DASHBOARD_HREF = "/dashboard";
 
@@ -257,6 +258,8 @@ export function Navbar() {
                     </SheetContent>
                 </Sheet>
             </div>
+
+            <LogoutOverlay show={logout.isPending || logout.isSuccess} />
         </header>
     );
 }

@@ -1,10 +1,16 @@
 "use client";
 
 import { Turnstile } from "@marsidev/react-turnstile";
+import { Spinner } from "@/components/ui/spinner";
 import { TURNSTILE_ENABLED, TURNSTILE_MISCONFIGURED, TURNSTILE_SITE_KEY } from "@/constants/auth-constant";
 import type { TurnstileController } from "@/hooks/use-turnstile";
 
-export function TurnstileField({ controller }: { controller: TurnstileController }) {
+type Props = {
+    controller: TurnstileController;
+    busy?: boolean;
+};
+
+export function TurnstileField({ controller, busy }: Props) {
     if (TURNSTILE_MISCONFIGURED) {
         return (
             <p role="alert" className="rounded-md bg-destructive/10 px-4 py-3 text-sm text-destructive">
@@ -28,6 +34,12 @@ export function TurnstileField({ controller }: { controller: TurnstileController
                     onTimeout={controller.onError}
                 />
             </div>
+            {!controller.ready && !controller.failed && !busy && (
+                <p role="status" className="flex items-center gap-2 text-xs text-muted-foreground">
+                    <Spinner aria-hidden />
+                    Menunggu verifikasi keamanan...
+                </p>
+            )}
             {controller.failed && (
                 <p role="alert" className="text-sm text-destructive">
                     Verifikasi keamanan gagal dimuat. Periksa koneksi Anda atau muat ulang halaman.

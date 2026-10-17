@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight, ChevronsUpDown, ExternalLink, KeyRound, LogOut } from "lucide-react";
 import { ChangePasswordSheet } from "@/components/common/change-password-sheet";
+import { LogoutOverlay } from "@/components/common/logout-overlay";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
@@ -16,7 +17,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ADMIN_NAV, isActivePath, type AdminNavEntry } from "@/constants/admin/admin-nav";
+import { ADMIN_AREA, isActivePath, type AdminAreaConfig, type AdminNavEntry } from "@/constants/admin/admin-nav";
 import { siteConfig } from "@/constants/site-config";
 import { getInitials } from "@/helpers/admin/admin-helper";
 import { useLogout } from "@/hooks/use-logout";
@@ -136,22 +137,26 @@ function UserMenu({ user }: { user: AuthUser }) {
             </DropdownMenu>
 
             {passwordOpen && <ChangePasswordSheet onClose={() => setPasswordOpen(false)} />}
+            <LogoutOverlay show={logout.isPending || logout.isSuccess} />
         </>
     );
 }
 
 type AdminSidebarContentProps = {
     user: AuthUser;
+    area?: AdminAreaConfig;
     onNavigate?: () => void;
 };
 
-export function AdminSidebarContent({ user, onNavigate }: AdminSidebarContentProps) {
+export function AdminSidebarContent({ user, area = ADMIN_AREA, onNavigate }: AdminSidebarContentProps) {
     const pathname = usePathname();
+    const [home] = area.nav;
+    const homeHref = home?.type === "link" ? home.href : area.basePath;
 
     return (
         <div className="flex h-full flex-col">
             <div className="space-y-2 p-4">
-                <Link href="/admin" onClick={onNavigate} className="block rounded-lg bg-primary px-3 py-2">
+                <Link href={homeHref} onClick={onNavigate} className="block rounded-lg bg-primary px-3 py-2">
                     <Image
                         src={siteConfig.logo}
                         alt={siteConfig.name}
@@ -162,14 +167,14 @@ export function AdminSidebarContent({ user, onNavigate }: AdminSidebarContentPro
                     />
                 </Link>
                 <p className="px-1 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                    Admin Management
+                    {area.areaLabel}
                 </p>
             </div>
 
-            <nav aria-label="Navigasi admin" className="flex-1 overflow-y-auto px-3 py-2">
+            <nav aria-label={`Navigasi ${area.areaLabel}`} className="flex-1 overflow-y-auto px-3 py-2">
                 <p className="px-2 pb-1 text-xs font-medium text-muted-foreground">Utama</p>
                 <ul className="flex flex-col gap-1">
-                    {ADMIN_NAV.map((entry) =>
+                    {area.nav.map((entry) =>
                         entry.type === "link" ? (
                             <NavLinkItem key={entry.href} entry={entry} pathname={pathname} onNavigate={onNavigate} />
                         ) : (
