@@ -28,11 +28,12 @@ export function LoginForm({ notice }: Props) {
     const [errors, setErrors] = useState<FieldErrors>({});
     const [showPassword, setShowPassword] = useState(false);
 
-    const { mutate, isPending, error } = useLogin();
+    const { mutate, isPending, isSuccess, error } = useLogin();
     const resend = useResendVerification();
     const turnstile = useTurnstile();
     const cooldown = useCooldown(RESEND_COOLDOWN_SECONDS);
 
+    const busy = isPending || isSuccess;
     const needsVerification = isApiError(error) && error.code === AUTH_ERROR_CODE.emailNotVerified;
 
     function handleChange<K extends keyof LoginInput>(field: K, value: LoginInput[K]) {
@@ -91,6 +92,7 @@ export function LoginForm({ notice }: Props) {
                     />
                     <Input
                         id="email"
+                        disabled={busy}
                         type="email"
                         autoComplete="email"
                         placeholder="nama@email.com"
@@ -122,6 +124,7 @@ export function LoginForm({ notice }: Props) {
                     />
                     <Input
                         id="password"
+                        disabled={busy}
                         type={showPassword ? "text" : "password"}
                         autoComplete="current-password"
                         placeholder="••••••••"
@@ -192,18 +195,18 @@ export function LoginForm({ notice }: Props) {
                 </p>
             )}
 
-            <TurnstileField controller={turnstile} />
+            <TurnstileField controller={turnstile} busy={busy} />
 
             <Button
                 type="submit"
-                disabled={isPending || !turnstile.ready}
+                disabled={busy || !turnstile.ready}
                 suppressHydrationWarning
                 className="h-12 w-full bg-secondary text-base font-semibold text-secondary-foreground hover:bg-secondary/90"
             >
-                {isPending ? (
+                {busy ? (
                     <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
-                        Memproses...
+                        {isSuccess ? "Mengalihkan..." : "Memproses..."}
                     </>
                 ) : (
                     <>

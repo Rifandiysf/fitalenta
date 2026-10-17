@@ -67,6 +67,7 @@ export function EmailCaptchaForm({ idPrefix, label, submitLabel, pendingLabel, s
                     />
                     <Input
                         id={inputId}
+                        disabled={action.isPending}
                         type="email"
                         autoComplete="email"
                         placeholder="nama@email.com"
@@ -103,7 +104,7 @@ export function EmailCaptchaForm({ idPrefix, label, submitLabel, pendingLabel, s
                 </p>
             )}
 
-            <TurnstileField controller={turnstile} />
+            <TurnstileField controller={turnstile} busy={action.isPending} />
 
             <Button
                 type="submit"

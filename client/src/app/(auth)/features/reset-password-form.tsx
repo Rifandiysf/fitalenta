@@ -16,7 +16,8 @@ export function ResetPasswordForm({ token }: { token: string }) {
     const [values, setValues] = useState<ResetPasswordInput>(initialValues);
     const [errors, setErrors] = useState<FieldErrors>({});
 
-    const { mutate, isPending, error } = useResetPassword();
+    const { mutate, isPending, isSuccess, error } = useResetPassword();
+    const busy = isPending || isSuccess;
 
     function handleChange<K extends keyof ResetPasswordInput>(field: K, value: string) {
         setValues((prev) => ({ ...prev, [field]: value }));
@@ -50,7 +51,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
                 value={values.newPassword}
                 onChange={(value) => handleChange("newPassword", value)}
                 error={errors.newPassword}
-                disabled={isPending}
+                disabled={busy}
             />
             <PasswordField
                 id="confirmPassword"
@@ -60,7 +61,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
                 value={values.confirmPassword}
                 onChange={(value) => handleChange("confirmPassword", value)}
                 error={errors.confirmPassword}
-                disabled={isPending}
+                disabled={busy}
             />
 
             {error && (
@@ -76,13 +77,13 @@ export function ResetPasswordForm({ token }: { token: string }) {
 
             <Button
                 type="submit"
-                disabled={isPending}
+                disabled={busy}
                 className="h-12 w-full bg-secondary text-base font-semibold text-secondary-foreground hover:bg-secondary/90"
             >
-                {isPending ? (
+                {busy ? (
                     <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden />
-                        Menyimpan...
+                        {isSuccess ? "Mengalihkan..." : "Menyimpan..."}
                     </>
                 ) : (
                     <>

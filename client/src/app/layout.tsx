@@ -3,7 +3,8 @@ import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { QueryProvider } from "@/lib/providers/query-provider";
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
+import { RouteProgress } from "@/components/common/route-progress";
 
 const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
 
@@ -32,6 +33,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>
+        <Suspense fallback={null}>
+          <RouteProgress />
+        </Suspense>
         <QueryProvider>
           <main>
             {children}
