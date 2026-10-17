@@ -5,17 +5,15 @@ type FormData = {
     email: string;
     phone: string;
     role: AdminUser["role"];
-    password: string;
 };
 
 export function buildUpdatePayload(original: AdminUser, data: FormData): AdminUserUpdatePayload {
     const payload: AdminUserUpdatePayload = {};
 
     if (data.name !== original.name) payload.name = data.name;
-    if (data.email.toLowerCase() !== original.email) payload.email = data.email;
+    if (data.email.toLowerCase() !== original.email) payload.email = data.email.toLocaleLowerCase();
     if (data.phone) payload.phone = data.phone;
     if (data.role !== original.role) payload.role = data.role;
-    if (data.password) payload.password = data.password;
 
     return payload;
 }

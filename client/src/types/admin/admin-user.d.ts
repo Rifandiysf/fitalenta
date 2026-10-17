@@ -46,4 +46,4 @@ export type AdminUserCreatePayload = {
     role: AdminUserRole;
 };
 
-export type AdminUserUpdatePayload = Partial<AdminUserCreatePayload>;
+export type AdminUserUpdatePayload = Partial<Omit<AdminUserCreatePayload, "password">>;
