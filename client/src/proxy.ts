@@ -43,7 +43,8 @@ export async function proxy(request: NextRequest) {
     }
 
     const isUserArea =
-        pathname.startsWith("/dashboard") || pathname.startsWith("/pembayaran") || pathname.startsWith("/notifikasi");
+        pathname.startsWith("/dashboard") || pathname.startsWith("/pembayaran") || pathname.startsWith("/notifikasi") ||
+        pathname.startsWith("/profil");
     if (isUserArea && role !== "user") {
         return NextResponse.redirect(new URL(getHomeByRole(role), request.url));
     }
@@ -52,5 +53,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/login", "/register", "/admin/:path*", "/editor/:path*", "/dashboard/:path*", "/pembayaran/:path*", "/notifikasi/:path*"],
+    matcher: ["/login", "/register", "/admin/:path*", "/editor/:path*", "/dashboard/:path*", "/pembayaran/:path*", "/notifikasi/:path*", "/profil/:path*"],
 };

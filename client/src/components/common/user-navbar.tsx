@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { ChevronDown, KeyRound, LogOut, User } from "lucide-react";
+import { ChevronDown, KeyRound, LogOut, User, UserRound } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -122,6 +122,13 @@ export function UserNavbar() {
                             ))}
 
                             <DropdownMenuSeparator className="lg:hidden" />
+
+                            <DropdownMenuItem asChild>
+                                <Link href="/profil">
+                                    <UserRound aria-hidden />
+                                    Profil saya
+                                </Link>
+                            </DropdownMenuItem>
 
                             <DropdownMenuItem onSelect={() => setPasswordOpen(true)}>
                                 <KeyRound aria-hidden />
