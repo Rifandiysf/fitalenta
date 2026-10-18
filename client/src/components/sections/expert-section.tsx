@@ -1,9 +1,9 @@
 import Image from "next/image";
 
 import { Carousel } from "@/components/common/carousel";
-import { getPublicTeamMembers } from "@/services/expert-service";
+import { getPublicExperts } from "@/services/team-service";
 import { imageUrl } from "@/lib/utils";
-import type { TeamMember } from "@/types/expert";
+import type { Team } from "@/types/team";
 import { User } from "lucide-react";
 
 const HEADING_ID = "experts-heading";
@@ -14,7 +14,7 @@ const PLACEHOLDER_TONES = [
     "from-primary to-[#10302B]",
 ] as const;
 
-function ExpertCard({ member, index }: { member: TeamMember; index: number }) {
+function ExpertCard({ member, index }: { member: Team; index: number }) {
     const tone = PLACEHOLDER_TONES[index % PLACEHOLDER_TONES.length];
     const photo = imageUrl(member.image);
 
@@ -52,7 +52,7 @@ function ExpertCard({ member, index }: { member: TeamMember; index: number }) {
 }
 
 export async function ExpertsSection() {
-    const members = await getPublicTeamMembers();
+    const members = await getPublicExperts();
 
     if (members.length === 0) return null;
 

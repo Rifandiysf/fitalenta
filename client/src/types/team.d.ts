@@ -1,4 +1,4 @@
-export type TeamMember = {
+export type Team = {
     id: number;
     name: string;
     position: string;
@@ -6,4 +6,4 @@ export type TeamMember = {
     image: string | null;
 };
 
-export type TeamMembersData = TeamMember[];
+export type TeamData = Team[];

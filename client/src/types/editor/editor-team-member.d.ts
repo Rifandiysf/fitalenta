@@ -1,6 +1,6 @@
 import type { AdminPageMeta } from "@/types/pagination";
 
-export type EditorExpert = {
+export type EditorMember = {
     id: number;
     name: string;
     position: string;
@@ -12,25 +12,25 @@ export type EditorExpert = {
     updatedAt: string;
 };
 
-export type EditorExpertSummary = {
+export type EditorMemberSummary = {
     total: number;
     active: number;
     inactive: number;
 };
 
-export type EditorExpertList = {
-    items: EditorExpert[];
+export type EditorMemberList = {
+    items: EditorMember[];
     meta: AdminPageMeta;
-    summary: EditorExpertSummary;
+    summary: EditorMemberSummary;
 };
 
-export type EditorExpertParams = {
+export type EditorMemberParams = {
     page: number;
     search: string;
     isActive: "all" | "true" | "false";
 };
 
-export type EditorExpertPayload = {
+export type EditorMemberPayload = {
     name: string;
     position: string;
     bio: string;
@@ -38,29 +38,4 @@ export type EditorExpertPayload = {
     isActive: boolean;
     image: File | null;
     removeImage: boolean;
-};
-
-export type EditorAboutJourney = { year: string; text: string };
-export type EditorAboutValue = { icon: string; title: string; desc: string };
-
-export type EditorAbout = {
-    hero: { title: string; subtitle: string };
-    story: { paragraphs: string[]; image: string | null };
-    vision: string;
-    missions: string[];
-    journey: EditorAboutJourney[];
-    values: EditorAboutValue[];
-    director: string | null;
-    team: string | null;
-    updatedAt: string | null;
-};
-
-/** Sama dengan AboutUpdateInput di backend. */
-export type EditorAboutPayload = {
-    hero: { title: string; subtitle: string };
-    story: { paragraphs: string[] };
-    vision: string;
-    missions: string[];
-    journey: EditorAboutJourney[];
-    values: EditorAboutValue[];
 };

@@ -1,34 +1,29 @@
 "use client";
 
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { AboutImageSlot } from "@/constants/editor/editor-team-member-constant";
+import type { MemberKind } from "@/constants/editor/editor-team-member-constant";
 import { EDITOR_CMS_KEY } from "@/hooks/editor/use-editor-cms";
 import {
-    createEditorExpert,
-    deleteEditorAboutImage,
-    deleteEditorExpert,
-    getEditorAbout,
-    getEditorExperts,
-    updateEditorAbout,
-    updateEditorExpert,
-    uploadEditorAboutImage,
+    createEditorMember,
+    deleteEditorMember,
+    getEditorMembers,
+    updateEditorMember,
 } from "@/services/editor/editor-team-member-service";
-import type { EditorAboutPayload, EditorExpertParams, EditorExpertPayload } from "@/types/editor/editor-team-member";
+import type { EditorMemberParams, EditorMemberPayload } from "@/types/editor/editor-team-member";
 
 const EDITOR_TEAM_KEY = ["editor", "team-members"] as const;
-const EDITOR_ABOUT_KEY = ["editor", "about"] as const;
 
-export function useEditorExperts(params: EditorExpertParams) {
+export function useEditorMembers(kind: MemberKind, params: EditorMemberParams) {
     return useQuery({
-        queryKey: [...EDITOR_TEAM_KEY, "list", params],
-        queryFn: () => getEditorExperts(params),
+        queryKey: [...EDITOR_TEAM_KEY, kind, "list", params],
+        queryFn: () => getEditorMembers(kind, params),
         placeholderData: keepPreviousData,
     });
 }
 
-type SaveVariables = { id?: number; payload: EditorExpertPayload };
+type SaveVariables = { id?: number; payload: EditorMemberPayload };
 
-function useInvalidateExperts() {
+function useInvalidateMembers() {
     const queryClient = useQueryClient();
     return () =>
         Promise.all([
@@ -37,55 +32,21 @@ function useInvalidateExperts() {
         ]);
 }
 
-export function useSaveEditorExpert() {
-    const invalidate = useInvalidateExperts();
+export function useSaveEditorMember(kind: MemberKind) {
+    const invalidate = useInvalidateMembers();
 
     return useMutation({
         mutationFn: ({ id, payload }: SaveVariables) =>
-            id !== undefined ? updateEditorExpert(id, payload) : createEditorExpert(payload),
+            id !== undefined ? updateEditorMember(kind, id, payload) : createEditorMember(kind, payload),
         onSuccess: invalidate,
     });
 }
 
-export function useDeleteEditorExpert() {
-    const invalidate = useInvalidateExperts();
+export function useDeleteEditorMember(kind: MemberKind) {
+    const invalidate = useInvalidateMembers();
 
     return useMutation({
-        mutationFn: deleteEditorExpert,
+        mutationFn: (id: number) => deleteEditorMember(kind, id),
         onSuccess: invalidate,
-    });
-}
-
-export function useEditorAbout() {
-    return useQuery({
-        queryKey: [...EDITOR_ABOUT_KEY, "detail"],
-        queryFn: getEditorAbout,
-    });
-}
-
-export function useSaveEditorAbout() {
-    const queryClient = useQueryClient();
-
-    return useMutation({
-        mutationFn: (payload: EditorAboutPayload) => updateEditorAbout(payload),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: EDITOR_ABOUT_KEY }),
-    });
-}
-
-export function useUploadEditorAboutImage() {
-    const queryClient = useQueryClient();
-
-    return useMutation({
-        mutationFn: ({ slot, file }: { slot: AboutImageSlot; file: File }) => uploadEditorAboutImage(slot, file),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: EDITOR_ABOUT_KEY }),
-    });
-}
-
-export function useDeleteEditorAboutImage() {
-    const queryClient = useQueryClient();
-
-    return useMutation({
-        mutationFn: (slot: AboutImageSlot) => deleteEditorAboutImage(slot),
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: EDITOR_ABOUT_KEY }),
     });
 }

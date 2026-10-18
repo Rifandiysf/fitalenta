@@ -79,7 +79,7 @@ export const EDITOR_SHORTCUTS = [
     },
     {
         title: "Tim",
-        description: "Kelola anggota tim, pakar, dan konten halaman About.",
+        description: "Kelola pakar di halaman Home dan anggota tim di halaman About.",
         href: "/editor/team-members",
         createHref: null,
         icon: Users,
