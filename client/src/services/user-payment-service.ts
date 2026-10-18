@@ -40,7 +40,6 @@ export async function submitPaymentProof(id: number, proof: File): Promise<MyPay
     body.append("proof", proof);
 
     const { data } = await api.post<ApiResponse<MyPaymentDetail>>(`${BASE_URL}/${id}/proof`, body, {
-        // instance axios default-nya JSON; FormData harus override agar file tidak ikut di-JSON-kan
         headers: { "Content-Type": "multipart/form-data" },
     });
     return data.data;

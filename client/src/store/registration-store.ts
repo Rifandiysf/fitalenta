@@ -86,7 +86,6 @@ export const useRegistrationStore = create<RegistrationState>()(
 
                 const reader = new FileReader();
                 reader.onload = () => {
-                    // abaikan jika user sudah mengganti foto selagi file dibaca
                     if (get().draft.photo === file) set({ photoPreview: String(reader.result) });
                 };
                 reader.readAsDataURL(file);

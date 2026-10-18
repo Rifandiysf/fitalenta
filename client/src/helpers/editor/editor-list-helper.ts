@@ -14,10 +14,6 @@ export function moveItem<T>(items: T[], from: number, to: number): T[] {
     return copy;
 }
 
-/**
- * Ubah issue zod untuk field array menjadi peta error per baris.
- * Kunci: "0" (baris string), "0.title" (field di dalam baris), "_" (error level array).
- */
 export function collectListErrors(issues: { path: PropertyKey[]; message: string }[], field: string) {
     const errors: Record<string, string> = {};
     for (const issue of issues) {

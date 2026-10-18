@@ -28,7 +28,6 @@ export type DashboardPayment = {
     [key: string]: unknown;
 };
 
-// Mengikuti enum Prisma
 export type RegistrationStatus = "menunggu" | "lolos" | "tidak_lolos";
 export type PlacementStage = "proses" | "lolos" | "ditempatkan";
 

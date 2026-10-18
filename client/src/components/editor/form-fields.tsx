@@ -98,7 +98,6 @@ export function NumberField<T extends FormValues>({ form, name, label, required,
                 step={step}
                 value={String(form.values[name])}
                 onChange={(event) => form.setValue(name, event.target.value as T[typeof name])}
-                // cegah nilai berubah tanpa sengaja saat scroll di atas input
                 onWheel={(event) => event.currentTarget.blur()}
                 className={CONTROL_CLASS}
                 {...fieldA11y(id, error, hint)}

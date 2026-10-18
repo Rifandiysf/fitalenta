@@ -39,7 +39,6 @@ export function toServicePoints(service?: EditorService): ServicePointValue[] {
 
 type ServiceSchemaOutput = ServiceFormValues & { points: ServicePointValue[] };
 
-/** Field opsional yang kosong tidak dikirim, supaya JSON content di database tetap bersih. */
 export function toServicePayload(data: ServiceSchemaOutput): EditorServicePayload {
     const content: EditorServicePayload["content"] = { intro: data.intro };
     if (data.listTitle) content.listTitle = data.listTitle;
@@ -76,7 +75,6 @@ const toPascal = (name: string) =>
         .map((word) => word[0].toUpperCase() + word.slice(1))
         .join("");
 
-/** Aturan yang sama dengan ServiceIcon di website: nama kosong atau tak dikenal jatuh ke ikon default. */
 export function isKnownIcon(name: string) {
     return toPascal(name) in icons;
 }

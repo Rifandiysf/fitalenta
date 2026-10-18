@@ -71,7 +71,6 @@ const STEP_SCHEMAS = {
     3: consentSchema,
 } satisfies Record<RegistrationStep, z.ZodType>;
 
-/** Validasi satu langkah dan kembalikan error pertama untuk tiap field. */
 export function validateStep(step: RegistrationStep, draft: RegistrationDraft): FieldErrors {
     const result = STEP_SCHEMAS[step].safeParse(draft);
     if (result.success) return {};

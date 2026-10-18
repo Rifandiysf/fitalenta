@@ -1,4 +1,3 @@
-/** "Administrator Fitalenta" -> "AF" */
 export function getInitials(name?: string | null) {
     if (!name) return "?";
     return name

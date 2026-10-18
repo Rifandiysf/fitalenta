@@ -3,7 +3,6 @@ import type { RegistrationValues } from "@/schemas/registration";
 import type { ApiResponse } from "@/types/api";
 import type { CreatedRegistration } from "@/types/registration";
 
-/** Nama field mengikuti kolom model Registration di server. */
 function toFormData(values: RegistrationValues): FormData {
     const { ktp, domicile } = values;
 
@@ -44,7 +43,6 @@ export async function createRegistration(values: RegistrationValues): Promise<Cr
     const { data } = await api.post<ApiResponse<CreatedRegistration>>(
         "/user/registrations",
         toFormData(values),
-        // instance axios default-nya JSON; FormData harus override agar file tidak ikut di-JSON-kan
         { headers: { "Content-Type": "multipart/form-data" } },
     );
     return data.data;

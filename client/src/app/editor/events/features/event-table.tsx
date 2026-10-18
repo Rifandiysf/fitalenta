@@ -12,13 +12,10 @@ import { cn } from "@/lib/utils";
 import type { EditorEvent } from "@/types/editor/editor-event";
 
 const COLUMNS = ["Event", "Kategori", "Jadwal", "Status", "Kuota", "Dilihat", "Aksi"];
-
-// Tabel full-width di dalam card, jadi kolom pertama & terakhir diberi jarak tepi.
 const EDGE = "first:pl-(--card-spacing) last:pr-(--card-spacing)";
 
 type EventTableProps = {
     events?: EditorEvent[];
-    /** Data lama masih ditampilkan sementara data baru dimuat. */
     stale?: boolean;
     onDelete: (event: EditorEvent) => void;
 };

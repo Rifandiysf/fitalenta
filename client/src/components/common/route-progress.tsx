@@ -6,15 +6,6 @@ import { usePathname, useSearchParams } from "next/navigation";
 const TRICKLE_MS = 200;
 const MAX_WAIT_MS = 10_000;
 
-/**
- * Progress bar tipis di atas layar saat berpindah halaman — pengganti indikator
- * "compiling" milik devtools Next.js yang tidak ada di production.
- *
- * Dimulai saat link internal diklik, selesai saat pathname / query berubah.
- * Dikontrol lewat ref + DOM langsung supaya tidak memicu re-render di seluruh app.
- * Perubahan query (filter, pagination) tidak memunculkan loading.tsx lagi, jadi
- * bar inilah yang memberi tahu pengguna bahwa data sedang dimuat.
- */
 export function RouteProgress() {
     const pathname = usePathname();
     const search = useSearchParams().toString();
@@ -83,7 +74,6 @@ export function RouteProgress() {
             start();
         };
 
-        // capture: berjalan sebelum <Link> memanggil preventDefault()
         document.addEventListener("click", onClick, true);
         return () => {
             document.removeEventListener("click", onClick, true);
@@ -92,7 +82,7 @@ export function RouteProgress() {
     }, [start, clearTimers]);
 
     return (
-        <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-100 h-[3px]">
+        <div aria-hidden className="pointer-events-none fixed inset-x-0 top-0 z-100 h-0.75">
             <div
                 ref={barRef}
                 style={{ transform: "scaleX(0)", opacity: 0 }}

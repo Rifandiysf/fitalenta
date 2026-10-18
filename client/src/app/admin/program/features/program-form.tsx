@@ -33,7 +33,6 @@ function FormCard({ title, description, children }: { title: string; description
 }
 
 type ProgramFormProps = {
-    /** Program yang diedit; kosong untuk program baru. */
     program?: AdminProgramDetail;
     options: AdminProgramOptions;
 };
@@ -48,7 +47,6 @@ export function ProgramForm({ program, options }: ProgramFormProps) {
         label: category.name,
     }));
 
-    // skema yang tersimpan di program lama ikut ditampilkan meski tidak ada di daftar umum
     const installmentOptions = [...new Set([...INSTALLMENT_PLANS, form.values.installmentPlan])].map((plan) => ({
         value: plan,
         label: installmentLabel(plan),

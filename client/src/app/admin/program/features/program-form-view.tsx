@@ -24,7 +24,6 @@ function FormSkeleton() {
 }
 
 type ProgramFormViewProps = {
-    /** Kosong untuk program baru. */
     programId?: number;
 };
 

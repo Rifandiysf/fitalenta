@@ -5,7 +5,6 @@ import { Card } from "@/components/ui/card";
 type Props = {
     exporting: boolean;
     downloadingTemplate: boolean;
-    /** Ekspor dinonaktifkan sementara filter tidak valid. */
     exportDisabled: boolean;
     onExport: () => void;
     onTemplate: () => void;

@@ -12,7 +12,6 @@ export function validateProofFile(file: File): string | null {
     return null;
 }
 
-/** Tagihan yang masih berjalan (belum lunas / dibatalkan). */
 export const isOpenPayment = ({ state }: Pick<MyPaymentItem, "state">) =>
     state === "awaiting_payment" || state === "awaiting_verification";
 
@@ -20,7 +19,6 @@ export function formatDeadline({ deadline }: Pick<MyPaymentItem, "deadline">): s
     return deadline ? formatShortDate(deadline) : null;
 }
 
-/** "Cicilan ke-2 dari 4" atau "Pelunasan" untuk tagihan non-cicilan. */
 export function getDueLabel(payment: MyPaymentItem): string {
     const { installment } = payment;
     if (!installment) return "Pelunasan";

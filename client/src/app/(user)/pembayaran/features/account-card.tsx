@@ -14,7 +14,6 @@ function CopyButton({ value, label }: { value: string; label: string }) {
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         } catch {
-            // clipboard bisa diblokir browser; pengguna tetap bisa menyalin manual
         }
     }
 

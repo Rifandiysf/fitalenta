@@ -23,7 +23,6 @@ export type PaymentAccount = {
 };
 
 export type MyPaymentInstallment = {
-    /** Jumlah cicilan yang sudah diverifikasi. */
     current: number;
     total: number;
     amounts: string[];
@@ -40,12 +39,10 @@ export type MyPaymentItem = {
     amount: string;
     amountPaid: string;
     remainingAmount: string;
-    /** Nominal yang harus dibayar sekarang (cicilan berikutnya atau sisa tagihan). */
     amountDue: string;
     paymentMethod: PaymentMethod;
     dueDate: string | null;
     nextDueDate: string | null;
-    /** nextDueDate ?? dueDate, sudah dihitung backend. */
     deadline: string | null;
     paymentDate: string | null;
     proofImage: string | null;
@@ -66,7 +63,6 @@ export type MyPaymentHistoryItem = {
 };
 
 export type MyPaymentDetail = MyPaymentItem & {
-    /** null jika tagihan sudah lunas / dibatalkan. */
     paymentAccount: PaymentAccount | null;
     history: MyPaymentHistoryItem[];
 };

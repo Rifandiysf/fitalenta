@@ -16,7 +16,6 @@ type RegionFieldsProps = {
     disabled?: boolean;
 };
 
-/** Provinsi → Kabupaten/Kota → detail alamat. Dipakai untuk alamat KTP dan domisili. */
 export function RegionFields({ kind, disabled = false }: RegionFieldsProps) {
     const address = useRegistrationStore((state) => state.draft[kind]);
     const errors = useRegistrationStore((state) => state.errors);
@@ -29,7 +28,6 @@ export function RegionFields({ kind, disabled = false }: RegionFieldsProps) {
 
     function handleProvinceChange(code: string) {
         const province = provinces.data?.find((item) => item.id === code);
-        // kota milik provinsi lama tidak berlaku lagi, jadi ikut dikosongkan
         setAddress(kind, {
             provinceCode: code,
             provinceName: province?.name ?? "",

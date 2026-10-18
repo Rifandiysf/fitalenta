@@ -69,7 +69,6 @@ const a11y = (id: FieldName, error?: string, hint?: string) => ({
 
 type SelectionFormProps = {
     participant: Participant;
-    /** Buka langsung dalam mode ubah (mis. dari tombol Kelola). */
     initialEditing: boolean;
 };
 
@@ -81,7 +80,6 @@ export function SelectionForm({ participant, initialEditing }: SelectionFormProp
     const [errors, setErrors] = useState<SelectionPlacementFormErrors>({});
     const [notice, setNotice] = useState<string | null>(null);
 
-    // Saat tidak mengubah, tampilkan data terbaru dari server.
     const values = editing ? draft : toFormValues(participant);
     const passed = values.selectionStatus === PASSED_SELECTION_STATUS;
     const companyRequired = COMPANY_REQUIRED_PLACEMENT_STATUSES.includes(values.placementStatus);

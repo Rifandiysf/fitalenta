@@ -31,7 +31,7 @@ export type AdminFilterOptions = {
 export type AdminRegistrationListItem = {
     id: number;
     registrationCode: string;
-    registrationDate: string; // Date -> ISO string di JSON
+    registrationDate: string;
     participant: {
         userId: number | null;
         name: string;

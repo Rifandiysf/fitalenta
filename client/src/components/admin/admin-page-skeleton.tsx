@@ -7,7 +7,6 @@ type AdminPageSkeletonProps = {
     rows?: number;
 };
 
-/** Kerangka halaman manajemen admin/editor: judul, kartu statistik, dan tabel. */
 export function AdminPageSkeleton({ stats = 4, rows = 6 }: AdminPageSkeletonProps) {
     return (
         <div role="status" aria-busy="true" aria-label="Memuat halaman" className="space-y-6">

@@ -10,7 +10,6 @@ type DeleteProgramDialogProps = {
     onDeleted: (program: AdminProgram) => void;
 };
 
-/** Mount hanya saat ada program yang akan dihapus. */
 export function DeleteProgramDialog({ program, onClose, onDeleted }: DeleteProgramDialogProps) {
     const remove = useDeleteAdminProgram();
 

@@ -37,7 +37,6 @@ export function DashboardView() {
     const [query, setQuery] = useState(INITIAL_QUERY);
     const [searchInput, setSearchInput] = useState("");
 
-    // Debounce pencarian 400ms, lalu reset ke halaman 1.
     useEffect(() => {
         const timer = setTimeout(() => {
             setQuery((q) => (q.search === searchInput ? q : { ...q, search: searchInput, page: 1 }));

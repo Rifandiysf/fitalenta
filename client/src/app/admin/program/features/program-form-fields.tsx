@@ -86,7 +86,6 @@ export function TextField({ form, name, label, required, hint, ...inputProps }: 
 }
 
 type NumberFieldProps = BaseFieldProps & {
-    /** Tampilkan pratinjau rupiah, mis. "Rp 16.000.000", sebagai hint. */
     currency?: boolean;
     min?: number;
     step?: number;
@@ -108,7 +107,6 @@ export function NumberField({ form, name, label, required, hint, currency, min =
                 step={step}
                 value={raw}
                 onChange={(event) => form.setValue(name, event.target.value)}
-                // cegah nilai berubah tanpa sengaja saat scroll di atas input
                 onWheel={(event) => event.currentTarget.blur()}
                 className={CONTROL_CLASS}
                 {...a11y(name, error, shownHint)}
@@ -135,12 +133,10 @@ export function TextareaField({ form, name, label, required, hint, rows = 4 }: T
     );
 }
 
-// Radix Select tidak menerima value "" untuk item, jadi pilihan kosong memakai penanda khusus.
 const EMPTY_VALUE = "__empty__";
 
 type SelectFieldProps = BaseFieldProps & {
     options: { value: string; label: string }[];
-    /** Jika diisi, ada pilihan kosong dengan label ini (nilai form = ""). */
     emptyLabel?: string;
     placeholder?: string;
 };

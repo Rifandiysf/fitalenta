@@ -31,7 +31,6 @@ export function UploadProofSheet({ id, onClose, onUploaded }: Props) {
     const [picked, setPicked] = useState<Picked | null>(null);
     const [fileError, setFileError] = useState<string | null>(null);
 
-    // object URL harus dilepas agar tidak bocor memori
     useEffect(
         () => () => {
             if (previewRef.current) URL.revokeObjectURL(previewRef.current);
@@ -41,7 +40,7 @@ export function UploadProofSheet({ id, onClose, onUploaded }: Props) {
 
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0];
-        event.target.value = ""; // memungkinkan memilih file yang sama setelah gagal validasi
+        event.target.value = "";
         if (!file) return;
 
         const message = validateProofFile(file);

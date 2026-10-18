@@ -20,7 +20,7 @@ export function PhotoUpload() {
 
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0];
-        event.target.value = ""; // memungkinkan memilih file yang sama setelah gagal validasi
+        event.target.value = "";
         if (!file) return;
 
         const message = validatePhotoFile(file);

@@ -14,13 +14,11 @@ type ImageUploadFieldProps = {
     label: string;
     required?: boolean;
     hint?: string;
-    /** Path/URL gambar yang sudah tersimpan di server (saat edit). */
     currentImage?: string | null;
     file: File | null;
     error?: string;
     onChange: (file: File | null) => void;
     onError: (message: string) => void;
-    /** Kelas rasio pratinjau, mis. "aspect-video". */
     aspectClassName?: string;
 };
 
@@ -40,7 +38,6 @@ export function ImageUploadField({
     const [preview, setPreview] = useState<string | null>(null);
     const previewRef = useRef<string | null>(null);
 
-    // URL pratinjau dibuat di event handler (bukan di effect) dan dilepas saat diganti atau komponen dibongkar.
     function replacePreview(next: File | null) {
         if (previewRef.current) URL.revokeObjectURL(previewRef.current);
         previewRef.current = next ? URL.createObjectURL(next) : null;
@@ -56,7 +53,7 @@ export function ImageUploadField({
 
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         const selected = event.target.files?.[0];
-        event.target.value = ""; // memungkinkan memilih file yang sama setelah gagal validasi
+        event.target.value = "";
         if (!selected) return;
 
         const message = validateImageFile(selected);

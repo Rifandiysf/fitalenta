@@ -48,7 +48,6 @@ export function DeleteUserDialog({ user, onClose, onDeleted }: DeleteUserDialogP
                         variant="destructive"
                         disabled={remove.isPending}
                         onClick={(event) => {
-                            // tetap terbuka sampai request selesai agar error bisa ditampilkan
                             event.preventDefault();
                             remove.mutate(user.id, { onSuccess: () => onDeleted(user) });
                         }}
