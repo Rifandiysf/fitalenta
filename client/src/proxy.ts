@@ -39,7 +39,7 @@ export async function proxy(request: NextRequest) {
     }
 
     if (pathname.startsWith("/editor") && role === "user") {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
+        return NextResponse.redirect(new URL(getHomeByRole(role), request.url));
     }
 
     const isUserArea = pathname.startsWith("/dashboard") || pathname.startsWith("/pembayaran");

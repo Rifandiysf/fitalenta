@@ -11,12 +11,10 @@ import { QuotaBar } from "./quota-bar";
 
 const COLUMNS = ["Program", "Kategori", "Durasi", "Kuota", "Biaya", "Status", "Aksi"];
 
-// Tabel full-width di dalam card, jadi kolom pertama & terakhir diberi jarak tepi.
 const EDGE = "first:pl-(--card-spacing) last:pr-(--card-spacing)";
 
 type ProgramTableProps = {
     programs?: AdminProgram[];
-    /** Data lama masih ditampilkan sementara data baru dimuat. */
     stale?: boolean;
     onDelete: (program: AdminProgram) => void;
 };
@@ -90,10 +88,12 @@ export function ProgramTable({ programs, stale, onDelete }: ProgramTableProps) {
                                 </TableCell>
                                 <TableCell className={EDGE}>
                                     <div className="flex flex-col items-start gap-1">
-                                        <Badge variant={status.variant}>{status.label}</Badge>
+                                        <Badge className={status.className}>
+                                            {status.label}
+                                        </Badge>
                                         {program.isRunning && (
                                             <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                                                <span className="size-1.5 rounded-full bg-primary" aria-hidden />
+                                                <span className="size-1.5 rounded-full bg-green-400" aria-hidden />
                                                 Sedang berjalan
                                             </span>
                                         )}

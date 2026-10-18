@@ -20,7 +20,6 @@ export type PaymentOptions = {
 };
 
 export type PaymentInstallment = {
-    /** Jumlah cicilan yang sudah diverifikasi. */
     current: number;
     total: number;
     amounts: string[];
@@ -47,7 +46,7 @@ export type PaymentItem = {
     notes: string | null;
     installment: PaymentInstallment | null;
     registration: { id: number; registrationCode: string };
-    participant: { userId: number | null; name: string; email: string; phone: string | null };
+    participant: { userId: number | null; name: string; email: string; phone: string | null, photoPath: string | null };
     program: { id: number | null; name: string; programFormat: string | null };
     actions: { canIssue: boolean; canVerify: boolean };
 };

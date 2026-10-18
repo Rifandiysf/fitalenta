@@ -9,7 +9,7 @@ function InfoRow({ icon: Icon, children }: { icon: typeof Mail; children: React.
     return (
         <div className="flex items-start gap-2 text-sm">
             <Icon className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden />
-            <span className="min-w-0 break-words">{children}</span>
+            <span className="min-w-0 wrap-break-word">{children}</span>
         </div>
     );
 }

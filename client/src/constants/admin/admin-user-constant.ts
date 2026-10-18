@@ -5,13 +5,28 @@ export const ADMIN_USER_ROLES = ["user", "editor", "admin"] as const satisfies r
 type RoleMeta = {
     label: string;
     subtitle: string;
-    variant: "outline" | "secondary" | "destructive";
+    className: string;
 };
 
 export const ROLE_META: Record<AdminUserRole, RoleMeta> = {
-    user: { label: "Peserta", subtitle: "Peserta FITALENTA", variant: "outline" },
-    editor: { label: "Editor", subtitle: "Editor konten", variant: "secondary" },
-    admin: { label: "Admin", subtitle: "Administrator", variant: "destructive" },
+    user: {
+        label: "Peserta",
+        subtitle: "Peserta FITALENTA",
+        className:
+            "border-transparent bg-muted text-muted-foreground",
+    },
+    editor: {
+        label: "Editor",
+        subtitle: "Editor konten",
+        className:
+            "border-transparent bg-sky-500/10 text-sky-700 dark:text-sky-400",
+    },
+    admin: {
+        label: "Admin",
+        subtitle: "Administrator",
+        className:
+            "border-transparent bg-violet-500/10 text-violet-700 dark:text-violet-400",
+    },
 };
 
 export const ROLE_FILTER_OPTIONS = [

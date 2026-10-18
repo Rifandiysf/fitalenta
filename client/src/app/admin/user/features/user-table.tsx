@@ -99,7 +99,9 @@ export function UserTable({ users, currentUserId, stale, onEdit, onDelete }: Use
                                     </span>
                                 </TableCell>
                                 <TableCell className={EDGE}>
-                                    <Badge variant={meta.variant}>{meta.label}</Badge>
+                                    <Badge className={meta.className}>
+                                        {meta.label}
+                                    </Badge>
                                 </TableCell>
                                 <TableCell className={cn(EDGE, "whitespace-nowrap")}>
                                     <div className="font-medium">{formatShortDate(user.createdAt)}</div>

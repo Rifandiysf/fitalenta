@@ -2,12 +2,27 @@ import type { AdminProgramStatus } from "@/types/admin/admin-program";
 
 export const PROGRAMS_PER_PAGE = 10;
 
-type StatusMeta = { label: string; variant: "default" | "outline" | "destructive" };
+type StatusMeta = {
+    label: string;
+    className: string;
+};
 
 export const PROGRAM_STATUS_META: Record<AdminProgramStatus, StatusMeta> = {
-    active: { label: "Aktif", variant: "default" },
-    inactive: { label: "Nonaktif", variant: "outline" },
-    full: { label: "Penuh", variant: "destructive" },
+    active: {
+        label: "Aktif",
+        className:
+            "border-transparent bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+    },
+    inactive: {
+        label: "Nonaktif",
+        className:
+            "border-transparent bg-muted text-muted-foreground",
+    },
+    full: {
+        label: "Penuh",
+        className:
+            "border-transparent bg-amber-500/10 text-amber-700 dark:text-amber-400",
+    },
 };
 
 export const PROGRAM_STATUS_OPTIONS: { value: AdminProgramStatus; label: string }[] = [
@@ -22,7 +37,6 @@ export const RUNNING_FILTER_OPTIONS = [
     { value: "false", label: "Tidak berjalan" },
 ] as const;
 
-// Mirror server/src/config/program.config.ts
 export const PROGRAM_LIMITS = {
     short: 191,
     long: 20000,
@@ -35,7 +49,6 @@ export const INSTALLMENT_PLAN_PATTERN = /^(none|\d{1,2}_installments)$/;
 
 export const INSTALLMENT_PLANS = ["none", ...[2, 3, 4, 5, 6, 8, 10, 12].map((count) => `${count}_installments`)];
 
-/** Nilai awal program baru; sama dengan default kolom di database. */
 export const NEW_PROGRAM_DEFAULTS = {
     location: "Jakarta, Indonesia & Jepang",
     bridgeFund: "Tersedia",

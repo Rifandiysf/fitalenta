@@ -2,7 +2,6 @@ import { getQuotaPercent } from "@/helpers/admin/admin-program-helper";
 import { cn } from "@/lib/utils";
 import type { AdminProgram } from "@/types/admin/admin-program";
 
-/** Keterisian kuota: "3/12" + bar tipis. Kuota kosong berarti tanpa batas. */
 export function QuotaBar({ program }: { program: AdminProgram }) {
     const percent = getQuotaPercent(program);
 
