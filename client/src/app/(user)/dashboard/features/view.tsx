@@ -92,7 +92,12 @@ export function DashboardView() {
                 <Alert>
                     <Bell aria-hidden />
                     <AlertTitle>{data.unreadNotifications} notifikasi belum dibaca</AlertTitle>
-                    <AlertDescription>Periksa pembaruan terbaru terkait pendaftaran Anda.</AlertDescription>
+                    <AlertDescription>
+                        Periksa pembaruan terbaru terkait pendaftaran Anda.{" "}
+                        <Link href="/notifikasi" className="font-semibold text-primary underline-offset-4 hover:underline">
+                            Lihat notifikasi
+                        </Link>
+                    </AlertDescription>
                 </Alert>
             )}
 
