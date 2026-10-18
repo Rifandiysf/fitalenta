@@ -69,6 +69,11 @@ enum RelatedEntity {
   placement
 }
 
+enum TeamMemberType {
+  expert
+  team
+}
+
 model User {
   id              Int       @id @default(autoincrement())
   email           String    @unique
@@ -240,16 +245,18 @@ model Gallery {
 }
 
 model TeamMember {
-  id        Int      @id @default(autoincrement())
+  id        Int            @id @default(autoincrement())
+  type      TeamMemberType @default(expert)
   name      String
   position  String
-  bio       String?  @db.Text
+  bio       String?        @db.Text
   image     String?
-  order     Int      @default(0)
-  isActive  Boolean  @default(true) @map("is_active")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  order     Int            @default(0)
+  isActive  Boolean        @default(true) @map("is_active")
+  createdAt DateTime       @default(now()) @map("created_at")
+  updatedAt DateTime       @updatedAt @map("updated_at")
 
+  @@index([type, isActive, order])
   @@map("team_members")
 }
 
