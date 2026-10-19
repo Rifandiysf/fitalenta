@@ -93,6 +93,7 @@ TURNSTILE_SECRET_KEY=0x4AAAAAAxxxxxxxxxxxxxxxxxxxx
 Buat file `/var/www/fitalenta/client/.env.local`:
 
 ```env
+NODE_ENV=production
 NEXT_PUBLIC_API_URL=https://fitalenta.co.id/api
 NEXT_PUBLIC_ASSET_URL=https://fitalenta.co.id
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=0x4AAAAAAxxxxxxxxxxxxxxxxxxxx
