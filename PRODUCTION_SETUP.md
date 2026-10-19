@@ -1,19 +1,19 @@
 # Panduan Setup Production & Migrasi Data — FITALENTA
 
-Dokumen ini berisi panduan teknis langkah demi langkah untuk melakukan deployment sistem **FITALENTA** ke server production (VPS / Cloud), mencakup konfigurasi web server Nginx, migrasi database, migrasi data peserta dari sistem lama (Laravel), dan pengelolaan proses aplikasi.
+Dokumen ini berisi panduan teknis langkah demi langkah untuk melakukan deployment sistem **FITALENTA** ke server production (VPS / Cloud), mencakup konfigurasi web server Nginx, konfigurasi database MySQL, migrasi data peserta dari sistem lama (ojetu & fitalenta), dan pengelolaan proses aplikasi.
 
 ---
 
-## 1. Ikhtisar Arsitektur Sistem
+## 1. Ikhtisar Arsitektur Sistem & Penggabungan Repository
 
-Repository ini merupakan hasil **penggabungan** dari dua repository terpisah sebelumnya:
-1. **Website Profil Perusahaan** (`fitalenta.co.id` — sebelumnya berbasis Laravel dari repo `junlandaime/fitalenta`).
-2. **Sistem Pendaftaran & Portal Peserta** (`registrasi.fitalenta.co.id` — sebelumnya berbasis Laravel dari repo `junlandaime/ojetu`).
+Repository ini merupakan hasil **penggabungan (unifikasi)** dari dua repository terpisah sebelumnya:
+1. **Website Profil Perusahaan** (`fitalenta.co.id` — sebelumnya berbasis **Laravel** dari repo `junlandaime/fitalenta`).
+2. **Sistem Pendaftaran & Portal Peserta** (`registrasi.fitalenta.co.id` — sebelumnya berbasis **Express.js dan React**, dengan koneksi database MySQL menggunakan driver **`mysql2`** dari repo `junlandaime/ojetu`).
 
-Keduanya kini bersatu dalam satu arsitektur monorepo modern:
-- **Frontend (`client/`)**: Next.js App Router (React 19, TypeScript, Tailwind CSS) — berjalan di port `3000`.
-- **Backend API (`server/`)**: Express.js + Prisma ORM + TypeScript — berjalan di port `5000`.
-- **Database**: MariaDB / MySQL.
+Kedua sistem tersebut kini disatukan ke dalam arsitektur monorepo modern:
+- **Frontend (`client/`)**: Next.js App Router (React 19, TypeScript, Tailwind CSS) — menggabungkan tampilan publik fitalenta dan portal registrasi ojetu, berjalan di port `3000`.
+- **Backend API (`server/`)**: Express.js + Prisma ORM + TypeScript — menyatukan logic API profil dan pendaftaran peserta, berjalan di port `5000`.
+- **Database**: MySQL / MariaDB (kompatibel dengan schema MySQL dari ojetu lama).
 - **Reverse Proxy**: Nginx + SSL Let's Encrypt (Certbot).
 - **Process Manager**: PM2.
 
@@ -21,10 +21,10 @@ Keduanya kini bersatu dalam satu arsitektur monorepo modern:
 
 ## 2. Prasyarat Server Production
 
-Pastikan server (misal: Ubuntu 22.04 LTS atau 24.04 LTS) telah terpasang:
+Pastikan server production (misal: Ubuntu 22.04 LTS atau 24.04 LTS) telah terpasang:
 - **Node.js**: v20.x atau v22.x LTS (`node -v`)
 - **npm**: v10+ (`npm -v`)
-- **MariaDB** / **MySQL Server**: v10.6+ / v8.0+
+- **MySQL Server**: v8.0+ atau **MariaDB Server**: v10.6+
 - **Nginx Web Server**: `nginx -v`
 - **PM2 Process Manager**: `npm install -g pm2`
 - **Certbot (SSL)**: `apt install certbot python3-certbot-nginx -y`
@@ -32,18 +32,18 @@ Pastikan server (misal: Ubuntu 22.04 LTS atau 24.04 LTS) telah terpasang:
 
 ---
 
-## 3. Persiapan Database Production
+## 3. Persiapan Database Production (MySQL)
 
-Masuk ke MySQL / MariaDB sebagai root:
+Masuk ke MySQL sebagai root:
 ```bash
 sudo mysql -u root -p
 ```
 
-Jalankan perintah berikut untuk membuat database dan user khusus:
+Jalankan perintah berikut untuk membuat database production dan user khusus dengan hak akses penuh:
 ```sql
 CREATE DATABASE fitalenta_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-CREATE USER 'fitalenta_user'@'localhost' IDENTIFIED BY 'PasswordKuatDatabase2026!';
+CREATE USER 'fitalenta_user'@'localhost' IDENTIFIED WITH mysql_native_password BY 'PasswordKuatDatabase2026!';
 GRANT ALL PRIVILEGES ON fitalenta_prod.* TO 'fitalenta_user'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
@@ -54,14 +54,14 @@ EXIT;
 ## 4. Konfigurasi Environment Variables
 
 ### A. Backend (`server/.env`)
-Buat file `/var/www/fitalenta/server/.env` dengan isi:
+Buat file `/var/www/fitalenta/server/.env` dengan konfigurasi database MySQL:
 
 ```env
 PORT=5000
 NODE_ENV=production
 TRUST_PROXY=true
 
-# Database Connection
+# Database MySQL Production (Kompatibel dengan MySQL2 / Prisma)
 DATABASE_HOST=127.0.0.1
 DATABASE_PORT=3306
 DATABASE_NAME=fitalenta_prod
@@ -74,7 +74,7 @@ COOKIE_SECURE=true
 COOKIE_SAME_SITE=lax
 COOKIE_DOMAIN=.fitalenta.co.id
 
-# JWT Authentication (Gunakan string acak minimal 32 karakter)
+# JWT Authentication
 JWT_SECRET=super_secret_jwt_key_production_fitalenta_2026_secure
 JWT_EXPIRES_IN=7d
 
@@ -90,7 +90,7 @@ TURNSTILE_SECRET_KEY=0x4AAAAAAxxxxxxxxxxxxxxxxxxxx
 ```
 
 ### B. Frontend (`client/.env.local` atau `client/.env.production`)
-Buat file `/var/www/fitalenta/client/.env.local` dengan isi:
+Buat file `/var/www/fitalenta/client/.env.local`:
 
 ```env
 NEXT_PUBLIC_API_URL=https://fitalenta.co.id/api
@@ -114,7 +114,7 @@ cd /var/www/fitalenta
 cd /var/www/fitalenta/server
 npm install
 
-# 1. Jalankan generator dan migrasi database Prisma
+# 1. Jalankan generator dan migrasi database Prisma ke MySQL
 npm run prisma:generate
 npx prisma migrate deploy
 
@@ -122,16 +122,16 @@ npx prisma migrate deploy
 mkdir -p uploads/articles uploads/events uploads/gallery uploads/team-members uploads/testimonials uploads/registrations uploads/payment-proofs
 chmod -R 775 uploads
 
-# 3. Build bundle backend
+# 3. Build bundle backend Express
 npm run build
 
 # 4. Seed Akun Admin Awal (Super Admin & Editor)
 npm run seed:admin
 ```
-> **Catatan Akun Default Hasil Seed:**
+> **Akun Default Hasil Seed:**
 > - Super Admin: `admin@fitalenta.id` / Password: `Admin@123`
 > - Editor: `editor@fitalenta.id` / Password: `Editor@123`
-> *(Segera ganti password melalui antarmuka setelah login).*
+> *(Segera ubah password setelah pertama kali login).*
 
 ### B. Setup Frontend Client
 ```bash
@@ -142,99 +142,140 @@ npm run build
 
 ---
 
-## 6. Prosedur Pemigrasian Data Peserta Lama (ojetu / fitalenta)
+## 6. Prosedur Pemigrasian Data Peserta Lama (Dari Database MySQL ojetu)
 
-### Langkah 1: Ekspor Data dari Database Laravel Lama
-Jalankan query SQL berikut pada database sistem lama (`ojetu` / `fitalenta`) untuk mengekstrak data seluruh pendaftar:
+Karena sistem pendaftaran lama **ojetu** dibangun menggunakan **Express dan React** dengan database MySQL (`mysql2`), struktur data peserta dapat dimigrasikan dengan sangat mudah.
+
+### Metode A: Menggunakan Dump Query SQL (Paling Direkomendasikan)
+1. Ekspor data peserta dari database MySQL `ojetu` lama menggunakan query SQL berikut:
 
 ```sql
 SELECT 
     u.name AS name,
     u.email AS email,
     u.phone AS phone,
-    p.nik AS nik,
-    p.gender AS gender,
-    p.birth_place AS birth_place,
-    p.birth_date AS birth_date,
-    p.address AS address,
-    p.last_education AS last_education,
-    p.major AS major,
-    p.education_institution AS education_institution,
-    p.current_activity AS current_activity,
-    p.marital_status AS marital_status,
-    p.parent_phone AS parent_phone,
-    p.parent_relationship AS parent_relationship,
-    p.registration_code AS registration_code,
-    p.status AS registration_status,
-    p.program_name AS program_name,
-    p.created_at AS created_at
+    r.nik AS nik,
+    r.gender AS gender,
+    r.birth_place AS birth_place,
+    r.birth_date AS birth_date,
+    r.address AS address,
+    r.last_education AS last_education,
+    r.major AS major,
+    r.education_institution AS education_institution,
+    r.current_activity AS current_activity,
+    r.marital_status AS marital_status,
+    r.parent_phone AS parent_phone,
+    r.parent_relationship AS parent_relationship,
+    r.ktp_province_code AS ktp_province_code,
+    r.ktp_province_name AS ktp_province_name,
+    r.ktp_city_code AS ktp_city_code,
+    r.ktp_city_name AS ktp_city_name,
+    r.ktp_address AS ktp_address,
+    r.domicile_province_code AS domicile_province_code,
+    r.domicile_province_name AS domicile_province_name,
+    r.domicile_city_code AS domicile_city_code,
+    r.domicile_city_name AS domicile_city_name,
+    r.domicile_address AS domicile_address,
+    r.photo_path AS photo_path,
+    r.n4_certificate_path AS n4_certificate_path,
+    r.ssw_certificate_path AS ssw_certificate_path,
+    r.registration_code AS registration_code,
+    r.registration_status AS registration_status,
+    r.created_at AS created_at
 FROM users u
-JOIN registrations p ON u.id = p.user_id;
+LEFT JOIN registrations r ON u.id = r.user_id
+WHERE u.role = 'user' OR u.role IS NULL;
 ```
 
-Ekspor hasil query tersebut ke dalam format JSON array.
+2. Simpan hasil export tersebut dalam format JSON pada path:
+   ```bash
+   /var/www/fitalenta/server/prisma/data/legacy-participants.json
+   ```
 
-### Langkah 2: Tempatkan File JSON di Server
-Simpan file hasil export tersebut pada path berikut:
-```bash
-/var/www/fitalenta/server/prisma/data/legacy-participants.json
+3. *(Opsional)* Salin berkas upload foto/dokumen dari folder uploads Express `ojetu` lama ke server baru:
+   ```bash
+   cp -r /path/to/ojetu/uploads/* /var/www/fitalenta/server/uploads/registrations/
+   ```
+
+4. Jalankan script migrasi otomatis:
+   ```bash
+   cd /var/www/fitalenta/server
+   npm run migrate:participants
+   ```
+
+### Metode B: Migrasi Langsung Menggunakan Driver `mysql2`
+Jika Anda ingin menarik data langsung dari instance database MySQL lama tanpa mengekspor ke file JSON, Anda dapat menggunakan script Node.js dengan driver `mysql2`. Buat skrip sementara (misal: `migrate-direct-mysql2.mjs`):
+
+```javascript
+import mysql from "mysql2/promise";
+import fs from "fs";
+
+async function dumpLegacyOjetu() {
+  const connection = await mysql.createConnection({
+    host: "127.0.0.1",
+    user: "root",
+    password: "password_db_ojetu_lama",
+    database: "ojetu_db_lama",
+  });
+
+  const [rows] = await connection.execute(`
+    SELECT u.name, u.email, u.phone, r.*
+    FROM users u
+    LEFT JOIN registrations r ON u.id = r.user_id
+  `);
+
+  fs.writeFileSync(
+    "./prisma/data/legacy-participants.json",
+    JSON.stringify(rows, null, 2)
+  );
+  console.log(`Berhasil mengekstrak ${rows.length} data peserta dari database MySQL ojetu lama!`);
+  await connection.end();
+}
+
+dumpLegacyOjetu();
 ```
-
-*(Opsional)* Jika ada berkas foto/sertifikat lama yang ingin dipindahkan:
-Salin berkas dari `storage/app/public/...` pada sistem lama ke `/var/www/fitalenta/server/uploads/registrations/`.
-
-### Langkah 3: Eksekusi Skrip Migrasi
-Jalankan skrip migrasi data peserta:
+Setelah file JSON tercipta, cukup jalankan:
 ```bash
-cd /var/www/fitalenta/server
 npm run migrate:participants
 ```
-
-Skrip ini otomatis:
-1. Membaca data dari `legacy-participants.json`.
-2. Membuat/memperbarui akun user peserta (`role: "user"`).
-3. Membuat record registrasi dengan kode pendaftaran unik.
-4. Menginisialisasi tahap `selection_status` dan `placement_status`.
-5. Memberikan password awal seragam ke setiap akun yang dimigrasi.
 
 ---
 
 ## 7. Fitur Reset Password Seragam Peserta Pasca-Migrasi
 
-Sesuai kebutuhan, semua peserta lama diberikan satu password baru yang seragam agar mempermudah transisi akun ke sistem baru.
+Setelah migrasi selesai, semua akun peserta lama (`role: "user"`) diseragamkan password-nya ke password default yang sama agar seluruh peserta lama dapat langsung masuk tanpa kendala perbedaan enkripsi password dari sistem lama.
 
-1. Tentukan password seragam yang diinginkan pada `server/.env`:
+1. Tentukan password seragam di `server/.env`:
    ```env
    DEFAULT_PARTICIPANT_PASSWORD=Fitalenta2026!
    ```
-2. Jalankan perintah reset password massal:
+2. Jalankan perintah:
    ```bash
    cd /var/www/fitalenta/server
    npm run reset:passwords
    ```
-3. **Hasil:**
-   - Seluruh akun peserta (`role: "user"`) password-nya akan di-hash ulang menggunakan bcrypt dengan password seragam tersebut.
-   - Akun Admin dan Editor **tidak** tersentuh.
-4. **Instruksi untuk Peserta:**
-   Informasikan kepada peserta:
-   > *"Gunakan email terdaftar Anda dan password sementara: `Fitalenta2026!` untuk masuk ke website fitalenta.co.id. Setelah berhasil login, disarankan segera mengubah password pada menu Profil."*
+3. **Hasil Eksekusi:**
+   - Semua akun dengan `role: "user"` akan di-hash menggunakan bcrypt dengan password `Fitalenta2026!`.
+   - Akun Admin dan Editor **tidak** terpengaruh.
+4. **Instruksi Pengumuman untuk Peserta:**
+   > *"Peserta yang telah mendaftar di sistem sebelumnya (ojetu) dapat masuk menggunakan email terdaftar masing-masing dengan password seragam: **`Fitalenta2026!`**. Setelah masuk ke dashboard peserta, silakan perbarui password Anda pada menu Profil."*
 
 ---
 
-## 8. Konfigurasi Nginx & Subdomain
+## 8. Konfigurasi Nginx & Penanganan Subdomain Lama
 
-Karena sebelumnya menggunakan domain `fitalenta.co.id` dan subdomain `registrasi.fitalenta.co.id`, Nginx dikonfigurasi agar menangani keduanya secara mulus.
+Karena sistem `ojetu` sebelumnya beralamat di `registrasi.fitalenta.co.id` dan website utama di `fitalenta.co.id`, Nginx dikonfigurasi untuk menangani penggabungan ini dengan mulus (mengarahkan URL subdomain lama langsung ke halaman `/pendaftaran` di sistem baru).
 
 Buat file konfigurasi Nginx:
 ```bash
 sudo nano /etc/nginx/sites-available/fitalenta.conf
 ```
 
-Isi konfigurasi berikut:
+Isi konfigurasi Nginx:
 
 ```nginx
-# 1. Penanganan Subdomain registrasi.fitalenta.co.id
-# Otomatis mengarahkan (redirect 301) ke halaman pendaftaran di domain utama
+# 1. Subdomain registrasi.fitalenta.co.id (Eks-Ojetu)
+# Mengarahkan langsung seluruh pengunjung ke form pendaftaran di sistem baru
 server {
     listen 80;
     listen [::]:80;
@@ -247,7 +288,6 @@ server {
     listen [::]:443 ssl http2;
     server_name registrasi.fitalenta.co.id;
 
-    # Path sertifikat SSL
     ssl_certificate /etc/letsencrypt/live/fitalenta.co.id/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/fitalenta.co.id/privkey.pem;
 
@@ -273,10 +313,10 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers HIGH:!aNULL:!MD5;
 
-    # Batas ukuran upload berkas (KTP, bukti bayar, foto)
+    # Batas ukuran upload (KTP, sertifikat, bukti pembayaran)
     client_max_body_size 25M;
 
-    # A. API Backend Express (Port 5000)
+    # A. Backend API Express (Port 5000)
     location /api/ {
         proxy_pass http://127.0.0.1:5000/api/;
         proxy_http_version 1.1;
@@ -309,59 +349,24 @@ server {
 }
 ```
 
-Aktifkan konfigurasi dan restart Nginx:
+Aktifkan konfigurasi dan reload Nginx:
 ```bash
 sudo ln -s /etc/nginx/sites-available/fitalenta.conf /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-Pasang SSL Let's Encrypt jika belum:
+Pasang SSL Certbot:
 ```bash
 sudo certbot --nginx -d fitalenta.co.id -d www.fitalenta.co.id -d registrasi.fitalenta.co.id
 ```
 
 ---
 
-## 9. Manajemen Proses dengan PM2
+## 9. Manajemen Proses PM2 (`ecosystem.config.cjs`)
 
-Buat file konfigurasi PM2 di root proyek:
-`/var/www/fitalenta/ecosystem.config.cjs`
+Gunakan file [ecosystem.config.cjs](file:///d:/MAGANG-FITALENTA/fitalenta/ecosystem.config.cjs) yang telah tersedia di root proyek:
 
-```javascript
-module.exports = {
-  apps: [
-    {
-      name: "fitalenta-backend",
-      cwd: "./server",
-      script: "dist/index.js",
-      instances: "max",
-      exec_mode: "cluster",
-      autorestart: true,
-      max_memory_restart: "1G",
-      env: {
-        NODE_ENV: "production",
-        PORT: 5000,
-      },
-    },
-    {
-      name: "fitalenta-frontend",
-      cwd: "./client",
-      script: "node_modules/next/dist/bin/next",
-      args: "start -p 3000",
-      instances: 1,
-      autorestart: true,
-      max_memory_restart: "1G",
-      env: {
-        NODE_ENV: "production",
-        PORT: 3000,
-      },
-    },
-  ],
-};
-```
-
-Jalankan kedua aplikasi dengan PM2:
 ```bash
 cd /var/www/fitalenta
 pm2 start ecosystem.config.cjs
@@ -369,38 +374,38 @@ pm2 save
 pm2 startup
 ```
 
-Untuk memantau log dan status:
+Perintah pemantauan PM2:
 ```bash
-pm2 status
-pm2 logs
-pm2 restart all
+pm2 status          # Cek status proses frontend dan backend
+pm2 logs            # Cek log runtime aplikasi
+pm2 reload all      # Restart aplikasi tanpa downtime
 ```
 
 ---
 
-## 10. Prosedur Pembaruan Aplikasi (Redeploy) di Masa Depan
+## 10. Prosedur Update Kode di Server Production
 
-Setiap ada update kode dari git repository, jalankan langkah berikut di server:
+Setiap kali melakukan push pembaruan kode ke repository Git, jalankan langkah berikut di server production:
 
 ```bash
 cd /var/www/fitalenta
 
-# 1. Tarik pembaruan kode
+# 1. Ambil update kode terbaru
 git pull origin main
 
-# 2. Build Backend
+# 2. Build Backend Server
 cd server
 npm install
 npm run prisma:generate
 npx prisma migrate deploy
 npm run build
 
-# 3. Build Frontend
+# 3. Build Frontend Client
 cd ../client
 npm install
 npm run build
 
-# 4. Reload PM2 tanpa downtime
+# 4. Reload proses PM2
 cd /var/www/fitalenta
 pm2 reload ecosystem.config.cjs
 ```
