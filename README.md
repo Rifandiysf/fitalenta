@@ -338,62 +338,6 @@ Penegakan dilakukan di dua lapis: **`proxy.ts`** (pengalihan halaman di client) 
 
 Rute rumah setiap peran: `admin` → `/admin/dashboard`, `editor` → `/editor/dashboard`, `user` → `/dashboard`.
 
-## Ringkasan API
-
-Base URL: `http://localhost:5000/api`. Respons umumnya berbentuk `{ "success": boolean, "data": ..., "message": ... }`; daftar yang dipaginasi menyertakan `meta` (dan `summary` bila relevan).
-
-### Publik
-
-| Method | Endpoint | Keterangan |
-| --- | --- | --- |
-| GET | `/health` | Cek status server |
-| POST | `/auth/register` · `/auth/login` · `/auth/logout` | Registrasi, login, logout |
-| POST | `/auth/verify-email` · `/auth/resend-verification` | Verifikasi email |
-| POST | `/auth/forgot-password` · `/auth/reset-password` | Pemulihan password |
-| GET | `/auth/me` · POST `/auth/change-password` | Sesi aktif, ganti password (perlu login) |
-| GET | `/programs` · `/programs/:id` · `/program-categories` | Program |
-| GET | `/events` · `/articles` · `/services` · `/gallery` | Konten (juga `/:slug` untuk detail) |
-| GET | `/testimonials` · `/partners` · `/jobs` | Testimoni, mitra, lowongan |
-| GET | `/team-members` | Anggota tim aktif (halaman About) |
-| GET | `/team-members/experts` | Pakar aktif (section beranda) |
-| POST | `/contact` | Kirim pesan kontak |
-
-### Peserta (`user`, perlu login)
-
-| Method | Endpoint | Keterangan |
-| --- | --- | --- |
-| GET | `/user/dashboard` | Ringkasan dashboard |
-| GET · PUT | `/user/profile` | Lihat dan ubah profil |
-| GET · POST | `/user/registrations` · GET `/user/registrations/:id` | Riwayat dan pembuatan pendaftaran (multipart) |
-| GET | `/user/payments` · `/user/payments/summary` · `/user/payments/:id` | Pembayaran |
-| GET | `/user/payments/:id/invoice` | Unduh invoice PDF |
-| POST | `/user/payments/:id/proof` | Unggah bukti pembayaran |
-| GET | `/user/notifications` | Daftar notifikasi dan jumlah belum dibaca |
-| PATCH | `/user/notifications/:id/read` · `/user/notifications/read-all` | Tandai terbaca |
-
-### Admin (`admin`)
-
-| Prefix | Fungsi |
-| --- | --- |
-| `/admin/dashboard` | Ringkasan, filter, daftar & detail pendaftaran |
-| `/admin/programs` · `/admin/program-categories` | Manajemen program |
-| `/admin/selection-placements` | Status seleksi & penempatan |
-| `/admin/payments` | Tagihan, terbitkan invoice, verifikasi bukti, invoice PDF |
-| `/admin/financial-reports` | Daftar, ringkasan, ekspor, template, dan impor Excel |
-| `/admin/users` | Manajemen akun |
-
-### CMS (`admin` dan `editor`)
-
-| Prefix | Fungsi |
-| --- | --- |
-| `/admin/cms` | Ringkasan dashboard CMS |
-| `/admin/events` · `/admin/articles` · `/admin/services` | Event, artikel, layanan |
-| `/admin/gallery` · `/admin/testimonials` | Galeri, testimoni |
-| `/admin/team-members/experts` | CRUD pakar (`GET /`, `POST /`, `PATCH /reorder`, `GET/PUT/DELETE /:id`) |
-| `/admin/team-members/members` | CRUD anggota tim (pola yang sama) |
-| `/admin/partners` · `/admin/companies` · `/admin/jobs` | Mitra, perusahaan, lowongan |
-| `/admin/contact-messages` | Pesan dari formulir kontak |
-
 ## Alur Bisnis
 
 ```mermaid
