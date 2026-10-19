@@ -23,10 +23,10 @@ import { useCurrentUser } from "@/hooks/auth/use-current-user";
 import { useLogout } from "@/hooks/auth/use-logout";
 
 const LINKS = [
-    { href: "/dashboard", label: "Dashboard" },
+    { href: "/user/dashboard", label: "Dashboard" },
     { href: "/programs", label: "Program" },
-    { href: "/pendaftaran", label: "Pendaftaran" },
-    { href: "/pembayaran", label: "Pembayaran" },
+    { href: "/user/pendaftaran", label: "Pendaftaran" },
+    { href: "/user/pembayaran", label: "Pembayaran" },
 ];
 
 function isActive(pathname: string, href: string) {
@@ -124,7 +124,7 @@ export function UserNavbar() {
                             <DropdownMenuSeparator className="lg:hidden" />
 
                             <DropdownMenuItem asChild>
-                                <Link href="/profil">
+                                <Link href="/user/profil">
                                     <UserRound aria-hidden />
                                     Profil saya
                                 </Link>

@@ -16,7 +16,7 @@ export function AdminStatCard({
     icon: Icon,
 }: AdminStatCardProps) {
     return (
-        <Card className="border border-border shadow-none">
+        <Card>
             <CardContent className="flex items-center gap-4">
                 <span className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                     <Icon className="size-5" aria-hidden />

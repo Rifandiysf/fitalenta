@@ -137,7 +137,7 @@ export function NotificationBell() {
                     Tandai semua dibaca
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                    <Link href="/notifikasi" className="justify-center font-medium text-primary">
+                    <Link href="/user/notifikasi" className="justify-center font-medium text-primary">
                         Lihat semua notifikasi
                     </Link>
                 </DropdownMenuItem>

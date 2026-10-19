@@ -36,7 +36,7 @@ export function AdminShell({ children, area = ADMIN_AREA }: AdminShellProps) {
 
     useEffect(() => {
         if (isError) router.replace(`/login?next=${area.basePath}`);
-        else if (user && !allowed) router.replace("/dashboard");
+        else if (user && !allowed) router.replace("/user/dashboard");
     }, [isError, user, allowed, router, area.basePath]);
 
     if (!user || !allowed) return <ShellSkeleton />;

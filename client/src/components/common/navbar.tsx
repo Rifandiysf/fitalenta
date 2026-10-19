@@ -28,7 +28,7 @@ import { useCurrentUser } from "@/hooks/auth/use-current-user";
 import { useLogout } from "@/hooks/auth/use-logout";
 import { LogoutOverlay } from "@/components/common/logout-overlay";
 
-const DASHBOARD_HREF = "/dashboard";
+const DASHBOARD_HREF = "/user/dashboard";
 
 function isActive(pathname: string, href: string) {
     return href === "/"
