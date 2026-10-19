@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { PROFILE_LIMITS } from "@/constants/user-profile-constant";
+import { PROFILE_LIMITS } from "@/constants/user/user-profile-constant";
 
 export const PROFILE_PHONE_PATTERN = /^\+?\d[\d\s-]{7,18}\d$/;
 

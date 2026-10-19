@@ -2,8 +2,8 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { isApiError } from "@/lib/api-error";
-import { getMyProfile, updateMyProfile } from "@/services/user-profile-service";
-import type { MyProfile, MyProfileUpdateResult } from "@/types/user-profile";
+import { getMyProfile, updateMyProfile } from "@/services/user/user-profile-service";
+import type { MyProfile, MyProfileUpdateResult } from "@/types/user/user-profile";
 
 const PROFILE_KEY = ["user", "profile"] as const;
 

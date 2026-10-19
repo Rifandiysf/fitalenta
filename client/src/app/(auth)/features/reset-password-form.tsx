@@ -5,7 +5,7 @@ import { useState, type FormEvent } from "react";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { PasswordField } from "@/components/common/password-field";
 import { Button } from "@/components/ui/button";
-import { useResetPassword } from "@/hooks/use-reset-password";
+import { useResetPassword } from "@/hooks/auth/use-reset-password";
 import { PASSWORD_MIN_LENGTH, resetPasswordSchema, type ResetPasswordInput } from "@/schemas/auth";
 
 type FieldErrors = Partial<Record<keyof ResetPasswordInput, string>>;

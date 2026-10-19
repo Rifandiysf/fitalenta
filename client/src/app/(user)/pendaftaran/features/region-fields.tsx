@@ -2,10 +2,10 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useProvinces, useRegencies } from "@/hooks/use-regions";
+import { useProvinces, useRegencies } from "@/hooks/auth/use-regions";
 import { cn } from "@/lib/utils";
 import { useRegistrationStore } from "@/store/registration-store";
-import type { AddressKind, RegistrationAddress } from "@/types/registration";
+import type { AddressKind, RegistrationAddress } from "@/types/user/registration";
 import { CONTROL_CLASS, FieldShell, fieldA11y } from "./form-field";
 import { FIELD_GRID } from "./form-section";
 

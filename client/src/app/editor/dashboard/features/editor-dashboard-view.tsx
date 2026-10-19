@@ -3,7 +3,7 @@
 import { CircleAlert, LayoutDashboard } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { EDITOR_SHORTCUTS } from "@/constants/editor/editor-nav";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { useCurrentUser } from "@/hooks/auth/use-current-user";
 import { useEditorCmsSummary } from "@/hooks/editor/use-editor-cms";
 import { EditorStatCards } from "./editor-stat-cards";
 import { ShortcutCard } from "./shortcut-card";

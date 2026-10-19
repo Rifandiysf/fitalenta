@@ -7,8 +7,8 @@ import {
     getMyPayments,
     getMyPaymentSummary,
     submitPaymentProof,
-} from "@/services/user-payment-service";
-import type { MyPaymentDetail, MyPaymentParams } from "@/types/user-payment";
+} from "@/services/user/user-payment-service";
+import type { MyPaymentDetail, MyPaymentParams } from "@/types/user/user-payment";
 
 const PAYMENTS_KEY = ["user", "payments"] as const;
 const detailKey = (id: number | undefined) => [...PAYMENTS_KEY, "detail", id] as const;

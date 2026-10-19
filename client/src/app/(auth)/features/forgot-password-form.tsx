@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Send } from "lucide-react";
-import { useForgotPassword } from "@/hooks/use-forgot-password";
+import { useForgotPassword } from "@/hooks/auth/use-forgot-password";
 import { EmailCaptchaForm } from "./email-captcha-form";
 
 export function ForgotPasswordForm() {

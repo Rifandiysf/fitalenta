@@ -20,7 +20,7 @@ import {
     toServicePayload,
     toServicePoints,
 } from "@/helpers/editor/editor-service-helper";
-import { focusFirstInvalidField } from "@/helpers/registration-helper";
+import { focusFirstInvalidField } from "@/helpers/user/registration-helper";
 import { useCmsForm } from "@/hooks/editor/use-cms-form";
 import { useSaveEditorService } from "@/hooks/editor/use-editor-services";
 import { collectErrors } from "@/schemas/editor/editor-common";

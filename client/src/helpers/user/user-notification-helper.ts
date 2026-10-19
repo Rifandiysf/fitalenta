@@ -1,4 +1,4 @@
-import type { MyNotificationList } from "@/types/user-notification";
+import type { MyNotificationList } from "@/types/user/user-notification";
 
 export function applyMarkRead(list: MyNotificationList, id: number): MyNotificationList {
     const target = list.notifications.find((notification) => notification.id === id);

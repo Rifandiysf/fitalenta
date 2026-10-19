@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 import type { ApiResponse } from "@/types/api";
-import type { MyProfile, MyProfileUpdatePayload, MyProfileUpdateResult } from "@/types/user-profile";
+import type { MyProfile, MyProfileUpdatePayload, MyProfileUpdateResult } from "@/types/user/user-profile";
 
 const BASE_URL = "/user/profile";
 

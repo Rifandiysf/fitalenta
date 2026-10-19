@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Region } from "@/types/registration";
+import type { Region } from "@/types/user/registration";
 
 const REGION_API_URL =
     process.env.NEXT_PUBLIC_REGION_API_URL ?? "https://www.emsifa.com/api-wilayah-indonesia/api";

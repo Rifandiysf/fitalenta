@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, type ReactNode } from "react";
 import { ArrowRight, CircleAlert, CircleCheck, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useVerifyEmail } from "@/hooks/use-verify-email";
+import { useVerifyEmail } from "@/hooks/auth/use-verify-email";
 import { isApiError } from "@/lib/api-error";
 import { ResendVerificationForm } from "./resend-verification-form";
 

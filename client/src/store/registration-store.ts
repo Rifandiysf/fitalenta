@@ -6,7 +6,7 @@ import type {
     RegistrationAddress,
     RegistrationDraft,
     RegistrationStep,
-} from "@/types/registration";
+} from "@/types/user/registration";
 
 const createEmptyAddress = (): RegistrationAddress => ({
     provinceCode: "",

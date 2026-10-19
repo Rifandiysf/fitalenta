@@ -1,7 +1,7 @@
 import { Bell, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn, formatDate, formatTime, timeAgo } from "@/lib/utils";
-import type { NotificationItem as NotificationData } from "@/types/user-notification";
+import type { NotificationItem as NotificationData } from "@/types/user/user-notification";
 
 type Props = {
     notification: NotificationData;

@@ -11,7 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { looksLikeHtml } from "@/helpers/editor/editor-content-helper";
 import { createEmptyArticleForm, toArticleFormValues } from "@/helpers/editor/editor-article-helper";
-import { focusFirstInvalidField } from "@/helpers/registration-helper";
+import { focusFirstInvalidField } from "@/helpers/user/registration-helper";
 import { useCmsForm } from "@/hooks/editor/use-cms-form";
 import { useSaveEditorArticle } from "@/hooks/editor/use-editor-articles";
 import { buildArticleSchema, type ArticleFormValues } from "@/schemas/editor/editor-article";

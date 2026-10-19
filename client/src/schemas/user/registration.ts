@@ -6,7 +6,7 @@ import {
     GUARDIAN_RELATIONS,
     MARITAL_STATUSES,
 } from "@/constants/registration-constant";
-import type { FieldErrors, RegistrationDraft, RegistrationStep } from "@/types/registration";
+import type { FieldErrors, RegistrationDraft, RegistrationStep } from "@/types/user/registration";
 
 const required = (label: string) => z.string().trim().min(1, `${label} wajib diisi`);
 

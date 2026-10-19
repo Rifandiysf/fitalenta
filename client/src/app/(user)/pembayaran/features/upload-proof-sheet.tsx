@@ -6,11 +6,11 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PAYMENT_PROOF_RULES } from "@/constants/user-payment-constant";
-import { formatDeadline, getDueLabel, validateProofFile } from "@/helpers/user-payment-helper";
-import { useMyPayment, useSubmitPaymentProof } from "@/hooks/use-user-payments";
+import { PAYMENT_PROOF_RULES } from "@/constants/user/user-payment-constant";
+import { formatDeadline, getDueLabel, validateProofFile } from "@/helpers/user/user-payment-helper";
+import { useMyPayment, useSubmitPaymentProof } from "@/hooks/user/use-user-payments";
 import { cn, formatIDR } from "@/lib/utils";
-import type { MyPaymentDetail } from "@/types/user-payment";
+import type { MyPaymentDetail } from "@/types/user/user-payment";
 import { AccountCard } from "./account-card";
 
 type Picked = { file: File; preview: string };

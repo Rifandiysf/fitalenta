@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 import type { ApiResponse } from "@/types/api";
-import type { MyNotificationList, NotificationItem } from "@/types/user-notification";
+import type { MyNotificationList, NotificationItem } from "@/types/user/user-notification";
 
 const BASE_URL = "/user/notifications";
 

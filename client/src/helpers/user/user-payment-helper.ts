@@ -1,6 +1,6 @@
-import { PAYMENT_PROOF_RULES } from "@/constants/user-payment-constant";
+import { PAYMENT_PROOF_RULES } from "@/constants/user/user-payment-constant";
 import { formatShortDate } from "@/helpers/admin/admin-helper";
-import type { MyPaymentItem } from "@/types/user-payment";
+import type { MyPaymentItem } from "@/types/user/user-payment";
 
 export function validateProofFile(file: File): string | null {
     if (!(PAYMENT_PROOF_RULES.types as readonly string[]).includes(file.type)) {

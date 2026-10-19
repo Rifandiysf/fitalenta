@@ -1,7 +1,7 @@
 import { api } from "@/lib/axios";
-import type { RegistrationValues } from "@/schemas/registration";
+import type { RegistrationValues } from "@/schemas/user/registration";
 import type { ApiResponse } from "@/types/api";
-import type { CreatedRegistration } from "@/types/registration";
+import type { CreatedRegistration } from "@/types/user/registration";
 
 function toFormData(values: RegistrationValues): FormData {
     const { ktp, domicile } = values;

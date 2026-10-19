@@ -1,5 +1,5 @@
 import { api } from "@/lib/axios";
-import type { DashboardData } from "@/types/dashboard";
+import type { DashboardData } from "@/types/user/dashboard";
 import type { ApiResponse } from "@/types/api"
 
 export async function getUserDashboard(): Promise<DashboardData> {

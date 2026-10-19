@@ -6,7 +6,7 @@ import { PasswordField } from "@/components/common/password-field";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { useChangePassword } from "@/hooks/use-change-password";
+import { useChangePassword } from "@/hooks/auth/use-change-password";
 import { changePasswordSchema, PASSWORD_MIN_LENGTH, type ChangePasswordInput } from "@/schemas/auth";
 
 type FieldErrors = Partial<Record<keyof ChangePasswordInput, string>>;

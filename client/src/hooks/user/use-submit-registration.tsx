@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createRegistration } from "@/services/registration-service";
+import { createRegistration } from "@/services/user/registration-service";
 
 export function useSubmitRegistration() {
     const queryClient = useQueryClient();

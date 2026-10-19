@@ -8,14 +8,14 @@ import { isAxiosError } from "axios";
 import { Bell, Briefcase, ClipboardCheck, Inbox, NotebookText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { getUserDashboard } from "@/services/dashboard-service";
+import { useCurrentUser } from "@/hooks/auth/use-current-user";
+import { getUserDashboard } from "@/services/user/dashboard-service";
 import { RefreshButton } from "./refresh";
 import { StatCard } from "./stat-card";
 import { RegistrationDetail } from "./registration-detail";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
-import { statusLabel } from "@/constants/dashboard-constant";
+import { statusLabel } from "@/constants/user/dashboard-constant";
 
 export function DashboardSkeleton() {
     return (

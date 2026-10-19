@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { INSTALLMENT_PLANS, PROGRAM_STATUS_OPTIONS } from "@/constants/admin/admin-program-constant";
 import { createEmptyProgramForm, toProgramFormValues } from "@/helpers/admin/admin-program-helper";
 import { installmentLabel } from "@/helpers/program-helper";
-import { focusFirstInvalidField } from "@/helpers/registration-helper";
+import { focusFirstInvalidField } from "@/helpers/user/registration-helper";
 import { useSaveAdminProgram } from "@/hooks/admin/use-admin-programs";
 import { useProgramForm, type ProgramFormErrors } from "@/hooks/use-program-form";
 import { buildProgramSchema, type ProgramFormValues } from "@/schemas/admin/admin-program";

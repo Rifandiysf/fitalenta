@@ -1,7 +1,7 @@
 import { PHOTO_RULES } from "@/constants/registration-constant";
 import { formatIDR } from "@/lib/utils";
 import type { Program } from "@/types/program";
-import { installmentLabel } from "./program-helper";
+import { installmentLabel } from "../program-helper";
 
 export const digitsOnly = (value: string) => value.replace(/\D/g, "");
 

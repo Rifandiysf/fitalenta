@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { registerSchema, type RegisterInput } from "@/schemas/auth";
-import { useRegister } from "@/hooks/use-register";
-import { useTurnstile } from "@/hooks/use-turnstile";
+import { useRegister } from "@/hooks/auth/use-register";
+import { useTurnstile } from "@/hooks/auth/use-turnstile";
 
 type FieldErrors = Partial<Record<keyof RegisterInput, string>>;
 

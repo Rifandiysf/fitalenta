@@ -24,8 +24,8 @@ import {
 import { Logo } from "./logo";
 import { authLinks, navItems } from "@/constants/site-config";
 import { cn } from "@/lib/utils";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { useLogout } from "@/hooks/use-logout";
+import { useCurrentUser } from "@/hooks/auth/use-current-user";
+import { useLogout } from "@/hooks/auth/use-logout";
 import { LogoutOverlay } from "@/components/common/logout-overlay";
 
 const DASHBOARD_HREF = "/dashboard";

@@ -4,7 +4,7 @@ import { useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ADMIN_AREA, type AdminAreaConfig } from "@/constants/admin/admin-nav";
-import { useCurrentUser } from "@/hooks/use-current-user";
+import { useCurrentUser } from "@/hooks/auth/use-current-user";
 import { AdminHeader } from "./admin-header";
 import { AdminSidebarContent } from "./admin-sidebar";
 

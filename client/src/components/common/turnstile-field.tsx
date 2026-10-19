@@ -3,7 +3,7 @@
 import { Turnstile } from "@marsidev/react-turnstile";
 import { Spinner } from "@/components/ui/spinner";
 import { TURNSTILE_ENABLED, TURNSTILE_MISCONFIGURED, TURNSTILE_SITE_KEY } from "@/constants/auth-constant";
-import type { TurnstileController } from "@/hooks/use-turnstile";
+import type { TurnstileController } from "@/hooks/auth/use-turnstile";
 
 type Props = {
     controller: TurnstileController;

@@ -1,4 +1,4 @@
-import type { PaymentMethod, PaymentStatus } from "@/types/dashboard";
+import type { PaymentMethod, PaymentStatus } from "@/types/user/dashboard";
 import type { AdminPageMeta } from "@/types/pagination";
 
 export type { PaymentMethod, PaymentStatus };

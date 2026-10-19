@@ -11,7 +11,7 @@ import { ROLE_META } from "@/constants/admin/admin-user-constant";
 import { getInitials } from "@/helpers/admin/admin-helper";
 import { normalizeRole } from "@/lib/auth-role";
 import { formatDate } from "@/lib/utils";
-import type { MyProfile } from "@/types/user-profile";
+import type { MyProfile } from "@/types/user/user-profile";
 
 export function ProfileSummary({ profile }: { profile: MyProfile }) {
     const [passwordOpen, setPasswordOpen] = useState(false);
