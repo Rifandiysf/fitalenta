@@ -5,9 +5,4 @@ export const CMS_SUMMARY_KEYS = [
   "gallery",
   "teamMembers",
   "testimonials",
-  "universityPartners",
-  "companies",
-  "jobs",
-  "programCategories",
-  "unreadContactMessages",
 ] as const;

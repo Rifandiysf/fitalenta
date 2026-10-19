@@ -9,11 +9,6 @@ const COUNTERS: Record<CmsSummaryKey, () => Promise<number>> = {
   gallery: () => prisma.gallery.count(),
   teamMembers: () => prisma.teamMember.count(),
   testimonials: () => prisma.testimonial.count(),
-  universityPartners: () => prisma.universityPartner.count(),
-  companies: () => prisma.company.count(),
-  jobs: () => prisma.job.count(),
-  programCategories: () => prisma.programCategory.count(),
-  unreadContactMessages: () => prisma.contactMessage.count({ where: { isRead: false } }),
 };
 
 export async function getSummary(): Promise<CmsSummary> {

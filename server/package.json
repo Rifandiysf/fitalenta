@@ -10,7 +10,9 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "seed:admin": "tsx prisma/seed-admin.ts"
+    "seed:admin": "tsx prisma/seed-admin.ts",
+    "migrate:participants": "tsx src/scripts/migrate-participants.ts",
+    "reset:passwords": "tsx src/scripts/reset-participant-passwords.ts"
   },
   "author": "fitalenta-dev",
   "license": "ISC",
