@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RESEND_COOLDOWN_SECONDS } from "@/constants/auth-constant";
-import { useCooldown } from "@/hooks/use-cooldown";
-import { useTurnstile } from "@/hooks/use-turnstile";
+import { useCooldown } from "@/hooks/auth/use-cooldown";
+import { useTurnstile } from "@/hooks/auth/use-turnstile";
 import { resendVerificationSchema } from "@/schemas/auth";
 
 type Payload = { email: string; turnstileToken?: string };

@@ -9,10 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { loginSchema, type LoginInput } from "@/schemas/auth";
 import { AUTH_ERROR_CODE, RESEND_COOLDOWN_SECONDS } from "@/constants/auth-constant";
-import { useCooldown } from "@/hooks/use-cooldown";
-import { useLogin } from "@/hooks/use-login";
-import { useResendVerification } from "@/hooks/use-resend-verification";
-import { useTurnstile } from "@/hooks/use-turnstile";
+import { useCooldown } from "@/hooks/auth/use-cooldown";
+import { useLogin } from "@/hooks/auth/use-login";
+import { useResendVerification } from "@/hooks/auth/use-resend-verification";
+import { useTurnstile } from "@/hooks/auth/use-turnstile";
 import { isApiError } from "@/lib/api-error";
 
 type FieldErrors = Partial<Record<keyof LoginInput, string>>;

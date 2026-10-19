@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { ArrowRight, Info, Workflow } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { PAYMENT_FLOW_NOTICE, PAYMENT_FLOW_STEPS } from "@/constants/user-payment-constant";
+import { PAYMENT_FLOW_NOTICE, PAYMENT_FLOW_STEPS } from "@/constants/user/user-payment-constant";
 
 export function PaymentFlow() {
     return (

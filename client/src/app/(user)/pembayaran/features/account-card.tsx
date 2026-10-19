@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Check, Copy, Landmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import type { PaymentAccount } from "@/types/user-payment";
+import type { PaymentAccount } from "@/types/user/user-payment";
 
 function CopyButton({ value, label }: { value: string; label: string }) {
     const [copied, setCopied] = useState(false);

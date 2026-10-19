@@ -1,6 +1,6 @@
 import { ToneBadge } from "@/app/admin/dashboard/features/status-badge";
-import { USER_PAYMENT_STATE } from "@/constants/user-payment-constant";
-import type { MyPaymentItem } from "@/types/user-payment";
+import { USER_PAYMENT_STATE } from "@/constants/user/user-payment-constant";
+import type { MyPaymentItem } from "@/types/user/user-payment";
 
 export function PaymentStateBadges({ payment }: { payment: Pick<MyPaymentItem, "state" | "isOverdue"> }) {
     const meta = USER_PAYMENT_STATE[payment.state];

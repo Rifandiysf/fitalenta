@@ -1,6 +1,6 @@
-import { NOT_CLEARABLE_FIELDS } from "@/constants/user-profile-constant";
-import type { ProfileFormValues } from "@/schemas/user-profile";
-import type { MyProfile, MyProfileUpdatePayload } from "@/types/user-profile";
+import { NOT_CLEARABLE_FIELDS } from "@/constants/user/user-profile-constant";
+import type { ProfileFormValues } from "@/schemas/user/user-profile";
+import type { MyProfile, MyProfileUpdatePayload } from "@/types/user/user-profile";
 
 type ProfileSource = Pick<MyProfile, "name" | "phone" | "address" | "birthPlace" | "birthDate">;
 

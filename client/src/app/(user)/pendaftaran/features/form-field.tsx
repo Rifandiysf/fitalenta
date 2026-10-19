@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { useRegistrationStore } from "@/store/registration-store";
-import type { StringFieldName } from "@/types/registration";
+import type { StringFieldName } from "@/types/user/registration";
 
 export const CONTROL_CLASS = "h-10";
 

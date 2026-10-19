@@ -20,7 +20,7 @@ import {
 import { ADMIN_AREA, isActivePath, type AdminAreaConfig, type AdminNavEntry } from "@/constants/admin/admin-nav";
 import { siteConfig } from "@/constants/site-config";
 import { getInitials } from "@/helpers/admin/admin-helper";
-import { useLogout } from "@/hooks/use-logout";
+import { useLogout } from "@/hooks/auth/use-logout";
 import { cn } from "@/lib/utils";
 import type { AuthUser } from "@/store/auth-store";
 

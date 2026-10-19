@@ -1,7 +1,7 @@
 "use client";
 
 import { Send } from "lucide-react";
-import { useResendVerification } from "@/hooks/use-resend-verification";
+import { useResendVerification } from "@/hooks/auth/use-resend-verification";
 import { EmailCaptchaForm } from "./email-captcha-form";
 
 export function ResendVerificationForm() {

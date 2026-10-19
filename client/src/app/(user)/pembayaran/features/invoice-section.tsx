@@ -5,10 +5,10 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { RefreshButton } from "@/app/(user)/dashboard/features/refresh";
 import { PAYMENT_STATUS_VALUES } from "@/constants/admin/admin-payment-constant";
-import { statusLabel } from "@/constants/dashboard-constant";
+import { statusLabel } from "@/constants/user/dashboard-constant";
 import { cn } from "@/lib/utils";
 import type { AdminPageMeta } from "@/types/pagination";
-import type { MyPaymentItem, MyPaymentParams } from "@/types/user-payment";
+import type { MyPaymentItem, MyPaymentParams } from "@/types/user/user-payment";
 import { InvoiceCard } from "./invoice-card";
 import { InvoiceEmpty, InvoiceFilteredEmpty } from "./invoice-empty";
 

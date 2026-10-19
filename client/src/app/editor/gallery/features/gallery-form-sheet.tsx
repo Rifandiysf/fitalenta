@@ -8,7 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { createEmptyGalleryForm, toGalleryFormValues } from "@/helpers/editor/editor-gallery-helper";
-import { focusFirstInvalidField } from "@/helpers/registration-helper";
+import { focusFirstInvalidField } from "@/helpers/user/registration-helper";
 import { useCmsForm } from "@/hooks/editor/use-cms-form";
 import { useSaveEditorGalleryItem } from "@/hooks/editor/use-editor-gallery";
 import { collectErrors } from "@/schemas/editor/editor-common";

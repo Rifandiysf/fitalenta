@@ -9,17 +9,17 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { PROFILE_LIMITS } from "@/constants/user-profile-constant";
+import { PROFILE_LIMITS } from "@/constants/user/user-profile-constant";
 import {
     buildProfilePayload,
     normalizeProfileValues,
     toProfileFormValues,
     validateClearedFields,
-} from "@/helpers/user-profile-helper";
-import { useUpdateMyProfile } from "@/hooks/use-user-profile";
+} from "@/helpers/user/user-profile-helper";
+import { useUpdateMyProfile } from "@/hooks/user/use-user-profile";
 import { cn } from "@/lib/utils";
-import { getTodayISO, profileSchema, type ProfileFormValues } from "@/schemas/user-profile";
-import type { MyProfile } from "@/types/user-profile";
+import { getTodayISO, profileSchema, type ProfileFormValues } from "@/schemas/user/user-profile";
+import type { MyProfile } from "@/types/user/user-profile";
 
 type FieldName = keyof ProfileFormValues;
 type FieldErrors = Partial<Record<FieldName, string>>;

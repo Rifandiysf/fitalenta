@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 import { fetchFile } from "@/lib/file-download";
-import { MY_PAYMENTS_PER_PAGE } from "@/constants/user-payment-constant";
+import { MY_PAYMENTS_PER_PAGE } from "@/constants/user/user-payment-constant";
 import type { ApiResponse } from "@/types/api";
 import type { DownloadedFile } from "@/types/admin/financial-report";
 import type { AdminPageMeta } from "@/types/pagination";
@@ -10,7 +10,7 @@ import type {
     MyPaymentList,
     MyPaymentParams,
     MyPaymentSummary,
-} from "@/types/user-payment";
+} from "@/types/user/user-payment";
 
 const BASE_URL = "/user/payments";
 

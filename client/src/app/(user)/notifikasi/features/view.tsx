@@ -8,10 +8,10 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { NOTIFICATION_FILTERS, NOTIFICATIONS_PER_PAGE } from "@/constants/user-notification-constant";
-import { useMarkAllNotificationsRead, useMarkNotificationRead, useMyNotifications } from "@/hooks/use-user-notifications";
+import { NOTIFICATION_FILTERS, NOTIFICATIONS_PER_PAGE } from "@/constants/user/user-notification-constant";
+import { useMarkAllNotificationsRead, useMarkNotificationRead, useMyNotifications } from "@/hooks/user/use-user-notifications";
 import { isApiError } from "@/lib/api-error";
-import type { NotificationFilter } from "@/types/user-notification";
+import type { NotificationFilter } from "@/types/user/user-notification";
 import { NotificationEmpty, NotificationFilteredEmpty } from "./notification-empty";
 import { NotificationItem } from "./notification-item";
 

@@ -5,7 +5,7 @@ import { Camera, Upload } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { PHOTO_RULES } from "@/constants/registration-constant";
-import { validatePhotoFile } from "@/helpers/registration-helper";
+import { validatePhotoFile } from "@/helpers/user/registration-helper";
 import { useRegistrationStore } from "@/store/registration-store";
 import { FieldShell, fieldA11y } from "./form-field";
 

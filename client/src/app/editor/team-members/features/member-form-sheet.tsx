@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { MEMBER_KINDS, MEMBER_LIMITS, type MemberKind } from "@/constants/editor/editor-team-member-constant";
 import { createEmptyMemberForm, toMemberFormValues } from "@/helpers/editor/editor-team-member-helper";
-import { focusFirstInvalidField } from "@/helpers/registration-helper";
+import { focusFirstInvalidField } from "@/helpers/user/registration-helper";
 import { useCmsForm } from "@/hooks/editor/use-cms-form";
 import { useSaveEditorMember } from "@/hooks/editor/use-editor-team-members";
 import { collectErrors } from "@/schemas/editor/editor-common";

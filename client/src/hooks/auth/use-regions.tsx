@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getProvinces, getRegencies } from "@/services/region-service";
+import { getProvinces, getRegencies } from "@/services/user/region-service";
 
 export function useProvinces() {
     return useQuery({

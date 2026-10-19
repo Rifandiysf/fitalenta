@@ -1,15 +1,15 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { NOTIFICATION_POLL_INTERVAL } from "@/constants/user-notification-constant";
-import { applyMarkAllRead, applyMarkRead } from "@/helpers/user-notification-helper";
+import { NOTIFICATION_POLL_INTERVAL } from "@/constants/user/user-notification-constant";
+import { applyMarkAllRead, applyMarkRead } from "@/helpers/user/user-notification-helper";
 import { isApiError } from "@/lib/api-error";
 import {
     getMyNotifications,
     markAllNotificationsRead,
     markNotificationRead,
-} from "@/services/user-notification-service";
-import type { MyNotificationList } from "@/types/user-notification";
+} from "@/services/user/user-notification-service";
+import type { MyNotificationList } from "@/types/user/user-notification";
 
 const NOTIFICATIONS_KEY = ["user", "notifications"] as const;
 

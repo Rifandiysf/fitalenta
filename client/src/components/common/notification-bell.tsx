@@ -11,9 +11,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import { NOTIFICATION_PREVIEW_LIMIT } from "@/constants/user-notification-constant";
-import { formatBadgeCount } from "@/helpers/user-notification-helper";
-import { useMarkAllNotificationsRead, useMarkNotificationRead, useMyNotifications } from "@/hooks/use-user-notifications";
+import { NOTIFICATION_PREVIEW_LIMIT } from "@/constants/user/user-notification-constant";
+import { formatBadgeCount } from "@/helpers/user/user-notification-helper";
+import { useMarkAllNotificationsRead, useMarkNotificationRead, useMyNotifications } from "@/hooks/user/use-user-notifications";
 import { cn, timeAgo } from "@/lib/utils";
 
 function PreviewSkeleton() {

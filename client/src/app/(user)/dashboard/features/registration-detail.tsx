@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { Badge } from "@/components/ui/badge";
-import { getStatus, PAYMENT_METHOD_LABEL, TONE_CLASS, type StatusKind } from "@/constants/dashboard-constant";
+import { getStatus, PAYMENT_METHOD_LABEL, TONE_CLASS, type StatusKind } from "@/constants/user/dashboard-constant";
 import { cn } from "@/lib/utils";
-import type { DashboardData } from "@/types/dashboard";
+import type { DashboardData } from "@/types/user/dashboard";
 
 function StatusBadge({ value, kind }: { value?: string | null; kind: StatusKind }) {
     const status = getStatus(value, kind);

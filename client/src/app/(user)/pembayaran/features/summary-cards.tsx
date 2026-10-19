@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { CircleCheck, FileText, Hourglass, Wallet, type LucideIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn, formatIDR } from "@/lib/utils";
-import type { MyPaymentSummary } from "@/types/user-payment";
+import type { MyPaymentSummary } from "@/types/user/user-payment";
 
 type CardProps = {
     icon: LucideIcon;

@@ -1,5 +1,5 @@
 import { CreditCard } from "lucide-react";
-import { PAYMENT_HERO, PAYMENT_HERO_CHIPS } from "@/constants/user-payment-constant";
+import { PAYMENT_HERO, PAYMENT_HERO_CHIPS } from "@/constants/user/user-payment-constant";
 
 export function PaymentHero() {
     return (

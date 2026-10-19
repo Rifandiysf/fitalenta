@@ -1,6 +1,6 @@
 import type { AdminPageMeta } from "@/types/pagination";
 import type { PaymentStatus } from "@/types/admin/admin-dashboard";
-import type { PaymentMethod } from "@/types/dashboard";
+import type { PaymentMethod } from "@/types/user/dashboard";
 
 export type { PaymentStatus, PaymentMethod };
 

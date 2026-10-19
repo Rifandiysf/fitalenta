@@ -1,4 +1,4 @@
-import type { NotificationFilter } from "@/types/user-notification";
+import type { NotificationFilter } from "@/types/user/user-notification";
 
 export const NOTIFICATION_PREVIEW_LIMIT = 5;
 export const NOTIFICATIONS_PER_PAGE = 10;

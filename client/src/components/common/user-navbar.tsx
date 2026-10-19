@@ -19,8 +19,8 @@ import { ChangePasswordSheet } from "./change-password-sheet";
 import { Logo } from "./logo";
 import { NotificationBell } from "./notification-bell";
 import { cn } from "@/lib/utils";
-import { useCurrentUser } from "@/hooks/use-current-user";
-import { useLogout } from "@/hooks/use-logout";
+import { useCurrentUser } from "@/hooks/auth/use-current-user";
+import { useLogout } from "@/hooks/auth/use-logout";
 
 const LINKS = [
     { href: "/dashboard", label: "Dashboard" },

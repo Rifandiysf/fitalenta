@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { RATING_OPTIONS, TESTIMONIAL_LIMITS } from "@/constants/editor/editor-testimonial-constant";
 import { createEmptyTestimonialForm, toTestimonialFormValues } from "@/helpers/editor/editor-testimonial-helper";
-import { focusFirstInvalidField } from "@/helpers/registration-helper";
+import { focusFirstInvalidField } from "@/helpers/user/registration-helper";
 import { useCmsForm } from "@/hooks/editor/use-cms-form";
 import { useSaveEditorTestimonial } from "@/hooks/editor/use-editor-testimonials";
 import { collectErrors } from "@/schemas/editor/editor-common";
