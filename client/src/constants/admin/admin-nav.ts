@@ -29,6 +29,7 @@ export const ADMIN_NAV: AdminNavEntry[] = [
             { title: "Pembayaran", href: "/admin/pembayaran" },
             { title: "Seleksi & Penempatan", href: "/admin/seleksi" },
             { title: "Program", href: "/admin/program" },
+            { title: "Kategori Program", href: "/admin/kategori-program" },
             { title: "User", href: "/admin/user" },
         ],
     },
