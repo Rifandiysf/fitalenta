@@ -6,32 +6,34 @@ import prisma from "../config/prisma";
 import { Gender, RegistrationStatus } from "../../generated/prisma/client";
 
 /**
- * Format data input peserta lama (kompatibel dengan export dump tabel ojetu / fitalenta Laravel)
+ * Format data input peserta lama (sesuai export JSON dari database MySQL registrasi.fitalenta.co.id / ojetu)
  */
 export interface LegacyParticipantRecord {
   // Akun & Kontak
   name: string;
   email: string;
   phone?: string | null;
+  email_verified?: boolean | null;
+  account_created_at?: string | null;
   nik?: string | null;
   gender?: "L" | "P" | "laki-laki" | "perempuan" | null;
-  
+
   // Data Pribadi
   birth_place?: string | null;
   birth_date?: string | null;
   address?: string | null;
-  
+
   // Pendidikan & Aktivitas
   last_education?: string | null;
   major?: string | null;
   education_institution?: string | null;
   current_activity?: string | null;
   marital_status?: string | null;
-  
+
   // Orang Tua / Wali
   parent_phone?: string | null;
   parent_relationship?: string | null;
-  
+
   // Wilayah Domisili / KTP
   ktp_province_code?: string | null;
   ktp_province_name?: string | null;
@@ -52,6 +54,7 @@ export interface LegacyParticipantRecord {
   // Program & Status Pendaftaran
   program_id?: number | null;
   program_name?: string | null;
+  program_format?: string | null;
   registration_code?: string | null;
   registration_status?: "menunggu" | "lolos" | "tidak_lolos" | string | null;
   created_at?: string | null;
@@ -92,26 +95,28 @@ export async function migrateParticipants(filePath?: string) {
 
   if (!fs.existsSync(targetFile)) {
     console.warn(`File sumber tidak ditemukan: ${targetFile}`);
-    console.log("Silakan tempatkan export JSON data peserta lama pada path tersebut.");
-    console.log("Format JSON yang didukung adalah array objek sesuai interface LegacyParticipantRecord.");
+    console.log("Silakan tempatkan file JSON data peserta pada path tersebut.");
     return;
   }
 
   const rawData = fs.readFileSync(targetFile, "utf-8");
   const records: LegacyParticipantRecord[] = JSON.parse(rawData);
 
-  console.log(`Jumlah baris data ditemukan: ${records.length}`);
-  console.log(`Menggunakan password seragam: ${defaultPassword}`);
+  console.log(`Jumlah baris data ditemukan : ${records.length}`);
+  console.log(`Password seragam peserta    : ${defaultPassword}`);
 
   const hashedPassword = await bcrypt.hash(defaultPassword, 10);
 
-  // Ambil program default sebagai fallback jika program_id tidak spesifik
-  const defaultProgram = await prisma.program.findFirst({
-    orderBy: { id: "asc" },
+  // Ambil semua program di database untuk pemetaan nama
+  const existingPrograms = await prisma.program.findMany({
+    select: { id: true, name: true, programFormat: true },
   });
 
-  let createdCount = 0;
-  let updatedCount = 0;
+  let usersCreated = 0;
+  let usersUpdated = 0;
+  let registrationsCreated = 0;
+  let registrationsUpdated = 0;
+  let accountsOnly = 0;
   let skippedCount = 0;
 
   for (const record of records) {
@@ -124,10 +129,15 @@ export async function migrateParticipants(filePath?: string) {
     const email = record.email.trim().toLowerCase();
 
     try {
-      // 1. Upsert Akun User
-      let user = await prisma.user.findUnique({ where: { email } });
-
+      // 1. Tentukan tanggal & status verifikasi
       const birthDate = record.birth_date ? new Date(record.birth_date) : null;
+      const accountCreatedAt = record.account_created_at ? new Date(record.account_created_at) : new Date();
+      const emailVerifiedAt = record.email_verified === false
+        ? null
+        : (record.account_created_at ? new Date(record.account_created_at) : new Date());
+
+      // 2. Upsert Akun User
+      let user = await prisma.user.findUnique({ where: { email } });
 
       if (!user) {
         user = await prisma.user.create({
@@ -140,12 +150,12 @@ export async function migrateParticipants(filePath?: string) {
             birthPlace: record.birth_place ?? null,
             birthDate: isNaN(birthDate?.getTime() ?? NaN) ? null : birthDate,
             role: "user",
-            emailVerifiedAt: new Date(),
+            emailVerifiedAt: emailVerifiedAt,
+            createdAt: isNaN(accountCreatedAt.getTime()) ? new Date() : accountCreatedAt,
           },
         });
-        createdCount++;
+        usersCreated++;
       } else {
-        // Update data profil user yang sudah ada
         user = await prisma.user.update({
           where: { id: user.id },
           data: {
@@ -155,24 +165,39 @@ export async function migrateParticipants(filePath?: string) {
             birthPlace: record.birth_place ?? user.birthPlace,
             birthDate: isNaN(birthDate?.getTime() ?? NaN) ? user.birthDate : birthDate,
             password: hashedPassword, // Seragamkan password juga
+            emailVerifiedAt: user.emailVerifiedAt ?? emailVerifiedAt,
           },
         });
-        updatedCount++;
+        usersUpdated++;
       }
 
-      // 2. Hubungkan ke Program yang sesuai
+      // 3. Hubungkan ke Program jika ada data pendaftaran
+      const hasProgram = Boolean(record.program_name || record.program_id || record.registration_code);
+
+      if (!hasProgram) {
+        accountsOnly++;
+        continue;
+      }
+
+      // Cari ID Program yang cocok
       let programId = record.program_id;
       if (!programId && record.program_name) {
-        const foundProgram = await prisma.program.findFirst({
-          where: { name: { contains: record.program_name } },
-        });
-        if (foundProgram) programId = foundProgram.id;
+        const pName = record.program_name.trim().toLowerCase();
+        const found = existingPrograms.find(
+          (p) => p.name.trim().toLowerCase() === pName || p.name.toLowerCase().includes(pName) || pName.includes(p.name.toLowerCase())
+        );
+        if (found) programId = found.id;
       }
-      if (!programId && defaultProgram) {
-        programId = defaultProgram.id;
+
+      // Jika programId masih belum ditemukan, gunakan program pertama sebagai fallback
+      if (!programId && existingPrograms.length > 0) {
+        programId = existingPrograms[0].id;
       }
 
       if (programId) {
+        const regStatus = normalizeStatus(record.registration_status);
+        const regDate = record.created_at ? new Date(record.created_at) : new Date();
+
         const existingReg = await prisma.registration.findUnique({
           where: {
             unique_user_program: {
@@ -182,7 +207,6 @@ export async function migrateParticipants(filePath?: string) {
           },
         });
 
-        const regStatus = normalizeStatus(record.registration_status);
         const regCode = record.registration_code?.trim() || existingReg?.registrationCode || generateRegCode();
 
         if (!existingReg) {
@@ -216,7 +240,7 @@ export async function migrateParticipants(filePath?: string) {
               photoPath: record.photo_path ?? null,
               n4CertificatePath: record.n4_certificate_path ?? null,
               sswCertificatePath: record.ssw_certificate_path ?? null,
-              registrationDate: record.created_at ? new Date(record.created_at) : new Date(),
+              registrationDate: isNaN(regDate.getTime()) ? new Date() : regDate,
             },
           });
 
@@ -233,10 +257,26 @@ export async function migrateParticipants(filePath?: string) {
           await prisma.placementStatus.create({
             data: {
               registrationId: newReg.id,
-              status: "proses",
-              notes: "Diinisialisasi dari migrasi",
+              status: regStatus === RegistrationStatus.lolos ? "lolos" : "proses",
+              notes: "Diinisialisasi dari migrasi legacy ojetu",
             },
           });
+
+          registrationsCreated++;
+        } else {
+          // Update pendaftaran yang sudah ada
+          await prisma.registration.update({
+            where: { id: existingReg.id },
+            data: {
+              registrationStatus: regStatus,
+              nik: record.nik ?? existingReg.nik,
+              gender: normalizeGender(record.gender) ?? existingReg.gender,
+              photoPath: record.photo_path ?? existingReg.photoPath,
+              n4CertificatePath: record.n4_certificate_path ?? existingReg.n4CertificatePath,
+              sswCertificatePath: record.ssw_certificate_path ?? existingReg.sswCertificatePath,
+            },
+          });
+          registrationsUpdated++;
         }
       }
     } catch (err) {
@@ -246,9 +286,12 @@ export async function migrateParticipants(filePath?: string) {
   }
 
   console.log("-------------------------------------------------");
-  console.log(`✔ Akun baru dibuat: ${createdCount}`);
-  console.log(`✔ Akun diperbarui: ${updatedCount}`);
-  console.log(`⚠ Data dilewati/gagal: ${skippedCount}`);
+  console.log(`✔ Akun peserta baru dibuat       : ${usersCreated}`);
+  console.log(`✔ Akun peserta diperbarui        : ${usersUpdated}`);
+  console.log(`✔ Pendaftaran program baru dibuat: ${registrationsCreated}`);
+  console.log(`✔ Pendaftaran program diperbarui : ${registrationsUpdated}`);
+  console.log(`✔ Akun user tanpa program        : ${accountsOnly}`);
+  console.log(`⚠ Data dilewati/error            : ${skippedCount}`);
   console.log(`✔ Semua peserta diseragamkan password-nya ke: ${defaultPassword}`);
   console.log("=================================================");
 }

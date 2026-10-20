@@ -93,7 +93,6 @@ TURNSTILE_SECRET_KEY=0x4AAAAAAxxxxxxxxxxxxxxxxxxxx
 Buat file `/var/www/fitalenta/client/.env.local`:
 
 ```env
-NODE_ENV=production
 NEXT_PUBLIC_API_URL=https://fitalenta.co.id/api
 NEXT_PUBLIC_ASSET_URL=https://fitalenta.co.id
 NEXT_PUBLIC_TURNSTILE_SITE_KEY=0x4AAAAAAxxxxxxxxxxxxxxxxxxxx
@@ -242,10 +241,11 @@ npm run migrate:participants
 
 ---
 
-## 7. Fitur Reset Password Seragam Peserta Pasca-Migrasi
+## 7. Fitur Reset & Verifikasi Password Seragam Peserta
 
 Setelah migrasi selesai, semua akun peserta lama (`role: "user"`) diseragamkan password-nya ke password default yang sama agar seluruh peserta lama dapat langsung masuk tanpa kendala perbedaan enkripsi password dari sistem lama.
 
+### A. Eksekusi Reset Password Massal
 1. Tentukan password seragam di `server/.env`:
    ```env
    DEFAULT_PARTICIPANT_PASSWORD=Fitalenta2026!
@@ -258,8 +258,23 @@ Setelah migrasi selesai, semua akun peserta lama (`role: "user"`) diseragamkan p
 3. **Hasil Eksekusi:**
    - Semua akun dengan `role: "user"` akan di-hash menggunakan bcrypt dengan password `Fitalenta2026!`.
    - Akun Admin dan Editor **tidak** terpengaruh.
-4. **Instruksi Pengumuman untuk Peserta:**
-   > *"Peserta yang telah mendaftar di sistem sebelumnya (ojetu) dapat masuk menggunakan email terdaftar masing-masing dengan password seragam: **`Fitalenta2026!`**. Setelah masuk ke dashboard peserta, silakan perbarui password Anda pada menu Profil."*
+
+### B. Uji Verifikasi Sample Password di Production
+Untuk memastikan tanpa keraguan bahwa akun peserta di database production benar-benar cocok dengan password baru tersebut, jalankan skrip verifikasi bawaan:
+
+1. **Uji Sampel 5 Akun Acak:**
+   ```bash
+   npm run verify:passwords
+   ```
+   *(Menampilkan status `[VALID]` atau `[GAGAL]` pada 5 peserta acak)*
+
+2. **Uji Email Peserta Tertentu:**
+   ```bash
+   npx tsx src/scripts/verify-participant-passwords.ts nama_email_peserta@example.com
+   ```
+
+### C. Instruksi Pengumuman untuk Peserta
+> *"Peserta yang telah mendaftar di sistem sebelumnya (ojetu) dapat masuk menggunakan email terdaftar masing-masing dengan password seragam: **`Fitalenta2026!`**. Setelah masuk ke dashboard peserta, silakan perbarui password Anda pada menu Profil."*
 
 ---
 
