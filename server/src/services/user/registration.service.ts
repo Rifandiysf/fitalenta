@@ -1,6 +1,6 @@
 import prisma from "../../config/prisma";
 import { Prisma } from "../../../generated/prisma/client";
-import { MAX_CODE_COLLISION_RETRIES } from "../../config/registration.config";
+import { MAX_CODE_COLLISION_RETRIES, REGISTRATION_FEE } from "../../config/registration.config";
 import { RegistrationErrors } from "../../errors/registration.errors";
 import {
   CreateRegistrationInput,
@@ -20,6 +20,10 @@ import {
   registrationResultInclude,
   toRegistrationResult,
 } from "./registration.mapper";
+import {
+  buildInvoiceIssuedNotification,
+  createPaymentNotification,
+} from "../admin/payment.notifications";
 
 const ISSUED_ONLY = {
   issuedAt: { not: null },
@@ -111,6 +115,10 @@ async function registerInTransaction(
     });
   }
 
+  const dueDate = program.registrationDeadline ?? null;
+  const registrationFeeNotes = REGISTRATION_FEE.defaultNotes(program.name);
+  const now = new Date();
+
   const registration = await tx.registration.create({
     data: {
       userId,
@@ -122,10 +130,13 @@ async function registerInTransaction(
       payments: {
         create: {
           invoiceNumber,
-          amount: program.trainingCost,
+          amount: REGISTRATION_FEE.amount,
           status: "pending",
           currentInstallmentNumber: 0,
-          issuedAt: new Date(),
+          issuedAt: now,
+          dueDate,
+          nextDueDate: dueDate,
+          notes: registrationFeeNotes,
         },
       },
       selectionStatuses: { create: {} },
@@ -133,6 +144,20 @@ async function registerInTransaction(
     },
     include: registrationResultInclude,
   });
+
+  const createdPayment = registration.payments[0];
+  if (createdPayment) {
+    await createPaymentNotification(
+      tx,
+      userId,
+      createdPayment.id,
+      buildInvoiceIssuedNotification({
+        invoiceNumber,
+        amount: new Prisma.Decimal(REGISTRATION_FEE.amount),
+        dueDate,
+      })
+    );
+  }
 
   return toRegistrationResult(registration);
 }

@@ -28,7 +28,13 @@ function assetPath(file: string): string | null {
 
 function resolveBilling(invoice: PaymentDetail): Billing {
   const { installment } = invoice;
-  if (!installment) return { description: "Biaya Program", amount: invoice.amount, installmentNumber: null };
+  if (!installment) {
+    return {
+      description: invoice.notes || "Biaya Program",
+      amount: invoice.amount,
+      installmentNumber: null,
+    };
+  }
 
   const index = Math.min(installment.current, installment.total - 1);
   return {
@@ -94,7 +100,7 @@ function drawRecipient(doc: Doc, invoice: PaymentDetail, billing: Billing, lette
 
   const subject = billing.installmentNumber
     ? `Invoice Cicilan Ke-${billing.installmentNumber} ${invoice.program.name}`
-    : `Invoice ${invoice.program.name}`;
+    : `Invoice ${invoice.notes || invoice.program.name}`;
   setFont(doc, FONT.bold).text(`Perihal: ${subject}`, MARGIN, doc.y + 18, { underline: true });
 
   setFont(doc, FONT.italic).text("Assalamu’alaikum Warahmatullahi Wabarakatuh.", MARGIN, doc.y + 18);
@@ -205,6 +211,7 @@ export function streamInvoicePdf(invoice: PaymentDetail, output: Writable): void
 
   doc.end();
 }
+
 export function sendInvoicePdf(res: Response, invoice: PaymentDetail, download = false): void {
   const disposition = download ? "attachment" : "inline";
 
