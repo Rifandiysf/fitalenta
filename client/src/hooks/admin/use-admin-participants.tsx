@@ -23,6 +23,7 @@ export function useImportParticipants() {
         mutationFn: importParticipants,
         onSuccess: (result) => {
             if (!result.committed) return;
+            queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
             queryClient.invalidateQueries({ queryKey: ["admin", "selection-placements"] });
             queryClient.invalidateQueries({ queryKey: ["admin", "dashboard"] });
         },

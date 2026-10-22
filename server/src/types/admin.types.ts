@@ -129,6 +129,7 @@ export interface UserItem {
   role: Role;
   createdAt: Date;
   updatedAt: Date;
+  registrationsCount: number;
   relatedDataCount: number;
   canDelete: boolean;
 }

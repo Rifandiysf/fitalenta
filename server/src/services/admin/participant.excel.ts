@@ -15,7 +15,7 @@ const JAKARTA_OFFSET_MS = 7 * 3_600_000;
 
 export interface ParticipantExportRow {
   registrationCode: string;
-  registrationDate: Date;
+  registrationDate: Date | null;
   registrationStatus: string;
   fullName: string;
   email: string;
@@ -93,7 +93,7 @@ export function buildParticipantWorkbook(rows: ParticipantExportRow[]): ExcelJS.
     sheet.addRow({
       no: index + 1,
       registrationCode: row.registrationCode,
-      registrationDate: toExcelDate(row.registrationDate),
+      registrationDate: row.registrationDate ? toExcelDate(row.registrationDate) : null,
       registrationStatus: REGISTRATION_STATUS_LABELS[row.registrationStatus] ?? row.registrationStatus,
       fullName: row.fullName,
       email: row.email,

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CircleAlert, CircleCheck, Download, FileDown, FileSpreadsheet, Loader2, Upload, Users, X } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -12,6 +12,7 @@ import { useDownloadParticipantTemplate, useExportParticipants } from "@/hooks/a
 import { saveFile } from "@/lib/file-download";
 import type { ParticipantExportFilters, ParticipantImportResult } from "@/types/admin/admin-participant";
 import { ImportParticipantSheet } from "./import-participant-sheet";
+import { ParticipantList } from "./participant-list";
 
 type RegistrationStatusFilter = "all" | "menunggu" | "lolos" | "tidak_lolos";
 type Notice = { tone: "success" | "error"; message: string };
@@ -78,6 +79,8 @@ export function ParticipantManagementView() {
                     Unduh data lengkap peserta dalam format Excel, atau perbarui data peserta secara massal melalui import file.
                 </p>
             </div>
+
+            <ParticipantList />
 
             {notice && (
                 <Alert variant={notice.tone === "error" ? "destructive" : "default"}>

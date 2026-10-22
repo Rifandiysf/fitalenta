@@ -8,6 +8,7 @@ export type AdminUser = {
     role: AdminUserRole;
     createdAt: string;
     updatedAt: string;
+    registrationsCount: number;
     relatedDataCount: number;
     canDelete: boolean;
 };

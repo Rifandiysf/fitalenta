@@ -20,6 +20,7 @@ function buildParticipantWhere(filters: ParticipantExportFilters): Prisma.Regist
             { registrationCode: { contains: filters.search } },
             { user: { name: { contains: filters.search } } },
             { user: { email: { contains: filters.search } } },
+            { user: { phone: { contains: filters.search } } },
             { nik: { contains: filters.search } },
           ],
         }
@@ -79,12 +80,69 @@ function toExportRow(reg: RegistrationExportRecord): ParticipantExportRow {
 
 export async function exportParticipants(filters: ParticipantExportFilters): Promise<ParticipantExportRow[]> {
   const where = buildParticipantWhere(filters);
-  const registrations = await prisma.registration.findMany({
-    where,
-    include: participantExportInclude,
-    orderBy: { registrationDate: "desc" },
-  });
-  return registrations.map(toExportRow);
+  const [registrations, unregisteredUsers] = await Promise.all([
+    prisma.registration.findMany({
+      where,
+      include: participantExportInclude,
+      orderBy: { registrationDate: "desc" },
+    }),
+    !filters.programId && !filters.registrationStatus
+      ? prisma.user.findMany({
+          where: {
+            role: "user",
+            registrations: { none: {} },
+            ...(filters.search
+              ? {
+                  OR: [
+                    { name: { contains: filters.search } },
+                    { email: { contains: filters.search } },
+                    { phone: { contains: filters.search } },
+                  ],
+                }
+              : {}),
+          },
+          select: { name: true, email: true, phone: true, birthPlace: true, birthDate: true, address: true },
+          orderBy: { createdAt: "desc" },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  return [
+    ...registrations.map(toExportRow),
+    ...unregisteredUsers.map((user) => ({
+      registrationCode: "",
+      registrationDate: null,
+      registrationStatus: "",
+      fullName: user.name,
+      email: user.email,
+      phone: user.phone,
+      nik: null,
+      gender: null,
+      birthPlace: user.birthPlace,
+      birthDate: user.birthDate,
+      lastEducation: null,
+      major: null,
+      educationInstitution: null,
+      currentActivity: null,
+      maritalStatus: null,
+      parentPhone: null,
+      parentRelationship: null,
+      ktpProvinceName: null,
+      ktpCityName: null,
+      ktpAddress: null,
+      domicileProvinceName: null,
+      domicileCityName: null,
+      domicileAddress: user.address,
+      programName: "",
+      programFormat: null,
+      selectionStatus: null,
+      placementStatus: null,
+      companyName: null,
+      placementDate: null,
+      paymentStatus: null,
+      amountPaid: null,
+    })),
+  ];
 }
 
 export interface ParticipantImportInput {

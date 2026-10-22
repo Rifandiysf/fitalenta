@@ -30,6 +30,7 @@ function toUserItem(user: UserRecord, currentUserId: number): UserItem {
     role: user.role,
     createdAt: user.createdAt,
     updatedAt: user.updatedAt,
+    registrationsCount: user._count.registrations,
     relatedDataCount,
     canDelete: user.id !== currentUserId && relatedDataCount === 0,
   };
