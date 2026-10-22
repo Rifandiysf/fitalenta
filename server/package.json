@@ -11,6 +11,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "seed:admin": "tsx prisma/seed-admin.ts",
+    "seed:superadmin": "tsx prisma/seed-superadmin.ts",
     "migrate:participants": "tsx src/scripts/migrate-participants.ts",
     "reset:passwords": "tsx src/scripts/reset-participant-passwords.ts",
     "verify:passwords": "tsx src/scripts/verify-participant-passwords.ts"

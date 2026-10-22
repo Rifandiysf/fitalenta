@@ -71,6 +71,7 @@ export async function getSummary(): Promise<UserSummary> {
   return {
     total,
     participants: countByRole("user"),
+    superAdmins: countByRole("superadmin"),
     administrators: countByRole("admin"),
     editors: countByRole("editor"),
     withPhone,
